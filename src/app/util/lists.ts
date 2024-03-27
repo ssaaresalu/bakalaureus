@@ -1,0 +1,20 @@
+export const CATEGORIES = [
+  'M1 - Elektrienergia tootmine',
+  'M1 - Soojusenergia tootmine',
+  'M1 - Oma sõidukite kütused',
+  'M1 - Hajusheitmed',
+  'M2 - Ostetud elektrienergia',
+  'M2 - Ostetud soojusenergia',
+  'M3 - Sisseostetud transporditeenus',
+  'M3 - tööreisid',
+  'M3 - Tööle-koju liikumine',
+  'M3 - Koju-tööle liikumine',
+  'M3 - Kodukontor',
+  'M3 - Jäätmete transport ja töötlus',
+  'M3 - Ostetud tooted',
+  'M3 - Müüdud tooted',
+  'M3 - Finantsinvesteeringud',
+  'M3 - Kütuste tootmine',
+  'M3 - Hajusheitmed',
+];
+export const AREAS = ['M1', 'M2', 'M3'];

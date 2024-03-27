@@ -1,0 +1,8 @@
+.text-link {
+  color: #0062bc;
+  cursor: pointer;
+  &:focus,
+  &:focus-visible {
+    outline: 1px solid #111111;
+  }
+}

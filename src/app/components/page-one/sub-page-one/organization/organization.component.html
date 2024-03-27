@@ -1,1 +1,263 @@
-<p>organization works!</p>
+<div class="mt-5">
+  <h2 class="h2">{{ "Organization.Heading" | translate }}</h2>
+  <form (ngSubmit)="onOrganizationSubmit()" [formGroup]="organizationForm">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="mb-3">
+          <label [for]="'organizationName'" class="col-form-label fw-500">{{
+            "Organization.Name" | translate
+          }}</label>
+          <input
+            [formControl]="organizationForm.controls.name"
+            [id]="'organizationName'"
+            type="text"
+            class="form-control"
+          />
+        </div>
+        <div class="mb-3">
+          <label
+            [for]="'organizationReportingPeriodStart'"
+            class="col-form-label me-2 fw-500"
+            >{{ "Organization.ReportingPeriodStart" | translate }}</label
+          >
+          <app-year-picker
+            (yearChanged)="onYearSelected($event)"
+            formControlName="reportingPeriodStart"
+            [id]="'organizationReportingPeriodStart'"
+          ></app-year-picker>
+        </div>
+        <div class="mb-3">
+          <label
+            [for]="'organizationReportingPeriodEnd'"
+            class="col-form-label me-3 fw-500"
+            >{{ "Organization.ReportingPeriodEnd" | translate }}</label
+          >
+          <app-year-picker
+            (yearChanged)="onYearSelected($event)"
+            formControlName="reportingPeriodEnd"
+            [id]="'organizationReportingPeriodEnd'"
+          ></app-year-picker>
+        </div>
+      </div>
+      <div class="col-md-2"></div>
+      <div class="col">
+        @for (
+          yearGroup of yearlyInfo.controls;
+          track yearGroup;
+          let i = $index
+        ) {
+          <div [hidden]="i !== currentYearIndex">
+            <div class="mb-3">
+              <p class="col-form-label fw-bold">
+                {{ yearGroup.controls.year.value }}
+              </p>
+              <label
+                [for]="'relativeIndicator-' + i"
+                class="col-form-label fw-500"
+                >{{ "Organization.RelativeIndicator" | translate }}</label
+              >
+              <input
+                class="form-control w-50"
+                [id]="'relativeIndicator-' + i"
+              />
+              <p class="mt-3 fw-500">
+                {{ "Organization.Units.StructuralUnits" | translate }}
+              </p>
+              @if (yearGroup.controls.structuralUnits?.length === 0) {
+                <span
+                  (click)="addStructuralUnit(yearGroup)"
+                  (keydown.enter)="addStructuralUnit(yearGroup)"
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500"
+                >
+                  <mat-icon class="pt-1">add</mat-icon>
+                  {{ "Organization.Units.AddUnit" | translate }}</span
+                >
+              }
+              @for (
+                unitNr of yearGroup.controls.structuralUnits?.controls;
+                track unitNr;
+                let i = $index
+              ) {
+                @if (
+                  yearGroup.controls.structuralUnits!.length <
+                    MAX_NR_OF_UNITS && i > 0
+                ) {
+                  <hr />
+                }
+                <label
+                  [for]="'unitNumber-' + i"
+                  class="col-form-label fw-500"
+                  >{{ "Organization.Units.UnitNumber" | translate }}</label
+                >
+                <p>{{ unitNr.controls.number.value }}</p>
+                <label [for]="'unitName-' + i" class="col-form-label fw-500">{{
+                  "Organization.Units.UnitName" | translate
+                }}</label>
+                <input
+                  [formControl]="unitNr.controls.name"
+                  [id]="'unitName-' + i"
+                  type="text"
+                  class="form-control"
+                />
+                <label
+                  [for]="'unitLocation-' + i"
+                  class="col-form-label fw-500"
+                  >{{ "Organization.Units.UnitLocation" | translate }}</label
+                >
+                <input
+                  [formControl]="unitNr.controls.location"
+                  [id]="'unitLocation-' + i"
+                  type="text"
+                  class="form-control"
+                />
+                <div class="mt-3">
+                  <span
+                    (click)="removeStructuralUnit(yearGroup, i)"
+                    (keydown.enter)="removeStructuralUnit(yearGroup, i)"
+                    role="button"
+                    tabindex="0"
+                    class="text-link fw-500 text-danger"
+                  >
+                    <mat-icon class="pt-1">remove</mat-icon>
+                    {{ "Organization.Units.RemoveUnit" | translate }}
+                  </span>
+                </div>
+              }
+              @if (
+                yearGroup.controls.structuralUnits!.length &&
+                yearGroup.controls.structuralUnits!.length <= MAX_NR_OF_UNITS
+              ) {
+                <div class="mt-3">
+                  <span
+                    (click)="addStructuralUnit(yearGroup)"
+                    (keydown.enter)="addStructuralUnit(yearGroup)"
+                    role="button"
+                    tabindex="0"
+                    class="text-link fw-500 col-8"
+                  >
+                    <mat-icon class="pt-1">add</mat-icon>
+                    {{ "Organization.Units.AddUnit" | translate }}</span
+                  >
+                </div>
+              }
+              @if (yearGroup.controls.structuralUnits?.length) {
+                <hr style="opacity: 0.75" />
+                <p class="mt-3 fw-500">
+                  {{ "Organization.Scope.AssessmentScope" | translate }}
+                </p>
+                @if (yearGroup.controls.ghgAssessmentScopes?.length === 0) {
+                  <span
+                    (click)="addGhgAssessmentScope(yearGroup)"
+                    (keydown.enter)="addGhgAssessmentScope(yearGroup)"
+                    role="button"
+                    tabindex="0"
+                    class="text-link fw-500"
+                  >
+                    <mat-icon class="pt-1">add</mat-icon>
+                    {{ "Organization.Scope.AddScope" | translate }}</span
+                  >
+                }
+                @for (
+                  assessmentScope of yearGroup.controls.ghgAssessmentScopes
+                    ?.controls;
+                  track assessmentScope;
+                  let i = $index
+                ) {
+                  @if (
+                    yearGroup.controls.ghgAssessmentScopes!.length <
+                      MAX_NR_OF_UNITS && i > 0
+                  ) {
+                    <hr />
+                  }
+                  <label
+                    [for]="'unitNumber-' + i"
+                    class="col-form-label fw-500"
+                    >{{ "Organization.Scope.UnitNumber" | translate }}</label
+                  >
+                  <div class="w-25">
+                    <app-dropdown
+                      [list]="getUnitNumbers(yearGroup)"
+                      [control]="assessmentScope.controls.unitNumber"
+                    ></app-dropdown>
+                  </div>
+                  <label [for]="'area-' + i" class="col-form-label fw-500">{{
+                    "Organization.Scope.AreaOfInfluence" | translate
+                  }}</label>
+                  <div class="w-50">
+                    <app-dropdown
+                      [list]="areas"
+                      [control]="assessmentScope.controls.influenceArea"
+                      [id]="'area-' + i"
+                    ></app-dropdown>
+                  </div>
+                  <label [for]="'scope-' + i" class="col-form-label fw-500">{{
+                    "Organization.Scope.Category" | translate
+                  }}</label>
+                  <app-dropdown
+                    [list]="categoriesList"
+                    [control]="assessmentScope.controls.category"
+                    [id]="'scope-' + i"
+                    [chosenArea]="assessmentScope.controls.influenceArea.value"
+                  ></app-dropdown>
+                  <div class="mt-3">
+                    <span
+                      (click)="removeGhgAssessmentScope(yearGroup, i)"
+                      (keydown.enter)="removeGhgAssessmentScope(yearGroup, i)"
+                      role="button"
+                      tabindex="0"
+                      class="text-link fw-500 text-danger"
+                    >
+                      <mat-icon class="pt-1">remove</mat-icon>
+                      {{ "Organization.Scope.RemoveUnit" | translate }}
+                    </span>
+                  </div>
+                }
+                @if (
+                  yearGroup.controls.ghgAssessmentScopes!.length &&
+                  yearGroup.controls.ghgAssessmentScopes!.length <=
+                    MAX_NR_OF_UNITS
+                ) {
+                  <div class="mt-3">
+                    <span
+                      (click)="addGhgAssessmentScope(yearGroup)"
+                      (keydown.enter)="addGhgAssessmentScope(yearGroup)"
+                      role="button"
+                      tabindex="0"
+                      class="text-link fw-500 col-8"
+                    >
+                      <mat-icon class="pt-1">add</mat-icon>
+                      {{ "Organization.Scope.AddScope" | translate }}</span
+                    >
+                  </div>
+                }
+              }
+            </div>
+            <hr style="opacity: 0.75" />
+          </div>
+        }
+        @if (yearlyInfo.controls.length > 0) {
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm me-3"
+            (click)="showPrevYear()"
+            [disabled]="!canShowPrevYear"
+          >
+            Previous
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            (click)="showNextYear()"
+            [disabled]="!canShowNextYear"
+          >
+            Next
+          </button>
+        }
+      </div>
+      <div class="col"></div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+</div>

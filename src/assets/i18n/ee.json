@@ -1,6 +1,29 @@
 {
   "Introductory": {
     "Heading": "Teretulemast Rohemõõdikusse",
-    "Objective": "Rohemõõdik on Kliimaministeeriumi KHG jalajälje arvutusmudelil põhinev kalkulaator, mis pakub universaalse raamistiku organisatsioonidele kasvuhoonegaaside (KHG) jalajälje arvutamiseks"
+    "Objective": "Käesolev mudel pakub universaalse raamistiku organisatsioonidele kasvuhoonegaaside (KHG) jalajälje arvutamiseks. Mudel toetub enamkasutatavatele rahvusvahelistele (eelkõige Greenhouse Gas Protocol, https://ghgprotocol.org) KHG jalajälje arvutamise metoodilistele juhistele ja standarditele. Samas võtab mudel arvesse eestikeskseid eeldusi ja tingimusi (sh eriheitetegureid), mis loovad ühtlustatud metoodilise aluse ja andmestiku Eesti organisatsioonidele KHG jalajälje arvutamiseks. Peale arvutusmudeli on koostatud KHG jalajälje hindamise juhendmaterjal, mis annab detailsemaid suuniseid ja näpunäiteid KHG jalajälje hindamiseks ja tulemuste esitamiseks/aruandluseks organisatsioonides. Nii käesoleva KHG jalajälje arvutusmudeli kui ka vastava juhendi on koostanud Stockholmi Keskkonnainstituudi Tallinna Keskus Keskkonnaministeeriumi tellimusel."
+  },
+  "Organization": {
+    "Heading": "Organisatsiooni andmed ja jalajälje hindamise ulatus",
+    "Name": "Organisatsiooni/ettevõtte nimi:",
+    "ReportingPeriodStart": "KHG jalajälje aruandlusperioodi algusaasta:",
+    "ReportingPeriodEnd": "KHG jalajälje aruandlusperioodi lõppaasta:",
+    "RelativeIndicator": "Muud andmed:",
+    "Units": {
+      "StructuralUnits": "Organisatsiooni ulatuse määratlemine:",
+      "UnitNumber": "Üksuse number:",
+      "AddUnit": "Lisa üksus",
+      "RemoveUnit": "Eemalda üksus",
+      "UnitName": "Üksuse nimetus:",
+      "UnitLocation": "Asukoht (aadress, linn):"
+    },
+    "Scope": {
+      "AssessmentScope": "KHG jalajälje ulatuse määratlemine",
+      "UnitNumber": "Üksuse number:",
+      "AreaOfInfluence": "Mõjuala",
+      "Category": "Kategooria (tegevus/heiteallikas)",
+      "AddScope": "Lisa",
+      "RemoveUnit": "Eemalda"
+    }
   }
 }

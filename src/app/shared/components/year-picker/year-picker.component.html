@@ -1,0 +1,16 @@
+<div ngbDropdown class="d-inline-block">
+  <button class="btn btn-outline-primary" ngbDropdownToggle type="button">
+    @if (selectedYear !== null) {
+      {{ selectedYear }}
+    } @else {
+      {{ "-" }}
+    }
+  </button>
+  <div ngbDropdownMenu aria-labelledby="yearDropdown">
+    @for (year of years; track year) {
+      <button ngbDropdownItem (click)="selectYear(year)" type="button">
+        {{ year }}
+      </button>
+    }
+  </div>
+</div>

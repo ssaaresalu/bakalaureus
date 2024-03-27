@@ -1,11 +1,4 @@
-<div
-  ngbDropdown
-  class="d-inline-block"
-  [autoClose]="'outside'"
-  [display]="'dynamic'"
-  [container]="'body'"
-  placement="top-left"
->
+<div ngbDropdown class="d-inline-block" placement="top-left">
   <button
     ngbDropdownToggle
     type="button"
@@ -14,11 +7,10 @@
     <span class="dropdown-button-text">{{ shownLanguage }}</span>
   </button>
   <div ngbDropdownMenu>
-    <button
-      *ngFor="let language of availableLanguages"
-      (click)="useLanguage(language)"
-    >
-      {{ language }}
-    </button>
+    @for (language of availableLanguages; track language) {
+      <button ngbDropdownItem (click)="useLanguage(language)">
+        {{ language }}
+      </button>
+    }
   </div>
 </div>

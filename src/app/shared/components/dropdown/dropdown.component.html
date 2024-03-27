@@ -1,0 +1,30 @@
+<div
+  ngbDropdown
+  [autoClose]="'outside'"
+  [display]="'dynamic'"
+  [container]="'body'"
+  #dropdown="ngbDropdown"
+  class="d-inline-block w-100"
+>
+  <button type="button" ngbDropdownToggle class="form-control dropdown-toggle">
+    <span>
+      @if (control.value) {
+        {{ control.value }}
+      } @else {
+        -
+      }
+    </span>
+  </button>
+  <div ngbDropdownMenu style="max-height: 400px; overflow: auto">
+    @for (item of filteredList; track item) {
+      <button
+        ngbDropdownItem
+        type="button"
+        style="white-space: normal"
+        (click)="select(item); dropdown.close()"
+      >
+        {{ item }}
+      </button>
+    }
+  </div>
+</div>
