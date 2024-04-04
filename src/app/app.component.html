@@ -1,4 +1,27 @@
+@if (showSpinner | async) {
+  <div class="spinner"></div>
+  <div class="overlay"></div>
+}
 <div class="main-container">
-  <app-page-one></app-page-one>
-  <app-footer></app-footer>
+  @switch (pageIndex) {
+    @case (Pages.ORGANIZATION) {
+      <app-page-one></app-page-one>
+    }
+    @case (Pages.M1_DATA) {
+      <app-page-two></app-page-two>
+    }
+  }
+  <div class="btn--btns-left">
+    @if (pageIndex !== 4) {
+      <button type="button" class="btn btn-primary" (click)="nextPage()">
+        Continue
+      </button>
+    }
+    @if (pageIndex > 0) {
+      <button type="button" class="btn btn-primary" (click)="prevPage()">
+        Back
+      </button>
+    }
+  </div>
 </div>
+<app-footer></app-footer>

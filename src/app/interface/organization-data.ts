@@ -8,13 +8,9 @@ export interface OrganizationData {
 
 export interface OrganizationYearlyInfo {
   year?: string;
-  relativeIndicators?: RelativeIndicators[];
+  nrOfEmployees?: string;
   structuralUnits?: StructuralUnits[];
   ghgAssessmentScopes?: GhgAssessmentScopes[];
-}
-
-export interface RelativeIndicators {
-  nrOfEmployees?: string;
 }
 
 export interface StructuralUnits {

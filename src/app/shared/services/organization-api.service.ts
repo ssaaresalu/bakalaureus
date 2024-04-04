@@ -13,9 +13,9 @@ export class OrganizationApiService {
 
   constructor() {}
 
-  getOrganizations(): Observable<OrganizationData[]> {
+  getOrganization(id: number): Observable<OrganizationData[]> {
     return this.http.get<OrganizationData[]>(
-      `${this.apiServerUrl}/organization/all`,
+      `${this.apiServerUrl}/organization/find/` + id,
     );
   }
 

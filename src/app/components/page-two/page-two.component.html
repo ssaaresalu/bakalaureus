@@ -1,0 +1,827 @@
+<h2 class="h2">{{ "PageTwo.Heading" | translate }}</h2>
+<form (ngSubmit)="submit()" [formGroup]="M1Form">
+  @for (
+    yearlyForm of M1Form.controls.yearlyInfo.controls;
+    track yearlyForm;
+    let i = $index
+  ) {
+    <div [hidden]="i !== currentYearIndex" class="mb-5">
+      <p>{{ yearlyForm.controls.year.value }}</p>
+      <article class="mb-4">
+        <h4 class="h4">{{ "PageTwo.EnergyHeading" | translate }}</h4>
+        @for (
+          energyInfo of yearlyForm.controls.energy.controls;
+          track energyInfo;
+          let i = $index
+        ) {
+          <div class="row row-cols-3 mb-3">
+            <div class="col">
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.UnitNumber" | translate }}
+                </span>
+                <app-dropdown
+                  [control]="energyInfo.controls.unitNumber"
+                  [simpleList]="getUnitsByYear(yearlyForm.controls.year.value)"
+                ></app-dropdown>
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.EnergyType" | translate }}
+                </span>
+                <app-dropdown
+                  [control]="energyInfo.controls.type"
+                  [emissionList]="emissionsLists.energy"
+                ></app-dropdown>
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.Amount" | translate }}
+                </span>
+                <input
+                  class="form-control"
+                  [formControl]="energyInfo.controls.amount"
+                  type="text"
+                />
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.ModelEmissions" | translate }}
+                </span>
+                <input
+                  type="checkbox"
+                  [formControl]="energyInfo.controls.isUsingModelEmissionFactor"
+                />
+              </div>
+            </div>
+            <div class="col">
+              <div class="mb-3">
+                @if (energyInfo.controls.isUsingModelEmissionFactor.value) {
+                  <span class="fw-500">
+                    {{ "PageTwo.ColumnHeader.EmissionFactor" | translate }}
+                  </span>
+                  {{ energyInfo.controls.emissionFactor.value }}
+                }
+              </div>
+              <div class="mb-3">
+                @if (
+                  energyInfo.controls.isUsingModelEmissionFactor.value === false
+                ) {
+                  <span class="fw-500">
+                    {{ "PageTwo.ColumnHeader.OtherEmissionFactor" | translate }}
+                  </span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [formControl]="energyInfo.controls.otherEmissionFactor"
+                  />
+                }
+              </div>
+              <div class="mb-3">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.EmissionsKG" | translate }}
+                </span>
+                @if (energyInfo.controls.isUsingModelEmissionFactor.value) {
+                  {{
+                    energyInfo.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : energyInfo.controls.emissionFactor.value
+                  }}
+                } @else if (
+                  energyInfo.controls.isUsingModelEmissionFactor.value === false
+                ) {
+                  {{
+                    energyInfo.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : energyInfo.controls.otherEmissionFactor.value ?? 0
+                  }}
+                }
+              </div>
+              <div>
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.EmissionsT" | translate }}
+                </span>
+                @if (energyInfo.controls.isUsingModelEmissionFactor.value) {
+                  {{
+                    energyInfo.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : energyInfo.controls.emissionFactor.value
+                        : true
+                  }}
+                } @else if (
+                  energyInfo.controls.isUsingModelEmissionFactor.value === false
+                ) {
+                  {{
+                    energyInfo.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : energyInfo.controls.otherEmissionFactor.value ?? 0
+                        : true
+                  }}
+                }
+              </div>
+            </div>
+            <div class="col">
+              @if (yearlyForm.controls.energy.length > 0) {
+                <span
+                  (click)="removeEnergyField(yearlyForm, i)"
+                  (keydown.enter)="removeEnergyField(yearlyForm, i)"
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageTwo.RemoveRow" | translate }}</span
+                >
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.energy.length === 0) {
+          <span
+            (click)="addEnergyField(yearlyForm)"
+            (keydown.enter)="addEnergyField(yearlyForm)"
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        } @else if (yearlyForm.controls.energy.length <= 10) {
+          <span
+            (click)="addEnergyField(yearlyForm)"
+            (keydown.enter)="addEnergyField(yearlyForm)"
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        }
+      </article>
+      <hr class="opacity-75" />
+      <article class="mb-4">
+        <h4 class="h4 mb-3">{{ "PageTwo.VehicleFuelsHeading" | translate }}</h4>
+        <h6 class="h6">{{ "PageTwo.VehicleFuelsHeading1" | translate }}</h6>
+        @for (
+          vehicleInfo1 of yearlyForm.controls.vehicleFuels1.controls;
+          track vehicleInfo1;
+          let i = $index
+        ) {
+          <div class="row row-cols-3 mb-3">
+            <div class="col">
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.UnitNumber" | translate }}
+                </span>
+                <app-dropdown
+                  [control]="vehicleInfo1.controls.unitNumber"
+                  [simpleList]="getUnitsByYear(yearlyForm.controls.year.value)"
+                ></app-dropdown>
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.VehicleType1" | translate }}
+                </span>
+                <app-dropdown
+                  [control]="vehicleInfo1.controls.type"
+                  [emissionList]="emissionsLists.vehicleFuels1"
+                ></app-dropdown>
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.Amount" | translate }}
+                </span>
+                <input
+                  class="form-control"
+                  [formControl]="vehicleInfo1.controls.amount"
+                  type="text"
+                />
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.ModelEmissions" | translate }}
+                </span>
+                <input
+                  type="checkbox"
+                  [formControl]="
+                    vehicleInfo1.controls.isUsingModelEmissionFactor
+                  "
+                />
+              </div>
+            </div>
+            <div class="col">
+              <div class="mb-3">
+                @if (vehicleInfo1.controls.isUsingModelEmissionFactor.value) {
+                  {{ "PageTwo.ColumnHeader.EmissionFactor" | translate }}
+                  {{
+                    emissionsLists.vehicleFuels1
+                      | getListItemValue: vehicleInfo1.controls.type.value
+                  }}
+                }
+              </div>
+              <div class="mb-3">
+                @if (
+                  vehicleInfo1.controls.isUsingModelEmissionFactor.value ===
+                  false
+                ) {
+                  <span class="fw-500">
+                    {{ "PageTwo.ColumnHeader.OtherEmissionFactor" | translate }}
+                  </span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [formControl]="vehicleInfo1.controls.otherEmissionFactor"
+                  />
+                }
+              </div>
+              <div class="mb-3">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.EmissionsKG" | translate }}
+                </span>
+                @if (vehicleInfo1.controls.isUsingModelEmissionFactor.value) {
+                  {{
+                    vehicleInfo1.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : vehicleInfo1.controls.emissionFactor.value
+                  }}
+                } @else if (
+                  vehicleInfo1.controls.isUsingModelEmissionFactor.value ===
+                  false
+                ) {
+                  {{
+                    vehicleInfo1.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : vehicleInfo1.controls.otherEmissionFactor.value ?? 0
+                  }}
+                }
+              </div>
+              <div>
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.EmissionsT" | translate }}
+                </span>
+                @if (vehicleInfo1.controls.isUsingModelEmissionFactor.value) {
+                  {{
+                    vehicleInfo1.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : vehicleInfo1.controls.emissionFactor.value
+                        : true
+                  }}
+                } @else if (
+                  vehicleInfo1.controls.isUsingModelEmissionFactor.value ===
+                  false
+                ) {
+                  {{
+                    vehicleInfo1.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : vehicleInfo1.controls.otherEmissionFactor.value ?? 0
+                        : true
+                  }}
+                }
+              </div>
+            </div>
+            <div class="col">
+              @if (yearlyForm.controls.vehicleFuels1.length > 0) {
+                <span
+                  (click)="removeVehicle1Field(yearlyForm, i)"
+                  (keydown.enter)="removeVehicle1Field(yearlyForm, i)"
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageTwo.RemoveRow" | translate }}</span
+                >
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.vehicleFuels1.length === 0) {
+          <span
+            (click)="addVehicle1Field(yearlyForm)"
+            (keydown.enter)="addVehicle1Field(yearlyForm)"
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        } @else if (yearlyForm.controls.vehicleFuels1.length <= 10) {
+          <span
+            (click)="addVehicle1Field(yearlyForm)"
+            (keydown.enter)="addVehicle1Field(yearlyForm)"
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        }
+      </article>
+      <hr class="opacity-25" />
+      <article class="mb-4">
+        <h6 class="h6">{{ "PageTwo.VehicleFuelsHeading2" | translate }}</h6>
+        @for (
+          vehicleInfo2 of yearlyForm.controls.vehicleFuels2.controls;
+          track vehicleInfo2;
+          let i = $index
+        ) {
+          <div class="row row-cols-3 mb-3">
+            <div class="col">
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.UnitNumber" | translate }}
+                </span>
+                <app-dropdown
+                  [control]="vehicleInfo2.controls.unitNumber"
+                  [simpleList]="getUnitsByYear(yearlyForm.controls.year.value)"
+                ></app-dropdown>
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.VehicleType2" | translate }}
+                </span>
+                <app-dropdown
+                  [control]="vehicleInfo2.controls.type"
+                  [emissionList]="emissionsLists.vehicleFuels2"
+                ></app-dropdown>
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.Amount" | translate }}
+                </span>
+                <input
+                  class="form-control"
+                  [formControl]="vehicleInfo2.controls.amount"
+                  type="text"
+                />
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.ModelEmissions" | translate }}
+                </span>
+                <input
+                  type="checkbox"
+                  [formControl]="
+                    vehicleInfo2.controls.isUsingModelEmissionFactor
+                  "
+                />
+              </div>
+            </div>
+            <div class="col">
+              <div class="mb-3">
+                @if (vehicleInfo2.controls.isUsingModelEmissionFactor.value) {
+                  <span class="fw-500">
+                    {{ "PageTwo.ColumnHeader.EmissionFactor" | translate }}
+                  </span>
+                  {{
+                    emissionsLists.vehicleFuels2
+                      | getListItemValue: vehicleInfo2.controls.type.value
+                  }}
+                }
+              </div>
+              <div class="mb-3">
+                @if (
+                  vehicleInfo2.controls.isUsingModelEmissionFactor.value ===
+                  false
+                ) {
+                  <span class="fw-500">
+                    {{ "PageTwo.ColumnHeader.OtherEmissionFactor" | translate }}
+                  </span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [formControl]="vehicleInfo2.controls.otherEmissionFactor"
+                  />
+                }
+              </div>
+              <div class="mb-3">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.EmissionsKG" | translate }}
+                </span>
+                @if (vehicleInfo2.controls.isUsingModelEmissionFactor.value) {
+                  {{
+                    vehicleInfo2.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : vehicleInfo2.controls.emissionFactor.value
+                  }}
+                } @else if (
+                  vehicleInfo2.controls.isUsingModelEmissionFactor.value ===
+                  false
+                ) {
+                  {{
+                    vehicleInfo2.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : vehicleInfo2.controls.otherEmissionFactor.value ?? 0
+                  }}
+                }
+              </div>
+              <div>
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.EmissionsT" | translate }}
+                </span>
+                @if (vehicleInfo2.controls.isUsingModelEmissionFactor.value) {
+                  {{
+                    vehicleInfo2.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : vehicleInfo2.controls.emissionFactor.value
+                        : true
+                  }}
+                } @else if (
+                  vehicleInfo2.controls.isUsingModelEmissionFactor.value ===
+                  false
+                ) {
+                  {{
+                    vehicleInfo2.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : vehicleInfo2.controls.otherEmissionFactor.value ?? 0
+                        : true
+                  }}
+                }
+              </div>
+            </div>
+            <div class="col">
+              @if (yearlyForm.controls.vehicleFuels2.length > 0) {
+                <span
+                  (click)="removeVehicle2Field(yearlyForm, i)"
+                  (keydown.enter)="removeVehicle2Field(yearlyForm, i)"
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageTwo.RemoveRow" | translate }}</span
+                >
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.vehicleFuels2.length === 0) {
+          <span
+            (click)="addVehicle2Field(yearlyForm)"
+            (keydown.enter)="addVehicle2Field(yearlyForm)"
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        } @else if (yearlyForm.controls.vehicleFuels2.length <= 10) {
+          <span
+            (click)="addVehicle2Field(yearlyForm)"
+            (keydown.enter)="addVehicle2Field(yearlyForm)"
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        }
+      </article>
+      <hr class="opacity-25" />
+      <article class="mb-4">
+        <h6 class="h6">{{ "PageTwo.VehicleFuelsHeading3" | translate }}</h6>
+        @for (
+          vehicleInfo3 of yearlyForm.controls.vehicleFuels3.controls;
+          track vehicleInfo3;
+          let i = $index
+        ) {
+          <div class="row row-cols-3 mb-3">
+            <div class="col">
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.UnitNumber" | translate }}
+                </span>
+                <app-dropdown
+                  [control]="vehicleInfo3.controls.unitNumber"
+                  [simpleList]="getUnitsByYear(yearlyForm.controls.year.value)"
+                ></app-dropdown>
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.VehicleType3" | translate }}
+                </span>
+                <app-dropdown
+                  [control]="vehicleInfo3.controls.type"
+                  [emissionList]="emissionsLists.vehicleFuels3"
+                ></app-dropdown>
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.Amount" | translate }}
+                </span>
+                <input
+                  class="form-control"
+                  [formControl]="vehicleInfo3.controls.amount"
+                  type="text"
+                />
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.ModelEmissions" | translate }}
+                </span>
+                <input
+                  type="checkbox"
+                  [formControl]="
+                    vehicleInfo3.controls.isUsingModelEmissionFactor
+                  "
+                />
+              </div>
+            </div>
+            <div class="col">
+              <div class="mb-3">
+                @if (vehicleInfo3.controls.isUsingModelEmissionFactor.value) {
+                  <span class="fw-500">
+                    {{ "PageTwo.ColumnHeader.EmissionFactor" | translate }}
+                  </span>
+                  {{
+                    emissionsLists.vehicleFuels3
+                      | getListItemValue: vehicleInfo3.controls.type.value
+                  }}
+                }
+              </div>
+              <div class="mb-3">
+                @if (
+                  vehicleInfo3.controls.isUsingModelEmissionFactor.value ===
+                  false
+                ) {
+                  <span class="fw-500">
+                    {{ "PageTwo.ColumnHeader.OtherEmissionFactor" | translate }}
+                  </span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [formControl]="vehicleInfo3.controls.otherEmissionFactor"
+                  />
+                }
+              </div>
+              <div class="mb-3">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.EmissionsKG" | translate }}
+                </span>
+                @if (vehicleInfo3.controls.isUsingModelEmissionFactor.value) {
+                  {{
+                    vehicleInfo3.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : vehicleInfo3.controls.emissionFactor.value
+                  }}
+                } @else if (
+                  vehicleInfo3.controls.isUsingModelEmissionFactor.value ===
+                  false
+                ) {
+                  {{
+                    vehicleInfo3.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : vehicleInfo3.controls.otherEmissionFactor.value ?? 0
+                  }}
+                }
+              </div>
+              <div>
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.EmissionsT" | translate }}
+                </span>
+                @if (vehicleInfo3.controls.isUsingModelEmissionFactor.value) {
+                  {{
+                    vehicleInfo3.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : vehicleInfo3.controls.emissionFactor.value
+                        : true
+                  }}
+                } @else if (
+                  vehicleInfo3.controls.isUsingModelEmissionFactor.value ===
+                  false
+                ) {
+                  {{
+                    vehicleInfo3.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : vehicleInfo3.controls.otherEmissionFactor.value ?? 0
+                        : true
+                  }}
+                }
+              </div>
+            </div>
+            <div class="col">
+              @if (yearlyForm.controls.vehicleFuels3.length > 0) {
+                <span
+                  (click)="removeVehicle3Field(yearlyForm, i)"
+                  (keydown.enter)="removeVehicle3Field(yearlyForm, i)"
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageTwo.RemoveRow" | translate }}</span
+                >
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.vehicleFuels3.length === 0) {
+          <span
+            (click)="addVehicle3Field(yearlyForm)"
+            (keydown.enter)="addVehicle3Field(yearlyForm)"
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        } @else if (yearlyForm.controls.vehicleFuels3.length <= 10) {
+          <span
+            (click)="addVehicle3Field(yearlyForm)"
+            (keydown.enter)="addVehicle3Field(yearlyForm)"
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        }
+      </article>
+      <hr class="opacity-75" />
+      <article class="mb-4">
+        <h4 class="h4">
+          {{ "PageTwo.DispersedEmissionsHeading" | translate }}
+        </h4>
+        @for (
+          dispersedEmissions of yearlyForm.controls.dispersedEmissions.controls;
+          track dispersedEmissions;
+          let i = $index
+        ) {
+          <div class="row row-cols-3 mb-3">
+            <div class="col">
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.UnitNumber" | translate }}
+                </span>
+                <app-dropdown
+                  [control]="dispersedEmissions.controls.unitNumber"
+                  [simpleList]="getUnitsByYear(yearlyForm.controls.year.value)"
+                ></app-dropdown>
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.DispersedEmissions" | translate }}
+                </span>
+                <app-dropdown
+                  [control]="dispersedEmissions.controls.type"
+                  [emissionList]="emissionsLists.dispersedEmissions"
+                ></app-dropdown>
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.Amount" | translate }}
+                </span>
+                <input
+                  class="form-control"
+                  [formControl]="dispersedEmissions.controls.amount"
+                  type="text"
+                />
+              </div>
+              <div class="mb-2">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.ModelEmissions" | translate }}
+                </span>
+                <input
+                  type="checkbox"
+                  [formControl]="
+                    dispersedEmissions.controls.isUsingModelEmissionFactor
+                  "
+                />
+              </div>
+            </div>
+            <div class="col">
+              <div class="mb-3">
+                @if (
+                  dispersedEmissions.controls.isUsingModelEmissionFactor.value
+                ) {
+                  <span class="fw-500">
+                    {{ "PageTwo.ColumnHeader.EmissionFactor" | translate }}
+                  </span>
+                  {{
+                    emissionsLists.dispersedEmissions
+                      | getListItemValue: dispersedEmissions.controls.type.value
+                  }}
+                }
+              </div>
+              <div class="mb-3">
+                @if (
+                  dispersedEmissions.controls.isUsingModelEmissionFactor
+                    .value === false
+                ) {
+                  <span class="fw-500">
+                    {{ "PageTwo.ColumnHeader.OtherEmissionFactor" | translate }}
+                  </span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    [formControl]="
+                      dispersedEmissions.controls.otherEmissionFactor
+                    "
+                  />
+                }
+              </div>
+              <div class="mb-3">
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.EmissionsKG" | translate }}
+                </span>
+                @if (
+                  dispersedEmissions.controls.isUsingModelEmissionFactor.value
+                ) {
+                  {{
+                    dispersedEmissions.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : dispersedEmissions.controls.emissionFactor.value
+                  }}
+                } @else if (
+                  dispersedEmissions.controls.isUsingModelEmissionFactor
+                    .value === false
+                ) {
+                  {{
+                    dispersedEmissions.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : dispersedEmissions.controls.otherEmissionFactor
+                            .value ?? 0
+                  }}
+                }
+              </div>
+              <div>
+                <span class="fw-500">
+                  {{ "PageTwo.ColumnHeader.EmissionsT" | translate }}.
+                </span>
+                @if (
+                  dispersedEmissions.controls.isUsingModelEmissionFactor.value
+                ) {
+                  {{
+                    dispersedEmissions.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : dispersedEmissions.controls.emissionFactor.value
+                        : true
+                  }}
+                } @else if (
+                  dispersedEmissions.controls.isUsingModelEmissionFactor
+                    .value === false
+                ) {
+                  {{
+                    dispersedEmissions.controls.amount.value ?? ""
+                      | calculateEmissions
+                        : dispersedEmissions.controls.otherEmissionFactor
+                            .value ?? 0
+                        : true
+                  }}
+                }
+              </div>
+            </div>
+            <div class="col">
+              @if (yearlyForm.controls.dispersedEmissions.length > 0) {
+                <span
+                  (click)="removeDispersedEmissionsField(yearlyForm, i)"
+                  (keydown.enter)="removeDispersedEmissionsField(yearlyForm, i)"
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageTwo.RemoveRow" | translate }}</span
+                >
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.dispersedEmissions.length === 0) {
+          <span
+            (click)="addDispersedEmissionsField(yearlyForm)"
+            (keydown.enter)="addDispersedEmissionsField(yearlyForm)"
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        } @else if (yearlyForm.controls.dispersedEmissions.length <= 10) {
+          <span
+            (click)="addDispersedEmissionsField(yearlyForm)"
+            (keydown.enter)="addDispersedEmissionsField(yearlyForm)"
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        }
+      </article>
+    </div>
+  }
+  @if (M1Form.controls.yearlyInfo.length > 0) {
+    <button
+      type="button"
+      class="btn btn-secondary btn-sm me-3"
+      (click)="showPrevYear()"
+      [disabled]="currentYearIndex === 0"
+    >
+      Previous
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="showNextYear()"
+      [disabled]="currentYearIndex >= M1Form.controls.yearlyInfo.length - 1"
+    >
+      Next
+    </button>
+  }
+</form>

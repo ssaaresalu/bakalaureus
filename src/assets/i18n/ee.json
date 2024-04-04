@@ -25,5 +25,30 @@
       "AddScope": "Lisa",
       "RemoveUnit": "Eemalda"
     }
+  },
+  "PageTwo": {
+    "Heading": "Mõjuala 1",
+    "EnergyHeading": "Organisatsiooni toodetud energia",
+    "VehicleFuelsHeading": "Organisatsiooni sõidukite kütus",
+    "AddRow": "Lisa kirje",
+    "RemoveRow": "Eemalda kirje",
+    "VehicleFuelsHeading1": "KHG heide arvutatud kütuseliigi ja tarbitud kütuse koguse põhjal",
+    "VehicleFuelsHeading2": "KHG heide arvutatud kütuseliigi, maanteesõiduki tüübi ja tarbitud kütuse koguse põhjal",
+    "VehicleFuelsHeading3": "KHG heide arvutatud sõiduauto tüübi, kütuseliigi ja läbisõidu põhjal",
+    "DispersedEmissionsHeading": "Fluoritud kasvuhoonegaaside kasutamisest tulenev KHG heide",
+    "ColumnHeader": {
+      "UnitNumber": "Üksuse number",
+      "EnergyType": "Kütuse-/energialiik",
+      "VehicleType1": "Kütuseliik ja koguse ühik",
+      "VehicleType2": "Kütuseliik, sõidukitüüp ja kütuse koguse ühik",
+      "VehicleType3": "Kütuseliik ja sõiduauto tüüp",
+      "DispersedEmissions": "Kasutatav F-gaas",
+      "Amount": "Kogus",
+      "ModelEmissions": "Kas kasutate arvutusmudeli eriheitetegurit?",
+      "EmissionFactor": "Mudeli eriheitetegur",
+      "OtherEmissionFactor": "Muu eriheitetegur (sisestage siia)",
+      "EmissionsKG": "KHG heide kg CO2 ekv",
+      "EmissionsT": "KHG heide t CO2 ekv"
+    }
   }
 }

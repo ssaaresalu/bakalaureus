@@ -5,3 +5,17 @@
   padding: 2rem;
   width: 100%;
 }
+
+.btn--btns-left {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-top: 2rem;
+  button {
+    width: auto;
+    min-width: 100px;
+  }
+  button + button {
+    margin-left: 0.7rem;
+  }
+}

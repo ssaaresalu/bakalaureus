@@ -6,8 +6,12 @@
   #dropdown="ngbDropdown"
   class="d-inline-block w-100"
 >
-  <button type="button" ngbDropdownToggle class="form-control dropdown-toggle">
-    <span>
+  <button
+    type="button"
+    ngbDropdownToggle
+    class="form-control dropdown-toggle text-truncate"
+  >
+    <span class="text-truncate">
       @if (control.value) {
         {{ control.value }}
       } @else {

@@ -11,7 +11,6 @@ import {
   GhgAssessmentScopeForm,
   OrganizationForm,
   OrganizationYearlyInfoForm,
-  RelativeIndicatorGroup,
   StructuralUnitForm,
 } from '../../../../interface/organization-form';
 import { TranslateModule } from '@ngx-translate/core';
@@ -20,6 +19,7 @@ import { MatIcon } from '@angular/material/icon';
 import { DropdownComponent } from '../../../../shared/components/dropdown/dropdown.component';
 import { AREAS, CATEGORIES } from '../../../../util/lists';
 import { OrganizationApiService } from '../../../../shared/services/organization-api.service';
+import {PageComponentAbstract} from "../../../../shared/components/page-component-abstract";
 
 @Component({
   selector: 'app-organization',
@@ -35,7 +35,7 @@ import { OrganizationApiService } from '../../../../shared/services/organization
   templateUrl: './organization.component.html',
   styleUrl: './organization.component.css',
 })
-export class OrganizationComponent implements OnInit {
+export class OrganizationComponent extends PageComponentAbstract implements OnInit {
   private organizationApiService = inject(OrganizationApiService);
   yearRange: number[] = [];
   readonly MAX_NR_OF_UNITS = 10;
@@ -51,31 +51,20 @@ export class OrganizationComponent implements OnInit {
     yearlyInfo: new FormArray<OrganizationYearlyInfoForm>([]),
   });
 
-  public constructor(private fb: NonNullableFormBuilder) {}
+  public constructor(private fb: NonNullableFormBuilder) {
+    super()
+  }
 
   ngOnInit(): void {
     this.subscribeToReportingPeriods();
   }
 
-  getOrganizations(): void {
-    this.organizationApiService.getOrganizations().subscribe((res) => {
-      console.log(res);
-      return res;
-    });
-  }
-
   onOrganizationSubmit() {
-    console.log(this.organizationForm.value);
     this.organizationApiService
       .saveOrganization(this.organizationForm.value)
-      .subscribe((res) => {
-        console.log(res);
-        this.getOrganizations();
+      .subscribe((organization) => {
+        this.dataService.organizationData$.next(organization);
       });
-  }
-
-  onYearSelected(selectedYear: number) {
-    console.log('selected year: ', selectedYear);
   }
 
   get canShowNextYear(): boolean {
@@ -141,8 +130,8 @@ export class OrganizationComponent implements OnInit {
     }
     this.yearRange.forEach((year) => {
       const yearlyInfoFormGroup = new FormGroup({
-        year: new FormControl(year.toString()),
-        relativeIndicators: new FormArray<RelativeIndicatorGroup>([]),
+        year: new FormControl<string>(year.toString()),
+        nrOfEmployees: new FormControl<string>(''),
         structuralUnits: new FormArray<StructuralUnitForm>([]),
         ghgAssessmentScopes: new FormArray<GhgAssessmentScopeForm>([]),
       });
@@ -150,7 +139,6 @@ export class OrganizationComponent implements OnInit {
         yearlyInfoFormGroup as OrganizationYearlyInfoForm,
       );
     });
-    console.log(this.organizationForm.controls.yearlyInfo.controls);
   }
 
   get yearlyInfo() {

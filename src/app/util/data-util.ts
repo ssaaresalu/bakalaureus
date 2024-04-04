@@ -1,4 +1,5 @@
 import { EmissionLists } from '../interface/emission-lists';
+import {ListValueItem} from "../interface/list-value-item";
 
 export const emptyEmissionLists: EmissionLists = {
   boughtElectricalEnergy: [],
@@ -43,4 +44,9 @@ export function getLanguageBasedOnCode(code: string): string {
     default:
       return '';
   }
+}
+
+export function getListItemValue(label: string, list: ListValueItem[]): number {
+  return list.find((item) => item.label === label)?.value ?? 0;
+
 }

@@ -10,13 +10,9 @@ export interface OrganizationForm {
 
 export type OrganizationYearlyInfoForm = FormGroup<{
   year: FormControl<string>;
-  relativeIndicators?: FormArray<RelativeIndicatorGroup>;
-  structuralUnits?: FormArray<StructuralUnitForm>;
-  ghgAssessmentScopes?: FormArray<GhgAssessmentScopeForm>;
-}>;
-
-export type RelativeIndicatorGroup = FormGroup<{
   nrOfEmployees: FormControl<string>;
+  structuralUnits: FormArray<StructuralUnitForm>;
+  ghgAssessmentScopes: FormArray<GhgAssessmentScopeForm>;
 }>;
 
 export type StructuralUnitForm = FormGroup<{
