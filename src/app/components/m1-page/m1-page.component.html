@@ -1,0 +1,283 @@
+<h2 class="h2">{{ "PageTwo.Heading" | translate }}</h2>
+<form (ngSubmit)="submit()" [formGroup]="M1Form">
+  @for (
+    yearlyForm of M1Form.controls.yearlyInfo.controls;
+    track yearlyForm;
+    let i = $index
+  ) {
+    <div [hidden]="i !== currentYearIndex" class="mb-5">
+      <p>{{ yearlyForm.controls.year.value }}</p>
+      <article class="mb-4">
+        <h4 class="h4">{{ "PageTwo.EnergyHeading" | translate }}</h4>
+        @for (
+          energyInfo of yearlyForm.controls.energy.controls;
+          track energyInfo;
+          let i = $index
+        ) {
+          <div class="mb-3">
+            <app-row
+              [formGroup]="energyInfo"
+              [emissionList]="emissionsLists.energy"
+              [year]="yearlyForm.controls.year.value"
+              [translationPrefix]="'PageTwo.ColumnHeader.EnergyType'"
+            ></app-row>
+            <div class="col">
+              @if (yearlyForm.controls.energy.length > 0) {
+                <span
+                  (click)="removeField(yearlyForm, i, 'energy')"
+                  (keydown.enter)="removeField(yearlyForm, i, 'energy')"
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageTwo.RemoveRow" | translate }}</span
+                >
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.energy.length <= 10) {
+          <span
+            (click)="addField(yearlyForm, 'energy', emissionsLists.energy)"
+            (keydown.enter)="
+              addField(yearlyForm, 'energy', emissionsLists.energy)
+            "
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        }
+      </article>
+      <hr class="opacity-75" />
+      <article class="mb-4">
+        <h4 class="h4 mb-3">{{ "PageTwo.VehicleFuelsHeading" | translate }}</h4>
+        <h6 class="h6">{{ "PageTwo.VehicleFuelsHeading1" | translate }}</h6>
+        @for (
+          vehicleInfo1 of yearlyForm.controls.vehicleFuels1.controls;
+          track vehicleInfo1;
+          let i = $index
+        ) {
+          <div class="mb-3">
+            <app-row
+              [formGroup]="vehicleInfo1"
+              [emissionList]="emissionsLists.vehicleFuels1"
+              [year]="yearlyForm.controls.year.value"
+              [translationPrefix]="'PageTwo.ColumnHeader.VehicleType1'"
+            ></app-row>
+            <div class="col">
+              @if (yearlyForm.controls.vehicleFuels1.length > 0) {
+                <span
+                  (click)="removeField(yearlyForm, i, 'vehicleFuels1')"
+                  (keydown.enter)="removeField(yearlyForm, i, 'vehicleFuels1')"
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageTwo.RemoveRow" | translate }}</span
+                >
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.vehicleFuels1.length <= 10) {
+          <span
+            (click)="
+              addField(
+                yearlyForm,
+                'vehicleFuels1',
+                emissionsLists.vehicleFuels1
+              )
+            "
+            (keydown.enter)="
+              addField(
+                yearlyForm,
+                'vehicleFuels1',
+                emissionsLists.vehicleFuels1
+              )
+            "
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        }
+      </article>
+      <hr class="opacity-25" />
+      <article class="mb-4">
+        <h6 class="h6">{{ "PageTwo.VehicleFuelsHeading2" | translate }}</h6>
+        @for (
+          vehicleInfo2 of yearlyForm.controls.vehicleFuels2.controls;
+          track vehicleInfo2;
+          let i = $index
+        ) {
+          <div class="mb-3">
+            <app-row
+              [formGroup]="vehicleInfo2"
+              [emissionList]="emissionsLists.vehicleFuels2"
+              [year]="yearlyForm.controls.year.value"
+              [translationPrefix]="'PageTwo.ColumnHeader.VehicleType2'"
+            ></app-row>
+            <div class="col">
+              @if (yearlyForm.controls.vehicleFuels2.length > 0) {
+                <span
+                  (click)="removeField(yearlyForm, i, 'vehicleFuels2')"
+                  (keydown.enter)="removeField(yearlyForm, i, 'vehicleFuels2')"
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageTwo.RemoveRow" | translate }}</span
+                >
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.vehicleFuels2.length <= 10) {
+          <span
+            (click)="
+              addField(
+                yearlyForm,
+                'vehicleFuels2',
+                emissionsLists.vehicleFuels2
+              )
+            "
+            (keydown.enter)="
+              addField(
+                yearlyForm,
+                'vehicleFuels2',
+                emissionsLists.vehicleFuels2
+              )
+            "
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        }
+      </article>
+      <hr class="opacity-25" />
+      <article class="mb-4">
+        <h6 class="h6">{{ "PageTwo.VehicleFuelsHeading3" | translate }}</h6>
+        @for (
+          vehicleInfo3 of yearlyForm.controls.vehicleFuels3.controls;
+          track vehicleInfo3;
+          let i = $index
+        ) {
+          <div class="mb-3">
+            <app-row
+              [formGroup]="vehicleInfo3"
+              [emissionList]="emissionsLists.vehicleFuels3"
+              [year]="yearlyForm.controls.year.value"
+              [translationPrefix]="'PageTwo.ColumnHeader.VehicleType3'"
+            ></app-row>
+            <div class="col">
+              @if (yearlyForm.controls.vehicleFuels3.length > 0) {
+                <span
+                  (click)="removeField(yearlyForm, i, 'vehicleFuels3')"
+                  (keydown.enter)="removeField(yearlyForm, i, 'vehicleFuels3')"
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageTwo.RemoveRow" | translate }}</span
+                >
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.vehicleFuels3.length <= 10) {
+          <span
+            (click)="
+              addField(
+                yearlyForm,
+                'vehicleFuels3',
+                emissionsLists.vehicleFuels3
+              )
+            "
+            (keydown.enter)="
+              addField(
+                yearlyForm,
+                'vehicleFuels3',
+                emissionsLists.vehicleFuels3
+              )
+            "
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        }
+      </article>
+      <hr class="opacity-75" />
+      <article class="mb-4">
+        <h4 class="h4">
+          {{ "PageTwo.DispersedEmissionsHeading" | translate }}
+        </h4>
+        @for (
+          dispersedEmissions of yearlyForm.controls.dispersedEmissions.controls;
+          track dispersedEmissions;
+          let i = $index
+        ) {
+          <div class="mb-3">
+            <app-row
+              [formGroup]="dispersedEmissions"
+              [emissionList]="emissionsLists.dispersedEmissions"
+              [year]="yearlyForm.controls.year.value"
+              [translationPrefix]="'PageTwo.ColumnHeader.DispersedEmissions'"
+              [isDispersedEmissions]="true"
+            ></app-row>
+            <div class="col">
+              @if (yearlyForm.controls.dispersedEmissions.length > 0) {
+                <span
+                  (click)="removeField(yearlyForm, i, 'dispersedEmissions')"
+                  (keydown.enter)="
+                    removeField(yearlyForm, i, 'dispersedEmissions')
+                  "
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageTwo.RemoveRow" | translate }}</span
+                >
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.dispersedEmissions.length <= 10) {
+          <span
+            (click)="addDispersedEmissionsField(yearlyForm)"
+            (keydown.enter)="addDispersedEmissionsField(yearlyForm)"
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageTwo.AddRow" | translate }}</span
+          >
+        }
+      </article>
+    </div>
+  }
+  @if (M1Form.controls.yearlyInfo.length > 0) {
+    <button
+      type="button"
+      class="btn btn-secondary btn-sm me-3"
+      (click)="showPrevYear()"
+      [disabled]="currentYearIndex === 0"
+    >
+      Previous
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="showNextYear()"
+      [disabled]="currentYearIndex >= M1Form.controls.yearlyInfo.length - 1"
+    >
+      Next
+    </button>
+  }
+</form>

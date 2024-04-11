@@ -1,0 +1,143 @@
+<h2 class="h2">{{ "PageThree.Heading" | translate }}</h2>
+<form (ngSubmit)="submit()" [formGroup]="M2Form">
+  @for (
+    yearlyForm of M2Form.controls.yearlyInfo.controls;
+    track yearlyForm;
+    let i = $index
+  ) {
+    <div [hidden]="i !== currentYearIndex" class="mb-5">
+      <p>{{ yearlyForm.controls.year.value }}</p>
+      <article class="mb-4">
+        <h4 class="h4">
+          {{ "PageThree.BoughtElectricalHeading" | translate }}
+        </h4>
+        @for (
+          electricalInfo of yearlyForm.controls.boughtElectricalEnergy.controls;
+          track electricalInfo;
+          let i = $index
+        ) {
+          <div class="mb-3">
+            <app-row
+              [formGroup]="electricalInfo"
+              [emissionList]="emissionsLists.boughtElectricalEnergy"
+              [year]="yearlyForm.controls.year.value"
+              [translationPrefix]="'PageThree.ColumnHeader.BoughtElectrical'"
+            ></app-row>
+            <div class="col">
+              @if (yearlyForm.controls.boughtElectricalEnergy.length > 0) {
+                <span
+                  (click)="removeField(yearlyForm, i, 'boughtElectricalEnergy')"
+                  (keydown.enter)="
+                    removeField(yearlyForm, i, 'boughtElectricalEnergy')
+                  "
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageThree.RemoveRow" | translate }}
+                </span>
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.boughtElectricalEnergy.length <= 10) {
+          <span
+            (click)="
+              addField(
+                yearlyForm,
+                'boughtElectricalEnergy',
+                emissionsLists.boughtElectricalEnergy
+              )
+            "
+            (keydown.enter)="
+              addField(
+                yearlyForm,
+                'boughtElectricalEnergy',
+                emissionsLists.boughtElectricalEnergy
+              )
+            "
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageThree.AddRow" | translate }}</span
+          >
+        }
+      </article>
+      <hr class="opacity-75" />
+      <article class="mb-4">
+        <h4 class="h4">{{ "PageThree.BoughtHeatHeading" | translate }}</h4>
+        @for (
+          boughtHeatInfo of yearlyForm.controls.boughtHeatEnergy.controls;
+          track boughtHeatInfo;
+          let i = $index
+        ) {
+          <div class="mb-3">
+            <app-row
+              [formGroup]="boughtHeatInfo"
+              [emissionList]="emissionsLists.boughtHeatEnergy"
+              [year]="yearlyForm.controls.year.value"
+              [translationPrefix]="'PageThree.ColumnHeader.BoughtHeat'"
+            ></app-row>
+            <div class="col">
+              @if (yearlyForm.controls.boughtHeatEnergy.length > 0) {
+                <span
+                  (click)="removeField(yearlyForm, i, 'boughtHeatEnergy')"
+                  (keydown.enter)="
+                    removeField(yearlyForm, i, 'boughtHeatEnergy')
+                  "
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageThree.RemoveRow" | translate }}</span
+                >
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.boughtHeatEnergy.length <= 0) {
+          <span
+            (click)="
+              addField(
+                yearlyForm,
+                'boughtHeatEnergy',
+                emissionsLists.boughtHeatEnergy
+              )
+            "
+            (keydown.enter)="
+              addField(
+                yearlyForm,
+                'boughtHeatEnergy',
+                emissionsLists.boughtHeatEnergy
+              )
+            "
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageThree.AddRow" | translate }}</span
+          >
+        }
+      </article>
+    </div>
+  }
+  @if (M2Form.controls.yearlyInfo.length > 0) {
+    <button
+      type="button"
+      class="btn btn-secondary btn-sm me-3"
+      (click)="showPrevYear()"
+      [disabled]="currentYearIndex === 0"
+    >
+      Previous
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="showNextYear()"
+      [disabled]="currentYearIndex >= M2Form.controls.yearlyInfo.length - 1"
+    >
+      Next
+    </button>
+  }
+</form>

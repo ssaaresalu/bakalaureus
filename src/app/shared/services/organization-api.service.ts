@@ -20,7 +20,6 @@ export class OrganizationApiService {
   }
 
   saveOrganization(data: OrganizationData): Observable<OrganizationData> {
-    console.log(`${this.apiServerUrl}/organization/add`);
     return this.http.post<OrganizationData>(
       `${this.apiServerUrl}/organization/add`,
       data,

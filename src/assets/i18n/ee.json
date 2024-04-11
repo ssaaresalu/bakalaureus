@@ -37,18 +37,57 @@
     "VehicleFuelsHeading3": "KHG heide arvutatud sõiduauto tüübi, kütuseliigi ja läbisõidu põhjal",
     "DispersedEmissionsHeading": "Fluoritud kasvuhoonegaaside kasutamisest tulenev KHG heide",
     "ColumnHeader": {
-      "UnitNumber": "Üksuse number",
       "EnergyType": "Kütuse-/energialiik",
       "VehicleType1": "Kütuseliik ja koguse ühik",
       "VehicleType2": "Kütuseliik, sõidukitüüp ja kütuse koguse ühik",
       "VehicleType3": "Kütuseliik ja sõiduauto tüüp",
-      "DispersedEmissions": "Kasutatav F-gaas",
-      "Amount": "Kogus",
-      "ModelEmissions": "Kas kasutate arvutusmudeli eriheitetegurit?",
-      "EmissionFactor": "Mudeli eriheitetegur",
-      "OtherEmissionFactor": "Muu eriheitetegur (sisestage siia)",
-      "EmissionsKG": "KHG heide kg CO2 ekv",
-      "EmissionsT": "KHG heide t CO2 ekv"
+      "DispersedEmissions": "Kasutatav F-gaas"
     }
+  },
+  "PageThree": {
+    "Heading": "Mõjuala 2",
+    "BoughtElectricalHeading": "Ostetud elektrienergia",
+    "BoughtHeatHeading": "Ostetud soojusenergia",
+    "AddRow": "Lisa kirje",
+    "RemoveRow": "Eemalda kirje",
+    "ColumnHeader": {
+      "BoughtElectrical": "Taastuv- või tavaelekter",
+      "BoughtHeat": "Soojusenergia päritolu"
+    }
+  },
+  "PageFour": {
+    "Heading": "Mõjuala 3 - transport",
+    "BoughtTransportEmissionsHeading": "Sisseostetud maanteetranspordist tulenev KHG heide",
+    "Vans": "Kaubik",
+    "RigidTrucks": "Jäiga kerega veoauto",
+    "ArticulatedTrucks": "Liigendveoauto",
+    "ArticulatedRigidTrucks": "Veoauto tüüp ja suurus pole teada",
+    "TransportEmissionsHeading": "Inimeste transpordist tulenev KHG heide",
+    "TrainHeading": "Sisseostetud raudteetranspordist tulenev KHG heide",
+    "PlaneHeading": "Sisseostetud lennutranspordist tulenev KHG heide",
+    "ShipHeading": "Sisseostetud laevatranspordist tulenev KHG heide",
+    "ColumnHeader": {
+      "Vans": "Kaubiku kütus ja transpordi ühik",
+      "RigidTrucks": "Jäiga kerega veoauto: suurus (täismass), kütus ja transpordi ühik ",
+      "ArticulatedTrucks": "Liigendveoauto: suurus (täismass), kütus ja transpordi ühik ",
+      "ArticulatedRigidTrucks": "Veoauto tüüp ja suurus teadmata, kütus ja transpordi ühik",
+      "TransportBus": "Sõidukitüüp",
+      "Train": "Rongitüüp",
+      "Plane": "Lennukitüüp",
+      "Ship": "Laevatüüp"
+    }
+  },
+  "ColumnHeader": {
+    "UnitNumber": "Üksuse number",
+    "Amount": "Kogus",
+    "ModelEmissions": "Kas kasutate arvutusmudeli eriheitetegurit?",
+    "EmissionFactor": "Mudeli eriheitetegur:",
+    "OtherEmissionFactor": "Muu eriheitetegur (sisestage siia):",
+    "EmissionsKG": "KHG heide: ",
+    "EmissionsT": "KHG heide: ",
+    "Capacity": "Veoauto täituvus",
+    "Distance": "Vahemaa (km)",
+    "ProductAmount": "Kauba kogus (km)",
+    "TotalDistanceAmount": "Transporditeenuse tonn-km või km kokku"
   }
 }

@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { EmissionLists } from '../../interface/emission-lists';
 import { emptyEmissionLists } from '../../util/data-util';
 import { OrganizationData } from '../../interface/organization-data';
+import { ListValueItem } from '../../interface/list-value-item';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,9 @@ export class DataService {
     {} as OrganizationData,
   );
 
-  constructor() {}
+  capacityList$: BehaviorSubject<ListValueItem[]> = new BehaviorSubject<
+    ListValueItem[]
+  >([]);
 
   get organizationData(): OrganizationData {
     return this.organizationData$.value;

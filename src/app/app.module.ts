@@ -12,8 +12,11 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FooterComponent } from './components/footer/footer.component';
 import { PageOneComponent } from './components/page-one/page-one.component';
-import { PageTwoComponent } from './components/page-two/page-two.component';
+import { M1PageComponent } from './components/m1-page/m1-page.component';
 import { ApiRequestInterceptor } from './shared/api-request.interceptor';
+import { M2PageComponent } from './components/m2-page/m2-page.component';
+import { M3TransportPageComponent } from './components/m3/transport/m3-transport-page.component';
+import { GetListByCapacityPipe } from './shared/pipes/get-list-by-capacity.pipe';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
@@ -36,9 +39,12 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     NgbModule,
     FooterComponent,
     PageOneComponent,
-    PageTwoComponent,
+    M1PageComponent,
+    M2PageComponent,
+    M3TransportPageComponent,
   ],
   providers: [
+    GetListByCapacityPipe,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ApiRequestInterceptor,

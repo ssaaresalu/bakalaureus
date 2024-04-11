@@ -4,7 +4,6 @@ import {
   FormControl,
   FormGroup,
   FormsModule,
-  NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
 import {
@@ -19,7 +18,7 @@ import { MatIcon } from '@angular/material/icon';
 import { DropdownComponent } from '../../../../shared/components/dropdown/dropdown.component';
 import { AREAS, CATEGORIES } from '../../../../util/lists';
 import { OrganizationApiService } from '../../../../shared/services/organization-api.service';
-import {PageComponentAbstract} from "../../../../shared/components/page-component-abstract";
+import { PageComponentAbstract } from '../../../../shared/components/page-component-abstract';
 
 @Component({
   selector: 'app-organization',
@@ -35,11 +34,13 @@ import {PageComponentAbstract} from "../../../../shared/components/page-componen
   templateUrl: './organization.component.html',
   styleUrl: './organization.component.css',
 })
-export class OrganizationComponent extends PageComponentAbstract implements OnInit {
+export class OrganizationComponent
+  extends PageComponentAbstract
+  implements OnInit
+{
   private organizationApiService = inject(OrganizationApiService);
   yearRange: number[] = [];
   readonly MAX_NR_OF_UNITS = 10;
-  currentYearIndex = 0;
   protected readonly categoriesList = CATEGORIES;
   protected readonly areas = AREAS;
 
@@ -50,10 +51,6 @@ export class OrganizationComponent extends PageComponentAbstract implements OnIn
     reportingPeriodEnd: this.fb.control<string>(''),
     yearlyInfo: new FormArray<OrganizationYearlyInfoForm>([]),
   });
-
-  public constructor(private fb: NonNullableFormBuilder) {
-    super()
-  }
 
   ngOnInit(): void {
     this.subscribeToReportingPeriods();
