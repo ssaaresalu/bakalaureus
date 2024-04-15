@@ -1,0 +1,132 @@
+<h2 class="h2">{{ "PageFive.Heading" | translate }}</h2>
+<form (ngSubmit)="submit()" [formGroup]="M3OtherItemsForm">
+  @for (
+    yearlyForm of M3OtherItemsForm.controls.yearlyInfo.controls;
+    track yearlyForm;
+    let i = $index
+  ) {
+    <div [hidden]="i !== currentYearIndex" class="mb-5">
+      <p>{{ yearlyForm.controls.year.value }}</p>
+      <h4 class="h4 mb-3">
+        {{ "PageFive.BusinessTripsHeading" | translate }}
+      </h4>
+      <article class="mb-4">
+        <h6 class="h6 mb-3">
+          {{ "PageFive.BusinessTripSmallVehicles" | translate }}
+        </h6>
+        @for (
+          businessTripInfo of yearlyForm.controls.businessTripsSmall.controls;
+          track businessTripInfo;
+          let i = $index
+        ) {
+          <div class="mb-3">
+            <app-row
+              [formGroup]="businessTripInfo"
+              [emissionList]="emissionsLists.businessTripsSmall"
+              [year]="yearlyForm.controls.year.value"
+              [translationPrefix]="'PageFive.ColumnHeader.BusinessTripsSmall'"
+            ></app-row>
+            <div class="col">
+              @if (yearlyForm.controls.businessTripsSmall.length > 0) {
+                <span
+                  (click)="removeField(yearlyForm, i, 'businessTripsSmall')"
+                  (keydown.enter)="
+                    removeField(yearlyForm, i, 'businessTripsSmall')
+                  "
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageThree.RemoveRow" | translate }}
+                </span>
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.businessTripsSmall.length <= 10) {
+          <span
+            (click)="
+              addField(
+                yearlyForm,
+                'businessTripsSmall',
+                emissionsLists.businessTripsSmall
+              )
+            "
+            (keydown.enter)="
+              addField(
+                yearlyForm,
+                'businessTripsSmall',
+                emissionsLists.businessTripsSmall
+              )
+            "
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageThree.AddRow" | translate }}</span
+          >
+        }
+      </article>
+      <hr class="opacity-25" />
+      <article class="mb-4">
+        <h6 class="m6 mb-3">
+          {{ "PageFive.BusinessTripLargeVehicles" | translate }}
+        </h6>
+        @for (
+          businessTripLargeInfo of yearlyForm.controls.businessTripsLarge
+            .controls;
+          track businessTripLargeInfo;
+          let i = $index
+        ) {
+          <div class="mb-3">
+            <app-row
+              [formGroup]="businessTripLargeInfo"
+              [emissionList]="emissionsLists.businessTripsBig"
+              [year]="yearlyForm.controls.year.value"
+              [translationPrefix]="'PageFive.ColumnHeader.BusinessTripsLarge'"
+            ></app-row>
+            <div class="col">
+              @if (yearlyForm.controls.businessTripsLarge.length > 0) {
+                <span
+                  (click)="removeField(yearlyForm, i, 'businessTripsLarge')"
+                  (keydown.enter)="
+                    removeField(yearlyForm, i, 'businessTripsLarge')
+                  "
+                  role="button"
+                  tabindex="0"
+                  class="text-link fw-500 text-danger"
+                  ><mat-icon class="pt-1">remove</mat-icon>
+                  {{ "PageThree.RemoveRow" | translate }}
+                </span>
+              }
+            </div>
+          </div>
+        }
+        @if (yearlyForm.controls.businessTripsSmall.length <= 10) {
+          <span
+            (click)="
+              addField(
+                yearlyForm,
+                'businessTripsLarge',
+                emissionsLists.businessTripsBig
+              )
+            "
+            (keydown.enter)="
+              addField(
+                yearlyForm,
+                'businessTripsLarge',
+                emissionsLists.businessTripsBig
+              )
+            "
+            role="button"
+            tabindex="0"
+            class="text-link fw-500"
+            ><mat-icon class="pt-1">add</mat-icon>
+            {{ "PageThree.AddRow" | translate }}</span
+          >
+        }
+      </article>
+      <hr class="opacity-75" />
+    </div>
+  }
+</form>

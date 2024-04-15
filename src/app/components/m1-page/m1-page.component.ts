@@ -113,7 +113,7 @@ export class M1PageComponent extends PageComponentAbstract implements OnInit {
     const data = new FormGroup({
       unitNumber: this.fb.control<string>(''),
       type: this.fb.control<string>(''),
-      amount: this.fb.control<string | undefined>(undefined),
+      amountOrDistance: this.fb.control<string | undefined>(undefined),
       isUsingModelEmissionFactor: this.fb.control<boolean | undefined>(true),
       emissionFactor: this.fb.control<number>(0),
       otherEmissionFactor: this.fb.control<string | undefined>(undefined),

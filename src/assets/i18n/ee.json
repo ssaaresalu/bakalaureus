@@ -77,6 +77,16 @@
       "Ship": "Laevatüüp"
     }
   },
+  "PageFive": {
+    "Heading": "M3",
+    "BusinessTripsHeading": "Tööreisid",
+    "BusinessTripSmallVehicles": "Sõiduauto, mootorratas, mopeed, takso",
+    "BusinessTripLargeVehicles": "Buss, rööbastransport, lennuk, laev",
+    "ColumnHeader": {
+      "BusinessTripsSmall": "Sõidukitüüp ja kütuseliik",
+      "BusinessTripsLarge": "Sõidukitüüp ja kütuseliik"
+    }
+  },
   "ColumnHeader": {
     "UnitNumber": "Üksuse number",
     "Amount": "Kogus",

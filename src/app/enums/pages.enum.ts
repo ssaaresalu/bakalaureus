@@ -3,5 +3,5 @@ export enum Pages {
   M1_DATA,
   M2_DATA,
   M3_TRANSPORT,
-  RESULTS,
+  M3_PAGE_TWO,
 }

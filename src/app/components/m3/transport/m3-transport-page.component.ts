@@ -40,8 +40,6 @@ export class M3TransportPageComponent
     yearlyInfo: new FormArray<M3TransportYearForm>([]),
   });
 
-  capacityList$ = this.dataService.capacityList$;
-
   private vansFormSubjects: Map<number, Subject<void>> = new Map();
   private rigidTrucksFormSubjects: Map<number, Subject<void>> = new Map();
 

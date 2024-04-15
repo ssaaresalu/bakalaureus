@@ -49,7 +49,7 @@ export abstract class PageComponentAbstract implements OnDestroy {
     destroy$: Subject<void>,
   ): void {
     const typeChanges$ = formControl.controls.type.valueChanges;
-    const amountChanges$ = formControl.controls.amount.valueChanges;
+    const amountChanges$ = formControl.controls.amountOrDistance.valueChanges;
     const isUsingModelEmissionFactorChanges$ =
       formControl.controls.isUsingModelEmissionFactor.valueChanges;
     const otherEmissionFactorChanges$ =
@@ -175,7 +175,7 @@ export abstract class PageComponentAbstract implements OnDestroy {
     return new FormGroup({
       unitNumber: this.fb.control<string>(''),
       type: this.fb.control<string>(''),
-      amount: this.fb.control<string | undefined>(undefined),
+      amountOrDistance: this.fb.control<string | undefined>(undefined),
       isUsingModelEmissionFactor: this.fb.control<boolean | undefined>(
         undefined,
       ),
