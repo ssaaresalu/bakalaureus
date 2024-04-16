@@ -1,0 +1,21 @@
+<div class="progress-bar-container">
+  <div
+    class="progress-bar-step"
+    *ngFor="let section of [].constructor(5); let i = index"
+    [id]="'progress-bar-step_' + i"
+    (click)="navigate(i)"
+    (keydown.space)="navigate(i)"
+    tabindex="0"
+    role="button"
+  >
+    <div class="progress-bar-header">
+      <div class="header-value text-truncate">
+        {{ i + 1 + "." }} {{ "Progress.ProgressBar_" + i | translate }}
+      </div>
+    </div>
+    <div
+      class="progress-bar-indicator"
+      [ngClass]="i < pageIndex ? 'completed-page' : 'inactive-page'"
+    ></div>
+  </div>
+</div>

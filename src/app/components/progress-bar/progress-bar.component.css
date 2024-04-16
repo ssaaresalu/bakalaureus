@@ -1,0 +1,40 @@
+.progress-bar-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-bottom: 2vh;
+  width: 100%;
+}
+
+.progress-bar-step {
+  flex-grow: 1;
+  flex-basis: calc(8.33% - 8px);
+  padding: 12px 0 0;
+  cursor: pointer;
+  min-width: 39px;
+}
+
+.header-value {
+  flex: 1;
+  display: inline-block;
+  flex-direction: row;
+  align-items: flex-start;
+  height: 32px;
+  color: white;
+  gap: 3px;
+}
+
+.progress-bar-indicator {
+  height: 2px;
+  width: inherit;
+}
+
+.completed-page {
+  background: white;
+}
+
+.inactive-page {
+  background: rgba(255, 255, 255, 0.61);
+}

@@ -99,5 +99,12 @@
     "Distance": "Vahemaa (km)",
     "ProductAmount": "Kauba kogus (km)",
     "TotalDistanceAmount": "Transporditeenuse tonn-km või km kokku"
+  },
+  "Progress": {
+    "ProgressBar_0": "Organisatsioon",
+    "ProgressBar_1": "M1 andmed",
+    "ProgressBar_2": "M2 andmed",
+    "ProgressBar_3": "M3 andmed",
+    "ProgressBar_4": "Tulemused"
   }
 }

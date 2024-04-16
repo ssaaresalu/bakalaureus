@@ -18,6 +18,7 @@ import { M2PageComponent } from './components/m2-page/m2-page.component';
 import { M3TransportPageComponent } from './components/m3/transport/m3-transport-page.component';
 import { GetListByCapacityPipe } from './shared/pipes/get-list-by-capacity.pipe';
 import { M3PageTwoComponentComponent } from './components/m3/m3-page-two-component/m3-page-two-component.component';
+import {ProgressBarComponent} from "./components/progress-bar/progress-bar.component";
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
@@ -44,6 +45,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     M2PageComponent,
     M3TransportPageComponent,
     M3PageTwoComponentComponent,
+    ProgressBarComponent,
   ],
   providers: [
     GetListByCapacityPipe,
