@@ -17,8 +17,14 @@ import { DropdownComponent } from '../../shared/components/dropdown/dropdown.com
 import { RoundTonsPipe } from '../../shared/pipes/round-tons.pipe';
 import { MatIcon } from '@angular/material/icon';
 import { GetListItemValuePipe } from '../../shared/pipes/get-list-item-value.pipe';
-import { RowComponent } from '../../shared/components/row/row.component';
+import { EntryComponent } from '../../shared/components/row/entry.component';
 import { ListValueItem } from '../../interface/list-value-item';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-m2-page',
@@ -31,7 +37,11 @@ import { ListValueItem } from '../../interface/list-value-item';
     RoundTonsPipe,
     MatIcon,
     GetListItemValuePipe,
-    RowComponent,
+    EntryComponent,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelTitle,
+    MatExpansionPanelHeader,
   ],
   templateUrl: './m2-page.component.html',
   styleUrl: './m2-page.component.css',

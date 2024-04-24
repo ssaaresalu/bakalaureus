@@ -14,8 +14,9 @@ import {
   getFootprintInKilosTransport,
   getListItemValue,
 } from '../../util/data-util';
-import { FormGroup, NonNullableFormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, NonNullableFormBuilder } from '@angular/forms';
 import { TransportDetailsForm } from '../../interface/m3-transport-form';
+import { EmissionsDetails } from '../../interface/emissions-details';
 
 @Directive()
 export abstract class PageComponentAbstract implements OnDestroy {
@@ -48,15 +49,21 @@ export abstract class PageComponentAbstract implements OnDestroy {
     list: ListValueItem[],
     destroy$: Subject<void>,
   ): void {
-    const typeChanges$ = formControl.controls.type.valueChanges;
-    const amountChanges$ = formControl.controls.amountOrDistance.valueChanges;
+    const typeChanges$ = formControl.controls.type.valueChanges.pipe(
+      startWith(formControl.controls.type.value),
+    );
+    const amountChanges$ =
+      formControl.controls.amountOrDistance.valueChanges.pipe(
+        startWith(formControl.controls.amountOrDistance.value),
+      );
     const isUsingModelEmissionFactorChanges$ =
-      formControl.controls.isUsingModelEmissionFactor.valueChanges;
+      formControl.controls.isUsingModelEmissionFactor.valueChanges.pipe(
+        startWith(formControl.controls.isUsingModelEmissionFactor.value),
+      );
     const otherEmissionFactorChanges$ =
       formControl.controls.otherEmissionFactor.valueChanges.pipe(
         startWith(formControl.controls.otherEmissionFactor.value),
       );
-
     typeChanges$
       .pipe(
         combineLatestWith(
@@ -171,17 +178,60 @@ export abstract class PageComponentAbstract implements OnDestroy {
     }
   }
 
-  addNewDetailsFormGroup(): DetailsForm {
+  addNewDetailsFormGroup(isDispersedEmissions?: boolean): DetailsForm {
     return new FormGroup({
       unitNumber: this.fb.control<string>(''),
       type: this.fb.control<string>(''),
       amountOrDistance: this.fb.control<string | undefined>(undefined),
       isUsingModelEmissionFactor: this.fb.control<boolean | undefined>(
-        undefined,
+        isDispersedEmissions ? true : undefined,
       ),
       emissionFactor: this.fb.control<number>(0),
       otherEmissionFactor: this.fb.control<string | undefined>(undefined),
       kgCO2Footprint: this.fb.control<number>(0),
     });
+  }
+
+  getDetailsFormValues(
+    formDetails: FormArray<DetailsForm>,
+  ): EmissionsDetails[] {
+    return formDetails.controls.map((formDet) => {
+      return {
+        ...formDet.value,
+        unitNumber: formDet.value.unitNumber ?? '',
+        type: formDet.value.type ?? '',
+        emissionFactor: formDet.value.emissionFactor ?? 0,
+        kgCO2Footprint: formDet.value.kgCO2Footprint ?? 0,
+        isUsingModelEmissionsFactor:
+          formDet.value.isUsingModelEmissionFactor ?? undefined,
+        otherEmissionFactor: formDet.value.otherEmissionFactor ?? '',
+        amountOrDistance: formDet.value.amountOrDistance ?? '',
+      };
+    });
+  }
+
+  addDataDetailsToForm(
+    list: ListValueItem[],
+    details: EmissionsDetails,
+  ): DetailsForm {
+    const newForm = new FormGroup({
+      unitNumber: this.fb.control<string>(details.unitNumber ?? ''),
+      type: this.fb.control<string>(details.type ?? ''),
+      amountOrDistance: this.fb.control<string | undefined>(
+        details.amountOrDistance ?? undefined,
+      ),
+      isUsingModelEmissionFactor: this.fb.control<boolean | undefined>(
+        details.isUsingModelEmissionsFactor ?? undefined,
+      ),
+      emissionFactor: this.fb.control<number>(details.emissionFactor ?? 0),
+      otherEmissionFactor: this.fb.control<string | undefined>(
+        details.otherEmissionFactor ?? undefined,
+      ),
+      kgCO2Footprint: this.fb.control<number>(details.kgCO2Footprint ?? 0),
+    });
+    const destroy$ = new Subject<void>();
+    //this.formSubjects.get(controlName)?.set(index, destroy$);
+    this.subscribeToFormGroupFields(newForm, list, destroy$);
+    return newForm;
   }
 }

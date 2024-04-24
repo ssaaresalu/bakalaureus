@@ -5,6 +5,7 @@ import { EmissionLists } from '../../interface/emission-lists';
 import { emptyEmissionLists } from '../../util/data-util';
 import { OrganizationData } from '../../interface/organization-data';
 import { ListValueItem } from '../../interface/list-value-item';
+import { M1Emissions } from '../../interface/m1-emissions';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,12 @@ export class DataService {
     ListValueItem[]
   >([]);
 
+  M1_emissionsKg = new BehaviorSubject<number>(0);
+  M2_emissionsKg = new BehaviorSubject<number>(0);
+  M3_emissionsKg = new BehaviorSubject<number>(0);
+
+  M1EmissionsInfo = new BehaviorSubject<M1Emissions>({} as M1Emissions);
+
   get organizationData(): OrganizationData {
     return this.organizationData$.value;
   }
@@ -34,5 +41,9 @@ export class DataService {
     this.ghgFootPrintApiService.getEmissionFactors().subscribe((lists) => {
       this.emissionLists$.next(lists);
     });
+  }
+
+  saveFields(savedFootprintData: M1Emissions) {
+    this.M1EmissionsInfo.next(savedFootprintData);
   }
 }

@@ -54,3 +54,9 @@ body {
   background-color: rgba(255, 255, 255, 0.8);
   z-index: 1040;
 }
+
+.entry {
+  background-color: #efefef;
+  padding: 1rem;
+  border-radius: 0.3rem;
+}

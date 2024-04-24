@@ -13,9 +13,10 @@ import { CalculateDistanceAmountPipe } from '../../pipes/calculate-distance-amou
 import { takeUntil } from 'rxjs';
 import { GetListByCapacityPipe } from '../../pipes/get-list-by-capacity.pipe';
 import { AsyncPipe } from '@angular/common';
+import { WORK_HOME_TYPES } from '../../../util/lists';
 
 @Component({
-  selector: 'app-row',
+  selector: 'app-entry',
   standalone: true,
   imports: [
     RoundTonsPipe,
@@ -27,10 +28,11 @@ import { AsyncPipe } from '@angular/common';
     CalculateDistanceAmountPipe,
     AsyncPipe,
   ],
-  templateUrl: './row.component.html',
-  styleUrl: './row.component.css',
+  templateUrl: './entry.component.html',
+  styleUrl: './entry.component.css',
 })
-export class RowComponent extends PageComponentAbstract implements OnInit {
+export class EntryComponent extends PageComponentAbstract implements OnInit {
+  protected readonly WORK_HOME_TYPES = WORK_HOME_TYPES;
   @Input() formGroup!: DetailsForm;
   @Input()
   transportFormGroup!: TransportDetailsForm;
@@ -40,6 +42,9 @@ export class RowComponent extends PageComponentAbstract implements OnInit {
   @Input() isDispersedEmissions = false;
   @Input() isTransport = false;
   @Input() capacityListName = '';
+  @Input() isWorkHomeForm = false;
+  @Input() isDistanceLabel = false;
+  @Input() isWasteMass = false;
   capacityList$ = this.dataService.capacityList$;
 
   constructor(

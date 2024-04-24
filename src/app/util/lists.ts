@@ -18,3 +18,24 @@ export const CATEGORIES = [
   'M3 - Hajusheitmed',
 ];
 export const AREAS = ['M1', 'M2', 'M3'];
+
+export const WORK_HOME_TYPES = ['Tööle-koju', 'Koju-tööle'];
+
+export const BOUGHT_OR_SOLD = ['Ostetud', 'Müüdud'];
+
+export const VEHICLE_FUELS_UPSTREAM_TYPES = [
+  'M1-sõidukid',
+  'M3-transport',
+  'M3-tööreisid ja M3-tööle-koju',
+];
+
+export const INVESTMENT_CALCULATION_METHODS = [
+  'Investeeringu- või projektispetsiifilise meetod',
+  'Keskmiste andmete meetod',
+];
+
+export const AVERAGE_INVESTMENT_CALCULATION_METHODS = [
+  'Investeeringu objektiks olev äriühing',
+  'Võlainvesteeringud ja projektide rahastamine - ehitusetapp',
+  'Võlainvesteeringud ja projektide rahastamine - kasutusetapp',
+];

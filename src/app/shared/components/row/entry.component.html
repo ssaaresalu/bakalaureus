@@ -1,6 +1,17 @@
 @if (!isTransport) {
   <div class="row row-cols-1 row-cols-md-2">
     <div class="col-md-4">
+      @if (isWorkHomeForm) {
+        <div class="mb-2">
+          <span class="fw-500">
+            {{ "ColumnHeader.WorkHomeType" | translate }}
+          </span>
+          <app-dropdown
+            [control]="formGroup.controls.workHomeType!"
+            [simpleList]="WORK_HOME_TYPES"
+          ></app-dropdown>
+        </div>
+      }
       <div class="mb-2">
         <span class="fw-500">{{ "ColumnHeader.UnitNumber" | translate }}</span>
         <div class="w-50">
@@ -20,9 +31,19 @@
         ></app-dropdown>
       </div>
       <div class="mb-2">
-        <span class="fw-500">
-          {{ "ColumnHeader.Amount" | translate }}
-        </span>
+        @if (isDistanceLabel) {
+          <span class="fw-500">
+            {{ "ColumnHeader.Distance" | translate }}
+          </span>
+        } @else if (isWasteMass) {
+          <span class="fw-500">
+            {{ "ColumnHeader.WasteMass" | translate }}
+          </span>
+        } @else {
+          <span class="fw-500">
+            {{ "ColumnHeader.Amount" | translate }}
+          </span>
+        }
         <input
           class="form-control w-50"
           [formControl]="formGroup.controls.amountOrDistance"

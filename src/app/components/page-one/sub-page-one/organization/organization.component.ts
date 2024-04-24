@@ -61,6 +61,15 @@ export class OrganizationComponent
       .saveOrganization(this.organizationForm.value)
       .subscribe((organization) => {
         this.dataService.organizationData$.next(organization);
+        if (organization.yearlyInfo) {
+          const emissionsInfo = organization.yearlyInfo.map((yi) => ({
+            year: yi.year,
+          }));
+
+          this.dataService.M1EmissionsInfo.next({
+            yearlyInfo: emissionsInfo,
+          });
+        }
       });
   }
 

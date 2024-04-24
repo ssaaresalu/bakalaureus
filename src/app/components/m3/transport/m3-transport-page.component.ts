@@ -13,11 +13,17 @@ import {
   TransportDetailsForm,
 } from '../../../interface/m3-transport-form';
 import { Subject } from 'rxjs';
-import { RowComponent } from '../../../shared/components/row/row.component';
+import { EntryComponent } from '../../../shared/components/row/entry.component';
 import { DetailsForm } from '../../../interface/details-form';
 import { MatIcon } from '@angular/material/icon';
 import { ListValueItem } from '../../../interface/list-value-item';
 import { GetListByCapacityPipe } from '../../../shared/pipes/get-list-by-capacity.pipe';
+import {
+  MatAccordion,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
 
 @Component({
   selector: 'app-m3-transport-page',
@@ -25,9 +31,13 @@ import { GetListByCapacityPipe } from '../../../shared/pipes/get-list-by-capacit
   imports: [
     TranslateModule,
     ReactiveFormsModule,
-    RowComponent,
+    EntryComponent,
     MatIcon,
     GetListByCapacityPipe,
+    MatAccordion,
+    MatExpansionPanel,
+    MatExpansionPanelTitle,
+    MatExpansionPanelHeader,
   ],
   templateUrl: './m3-transport-page.component.html',
   styleUrl: './m3-transport-page.component.css',

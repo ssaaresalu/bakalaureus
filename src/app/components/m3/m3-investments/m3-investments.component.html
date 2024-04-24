@@ -1,0 +1,277 @@
+<div class="row row-cols-1 row-cols-md-2">
+  <div class="col-md-4">
+    <div class="mb-2">
+      <span class="fw-500">{{ "ColumnHeader.UnitNumber" | translate }}</span>
+      <div class="w-50">
+        <app-dropdown
+          [control]="investmentForm.controls.unitNumber"
+          [simpleList]="getUnitsByYear(year)"
+        ></app-dropdown>
+      </div>
+    </div>
+
+    <div class="mb-2">
+      <span class="fw-500">{{
+        "PageFive.InvestmentsHeading" | translate
+      }}</span>
+      <input
+        type="text"
+        class="form-control"
+        [formControl]="investmentForm.controls.investment"
+      />
+    </div>
+
+    <div class="mb-2">
+      <span class="fw-500">{{
+        "PageFive.ColumnHeader.CalculationMethod" | translate
+      }}</span>
+      <app-dropdown
+        [control]="investmentForm.controls.calculationMethod"
+        [simpleList]="INVESTMENT_CALCULATION_METHODS"
+      ></app-dropdown>
+    </div>
+  </div>
+  <div class="col-md-4">
+    @if (investmentForm.controls.investmentMethod) {
+      <div class="mb-2">
+        <span class="fw-500">{{
+          "PageFive.ColumnHeader.M1_M2_Emissions" | translate
+        }}</span>
+        <input
+          type="text"
+          class="form-control"
+          [formControl]="
+            investmentForm.controls.investmentMethod.controls.M1_M2_emissions
+          "
+        />
+      </div>
+      <div class="mb-2">
+        <span class="fw-500">{{
+          "PageFive.ColumnHeader.EquityShare" | translate
+        }}</span>
+        <input
+          type="text"
+          class="form-control"
+          [formControl]="
+            investmentForm.controls.investmentMethod.controls.equityShare
+          "
+        />
+      </div>
+      <div class="mb-2">
+        <span class="fw-500">{{
+          "PageFive.ColumnHeader.PercentageOfTotalExpenses" | translate
+        }}</span>
+        <input
+          type="text"
+          class="form-control"
+          [formControl]="
+            investmentForm.controls.investmentMethod.controls
+              .percentageOfExpenses
+          "
+        />
+      </div>
+      <div class="mb-3">
+        <span class="fw-500">
+          {{ "ColumnHeader.EmissionsKG" | translate }}
+        </span>
+        {{ investmentForm.controls.kgCO2Footprint.value }}
+        <span class="fw-500">kg CO2 ekv</span>
+      </div>
+      <div>
+        <span class="fw-500">
+          {{ "ColumnHeader.EmissionsT" | translate }}
+        </span>
+        {{ investmentForm.controls.kgCO2Footprint.value | roundTons }}
+        <span class="fw-500">t CO2 ekv</span>
+      </div>
+    }
+    @if (investmentForm.controls.averageMethod) {
+      <div class="mb-2">
+        <span class="fw-500">{{
+          "PageFive.ColumnHeader.InvestedObject" | translate
+        }}</span>
+        <app-dropdown
+          [control]="
+            investmentForm.controls.averageMethod.controls.averageMethodType
+          "
+          [simpleList]="AVERAGE_INVESTMENT_CALCULATION_METHODS"
+        ></app-dropdown>
+      </div>
+      @if (
+        investmentForm.controls.averageMethod.controls
+          .companyProfitEmissionsForm
+      ) {
+        <div class="mb-2">
+          <span class="fw-500">{{
+            "PageFive.ColumnHeader.CompanyTotalIncome" | translate
+          }}</span>
+          <input
+            type="text"
+            class="form-control"
+            [formControl]="
+              investmentForm.controls.averageMethod.controls
+                .companyProfitEmissionsForm.controls.companyTotalIncome
+            "
+          />
+        </div>
+        <div class="mb-2">
+          <span class="fw-500">{{
+            "PageFive.ColumnHeader.ProductEmissionFactor" | translate
+          }}</span>
+          <input
+            type="text"
+            class="form-control"
+            [formControl]="
+              investmentForm.controls.averageMethod.controls
+                .companyProfitEmissionsForm.controls.emissionFactor
+            "
+          />
+        </div>
+        <div class="mb-2">
+          <span class="fw-500">{{
+            "PageFive.ColumnHeader.EquityShare" | translate
+          }}</span>
+          <input
+            type="text"
+            class="form-control"
+            [formControl]="
+              investmentForm.controls.averageMethod.controls
+                .companyProfitEmissionsForm.controls.equityShare
+            "
+          />
+        </div>
+        <div class="mb-3">
+          <span class="fw-500">
+            {{ "ColumnHeader.EmissionsKG" | translate }}
+          </span>
+          {{ investmentForm.controls.kgCO2Footprint.value }}
+          <span class="fw-500">kg CO2 ekv</span>
+        </div>
+        <div>
+          <span class="fw-500">
+            {{ "ColumnHeader.EmissionsT" | translate }}
+          </span>
+          {{ investmentForm.controls.kgCO2Footprint.value | roundTons }}
+          <span class="fw-500">t CO2 ekv</span>
+        </div>
+      }
+      @if (
+        investmentForm.controls.averageMethod.controls
+          .investmentBuildingEmissionsForm
+      ) {
+        <div class="mb-2">
+          <span class="fw-500">{{
+            "PageFive.ColumnHeader.ProjectBuildingCost" | translate
+          }}</span>
+          <input
+            type="text"
+            class="form-control"
+            [formControl]="
+              investmentForm.controls.averageMethod.controls
+                .investmentBuildingEmissionsForm.controls.projectBuildingCost
+            "
+          />
+        </div>
+        <div class="mb-2">
+          <span class="fw-500">{{
+            "PageFive.ColumnHeader.ProductEmissionFactor" | translate
+          }}</span>
+          <input
+            type="text"
+            class="form-control"
+            [formControl]="
+              investmentForm.controls.averageMethod.controls
+                .investmentBuildingEmissionsForm.controls.emissionFactor
+            "
+          />
+        </div>
+        <div class="mb-2">
+          <span class="fw-500">{{
+            "PageFive.ColumnHeader.PercentageOfTotalExpenses" | translate
+          }}</span>
+          <input
+            type="text"
+            class="form-control"
+            [formControl]="
+              investmentForm.controls.averageMethod.controls
+                .investmentBuildingEmissionsForm.controls
+                .percentageOfTotalExpenses
+            "
+          />
+        </div>
+        <div class="mb-3">
+          <span class="fw-500">
+            {{ "ColumnHeader.EmissionsKG" | translate }}
+          </span>
+          {{ investmentForm.controls.kgCO2Footprint.value }}
+          <span class="fw-500">kg CO2 ekv</span>
+        </div>
+        <div>
+          <span class="fw-500">
+            {{ "ColumnHeader.EmissionsT" | translate }}
+          </span>
+          {{ investmentForm.controls.kgCO2Footprint.value | roundTons }}
+          <span class="fw-500">t CO2 ekv</span>
+        </div>
+      }
+      @if (
+        investmentForm.controls.averageMethod.controls
+          .investmentUsingEmissionsForm
+      ) {
+        <div class="mb-2">
+          <span class="fw-500">{{
+            "PageFive.ColumnHeader.ProjectProfit" | translate
+          }}</span>
+          <input
+            type="text"
+            class="form-control"
+            [formControl]="
+              investmentForm.controls.averageMethod.controls
+                .investmentUsingEmissionsForm.controls.projectProfit
+            "
+          />
+        </div>
+        <div class="mb-2">
+          <span class="fw-500">{{
+            "PageFive.ColumnHeader.ProductEmissionFactor" | translate
+          }}</span>
+          <input
+            type="text"
+            class="form-control"
+            [formControl]="
+              investmentForm.controls.averageMethod.controls
+                .investmentUsingEmissionsForm.controls.emissionFactor
+            "
+          />
+        </div>
+        <div class="mb-2">
+          <span class="fw-500">{{
+            "PageFive.ColumnHeader.PercentageOfTotalExpenses" | translate
+          }}</span>
+          <input
+            type="text"
+            class="form-control"
+            [formControl]="
+              investmentForm.controls.averageMethod.controls
+                .investmentUsingEmissionsForm.controls.percentageOfTotalExpenses
+            "
+          />
+        </div>
+        <div class="mb-3">
+          <span class="fw-500">
+            {{ "ColumnHeader.EmissionsKG" | translate }}
+          </span>
+          {{ investmentForm.controls.kgCO2Footprint.value }}
+          <span class="fw-500">kg CO2 ekv</span>
+        </div>
+        <div>
+          <span class="fw-500">
+            {{ "ColumnHeader.EmissionsT" | translate }}
+          </span>
+          {{ investmentForm.controls.kgCO2Footprint.value | roundTons }}
+          <span class="fw-500">t CO2 ekv</span>
+        </div>
+      }
+    }
+  </div>
+</div>

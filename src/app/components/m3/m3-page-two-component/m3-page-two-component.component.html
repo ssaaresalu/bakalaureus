@@ -7,126 +7,1004 @@
   ) {
     <div [hidden]="i !== currentYearIndex" class="mb-5">
       <p>{{ yearlyForm.controls.year.value }}</p>
-      <h4 class="h4 mb-3">
-        {{ "PageFive.BusinessTripsHeading" | translate }}
-      </h4>
-      <article class="mb-4">
-        <h6 class="h6 mb-3">
-          {{ "PageFive.BusinessTripSmallVehicles" | translate }}
-        </h6>
-        @for (
-          businessTripInfo of yearlyForm.controls.businessTripsSmall.controls;
-          track businessTripInfo;
-          let i = $index
-        ) {
-          <div class="mb-3">
-            <app-row
-              [formGroup]="businessTripInfo"
-              [emissionList]="emissionsLists.businessTripsSmall"
-              [year]="yearlyForm.controls.year.value"
-              [translationPrefix]="'PageFive.ColumnHeader.BusinessTripsSmall'"
-            ></app-row>
-            <div class="col">
-              @if (yearlyForm.controls.businessTripsSmall.length > 0) {
-                <span
-                  (click)="removeField(yearlyForm, i, 'businessTripsSmall')"
-                  (keydown.enter)="
-                    removeField(yearlyForm, i, 'businessTripsSmall')
-                  "
-                  role="button"
-                  tabindex="0"
-                  class="text-link fw-500 text-danger"
-                  ><mat-icon class="pt-1">remove</mat-icon>
-                  {{ "PageThree.RemoveRow" | translate }}
-                </span>
-              }
-            </div>
-          </div>
-        }
-        @if (yearlyForm.controls.businessTripsSmall.length <= 10) {
-          <span
-            (click)="
-              addField(
-                yearlyForm,
-                'businessTripsSmall',
-                emissionsLists.businessTripsSmall
-              )
-            "
-            (keydown.enter)="
-              addField(
-                yearlyForm,
-                'businessTripsSmall',
-                emissionsLists.businessTripsSmall
-              )
-            "
-            role="button"
-            tabindex="0"
-            class="text-link fw-500"
-            ><mat-icon class="pt-1">add</mat-icon>
-            {{ "PageThree.AddRow" | translate }}</span
-          >
-        }
-      </article>
-      <hr class="opacity-25" />
-      <article class="mb-4">
-        <h6 class="m6 mb-3">
-          {{ "PageFive.BusinessTripLargeVehicles" | translate }}
-        </h6>
-        @for (
-          businessTripLargeInfo of yearlyForm.controls.businessTripsLarge
-            .controls;
-          track businessTripLargeInfo;
-          let i = $index
-        ) {
-          <div class="mb-3">
-            <app-row
-              [formGroup]="businessTripLargeInfo"
-              [emissionList]="emissionsLists.businessTripsBig"
-              [year]="yearlyForm.controls.year.value"
-              [translationPrefix]="'PageFive.ColumnHeader.BusinessTripsLarge'"
-            ></app-row>
-            <div class="col">
-              @if (yearlyForm.controls.businessTripsLarge.length > 0) {
-                <span
-                  (click)="removeField(yearlyForm, i, 'businessTripsLarge')"
-                  (keydown.enter)="
-                    removeField(yearlyForm, i, 'businessTripsLarge')
-                  "
-                  role="button"
-                  tabindex="0"
-                  class="text-link fw-500 text-danger"
-                  ><mat-icon class="pt-1">remove</mat-icon>
-                  {{ "PageThree.RemoveRow" | translate }}
-                </span>
-              }
-            </div>
-          </div>
-        }
-        @if (yearlyForm.controls.businessTripsSmall.length <= 10) {
-          <span
-            (click)="
-              addField(
-                yearlyForm,
-                'businessTripsLarge',
-                emissionsLists.businessTripsBig
-              )
-            "
-            (keydown.enter)="
-              addField(
-                yearlyForm,
-                'businessTripsLarge',
-                emissionsLists.businessTripsBig
-              )
-            "
-            role="button"
-            tabindex="0"
-            class="text-link fw-500"
-            ><mat-icon class="pt-1">add</mat-icon>
-            {{ "PageThree.AddRow" | translate }}</span
-          >
-        }
-      </article>
-      <hr class="opacity-75" />
+      <mat-accordion multi>
+        <mat-expansion-panel class="mb-3">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ "PageFive.BusinessTripsHeading" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-accordion multi>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ "PageFive.BusinessTripSmallVehicles" | translate }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <article class="mb-4">
+                @for (
+                  businessTripInfo of yearlyForm.controls.businessTripsSmall
+                    .controls;
+                  track businessTripInfo;
+                  let i = $index
+                ) {
+                  <div class="mb-3 entry">
+                    <app-entry
+                      [formGroup]="businessTripInfo"
+                      [emissionList]="emissionsLists.businessTripsSmall"
+                      [year]="yearlyForm.controls.year.value"
+                      [translationPrefix]="
+                        'PageFive.ColumnHeader.BusinessTripsSmall'
+                      "
+                      [isDistanceLabel]="true"
+                    ></app-entry>
+                    <div class="col">
+                      @if (yearlyForm.controls.businessTripsSmall.length > 0) {
+                        <span
+                          (click)="
+                            removeField(yearlyForm, i, 'businessTripsSmall')
+                          "
+                          (keydown.enter)="
+                            removeField(yearlyForm, i, 'businessTripsSmall')
+                          "
+                          role="button"
+                          tabindex="0"
+                          class="text-link fw-500 text-danger"
+                          ><mat-icon class="pt-1">remove</mat-icon>
+                          {{ "PageThree.RemoveRow" | translate }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+                @if (yearlyForm.controls.businessTripsSmall.length <= 10) {
+                  <span
+                    (click)="
+                      addField(
+                        yearlyForm,
+                        'businessTripsSmall',
+                        emissionsLists.businessTripsSmall
+                      )
+                    "
+                    (keydown.enter)="
+                      addField(
+                        yearlyForm,
+                        'businessTripsSmall',
+                        emissionsLists.businessTripsSmall
+                      )
+                    "
+                    role="button"
+                    tabindex="0"
+                    class="text-link fw-500"
+                    ><mat-icon class="pt-1">add</mat-icon>
+                    {{ "PageThree.AddRow" | translate }}</span
+                  >
+                }
+              </article>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ "PageFive.BusinessTripLargeVehicles" | translate }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <article class="mb-4">
+                @for (
+                  businessTripLargeInfo of yearlyForm.controls
+                    .businessTripsLarge.controls;
+                  track businessTripLargeInfo;
+                  let i = $index
+                ) {
+                  <div class="mb-3 entry">
+                    <app-entry
+                      [formGroup]="businessTripLargeInfo"
+                      [emissionList]="emissionsLists.businessTripsBig"
+                      [year]="yearlyForm.controls.year.value"
+                      [translationPrefix]="
+                        'PageFive.ColumnHeader.BusinessTripsLarge'
+                      "
+                      [isDistanceLabel]="true"
+                    ></app-entry>
+                    <div class="col">
+                      @if (yearlyForm.controls.businessTripsLarge.length > 0) {
+                        <span
+                          (click)="
+                            removeField(yearlyForm, i, 'businessTripsLarge')
+                          "
+                          (keydown.enter)="
+                            removeField(yearlyForm, i, 'businessTripsLarge')
+                          "
+                          role="button"
+                          tabindex="0"
+                          class="text-link fw-500 text-danger"
+                          ><mat-icon class="pt-1">remove</mat-icon>
+                          {{ "PageThree.RemoveRow" | translate }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+                @if (yearlyForm.controls.businessTripsSmall.length <= 10) {
+                  <span
+                    (click)="
+                      addField(
+                        yearlyForm,
+                        'businessTripsLarge',
+                        emissionsLists.businessTripsBig
+                      )
+                    "
+                    (keydown.enter)="
+                      addField(
+                        yearlyForm,
+                        'businessTripsLarge',
+                        emissionsLists.businessTripsBig
+                      )
+                    "
+                    role="button"
+                    tabindex="0"
+                    class="text-link fw-500"
+                    ><mat-icon class="pt-1">add</mat-icon>
+                    {{ "PageThree.AddRow" | translate }}</span
+                  >
+                }
+              </article>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mb-3">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ "PageFive.WorkHomeHeading" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-accordion multi>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ "PageFive.WorkHomeSmallHeading" | translate }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <article class="mb-4">
+                @for (
+                  workHomeInfo of yearlyForm.controls.workHomeTransportSmall
+                    .controls;
+                  track workHomeInfo;
+                  let i = $index
+                ) {
+                  <div class="mb-3 entry">
+                    <app-entry
+                      [formGroup]="workHomeInfo"
+                      [emissionList]="emissionsLists.workHomeSmallVehicle"
+                      [year]="yearlyForm.controls.year.value"
+                      [translationPrefix]="
+                        'PageFive.ColumnHeader.WorkHomeSmall'
+                      "
+                      [isWorkHomeForm]="true"
+                      [isDistanceLabel]="true"
+                    ></app-entry>
+                    <div class="col">
+                      @if (
+                        yearlyForm.controls.workHomeTransportSmall.length > 0
+                      ) {
+                        <span
+                          (click)="
+                            removeField(yearlyForm, i, 'workHomeTransportSmall')
+                          "
+                          (keydown.enter)="
+                            removeField(yearlyForm, i, 'workHomeTransportSmall')
+                          "
+                          role="button"
+                          tabindex="0"
+                          class="text-link fw-500 text-danger"
+                          ><mat-icon class="pt-1">remove</mat-icon>
+                          {{ "PageThree.RemoveRow" | translate }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+                @if (yearlyForm.controls.workHomeTransportSmall.length <= 10) {
+                  <span
+                    (click)="
+                      addField(
+                        yearlyForm,
+                        'workHomeTransportSmall',
+                        emissionsLists.workHomeSmallVehicle,
+                        true
+                      )
+                    "
+                    (keydown.enter)="
+                      addField(
+                        yearlyForm,
+                        'workHomeTransportSmall',
+                        emissionsLists.workHomeSmallVehicle,
+                        true
+                      )
+                    "
+                    role="button"
+                    tabindex="0"
+                    class="text-link fw-500"
+                    ><mat-icon class="pt-1">add</mat-icon>
+                    {{ "PageThree.AddRow" | translate }}</span
+                  >
+                }
+              </article>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ "PageFive.WorkHomeLargeHeading" | translate }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <article class="mb-4">
+                @for (
+                  workHomeLargeInfo of yearlyForm.controls
+                    .workHomeTransportLarge.controls;
+                  track workHomeLargeInfo;
+                  let i = $index
+                ) {
+                  <div class="mb-3 entry">
+                    <app-entry
+                      [formGroup]="workHomeLargeInfo"
+                      [emissionList]="emissionsLists.workHomeBigVehicle"
+                      [year]="yearlyForm.controls.year.value"
+                      [translationPrefix]="
+                        'PageFive.ColumnHeader.WorkHomeLarge'
+                      "
+                      [isWorkHomeForm]="true"
+                      [isDistanceLabel]="true"
+                    ></app-entry>
+                    <div class="col">
+                      @if (
+                        yearlyForm.controls.workHomeTransportLarge.length > 0
+                      ) {
+                        <span
+                          (click)="
+                            removeField(yearlyForm, i, 'workHomeTransportLarge')
+                          "
+                          (keydown.enter)="
+                            removeField(yearlyForm, i, 'workHomeTransportLarge')
+                          "
+                          role="button"
+                          tabindex="0"
+                          class="text-link fw-500 text-danger"
+                          ><mat-icon class="pt-1">remove</mat-icon>
+                          {{ "PageThree.RemoveRow" | translate }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+                @if (yearlyForm.controls.workHomeTransportLarge.length <= 10) {
+                  <span
+                    (click)="
+                      addField(
+                        yearlyForm,
+                        'workHomeTransportLarge',
+                        emissionsLists.workHomeBigVehicle,
+                        true
+                      )
+                    "
+                    (keydown.enter)="
+                      addField(
+                        yearlyForm,
+                        'workHomeTransportLarge',
+                        emissionsLists.workHomeBigVehicle,
+                        true
+                      )
+                    "
+                    role="button"
+                    tabindex="0"
+                    class="text-link fw-500"
+                    ><mat-icon class="pt-1">add</mat-icon>
+                    {{ "PageThree.AddRow" | translate }}</span
+                  >
+                }
+              </article>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mb-3">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ "PageFive.WasteHeading" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <article class="mb-4">
+            @for (
+              wasteInfo of yearlyForm.controls.waste.controls;
+              track wasteInfo;
+              let i = $index
+            ) {
+              <div class="mb-3 entry">
+                <app-entry
+                  [formGroup]="wasteInfo"
+                  [emissionList]="emissionsLists.waste"
+                  [year]="yearlyForm.controls.year.value"
+                  [translationPrefix]="'PageFive.ColumnHeader.Waste'"
+                  [isWasteMass]="true"
+                ></app-entry>
+                <div class="col">
+                  @if (yearlyForm.controls.waste.length > 0) {
+                    <span
+                      (click)="removeField(yearlyForm, i, 'waste')"
+                      (keydown.enter)="removeField(yearlyForm, i, 'waste')"
+                      role="button"
+                      tabindex="0"
+                      class="text-link fw-500 text-danger"
+                      ><mat-icon class="pt-1">remove</mat-icon>
+                      {{ "PageThree.RemoveRow" | translate }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+            @if (yearlyForm.controls.waste.length <= 10) {
+              <span
+                (click)="addField(yearlyForm, 'waste', emissionsLists.waste)"
+                (keydown.enter)="
+                  addField(yearlyForm, 'waste', emissionsLists.waste)
+                "
+                role="button"
+                tabindex="0"
+                class="text-link fw-500"
+                ><mat-icon class="pt-1">add</mat-icon>
+                {{ "PageThree.AddRow" | translate }}</span
+              >
+            }
+          </article>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mb-3">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ "PageFive.HomeOffice" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <article class="mb-4">
+            @for (
+              homeOfficeInfo of yearlyForm.controls.homeOffice.controls;
+              track homeOfficeInfo;
+              let i = $index
+            ) {
+              <div class="mb-3 entry">
+                <div class="row row-cols-1 row-cols-md-2">
+                  <div class="col-md-4">
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "ColumnHeader.UnitNumber" | translate
+                      }}</span>
+                      <div class="w-50">
+                        <app-dropdown
+                          [control]="homeOfficeInfo.controls.unitNumber"
+                          [simpleList]="
+                            getUnitsByYear(yearlyForm.controls.year.value)
+                          "
+                        ></app-dropdown>
+                      </div>
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.UsedDevice" | translate
+                      }}</span>
+                      <input
+                        class="form-control"
+                        [formControl]="homeOfficeInfo.controls.usedDevice"
+                        type="text"
+                      />
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.AmountOfDevices" | translate
+                      }}</span>
+                      <input
+                        class="form-control w-50"
+                        [formControl]="homeOfficeInfo.controls.amountOfDevices"
+                        type="text"
+                      />
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.DeviceElectricityAmount"
+                          | translate
+                      }}</span>
+                      <input
+                        class="form-control"
+                        [formControl]="
+                          homeOfficeInfo.controls.deviceElectricityAmount
+                        "
+                        type="text"
+                      />
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.AmountOfHours" | translate
+                      }}</span>
+                      <input
+                        class="form-control"
+                        [formControl]="homeOfficeInfo.controls.amountOfHours"
+                        type="text"
+                      />
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.ElectricityPackage" | translate
+                      }}</span>
+                      <app-dropdown
+                        [emissionList]="homeOfficeElectricalList"
+                        [control]="homeOfficeInfo.controls.electricityPackage"
+                      ></app-dropdown>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.Amount" | translate
+                      }}</span>
+                      {{ homeOfficeInfo.controls.amount_kWh.value }}
+                    </div>
+                    <div class="mb-3">
+                      <span class="fw-500">
+                        {{ "ColumnHeader.ModelEmissions" | translate }}
+                      </span>
+                      <input
+                        type="checkbox"
+                        class="ms-2"
+                        [formControl]="
+                          homeOfficeInfo.controls.isUsingModelEmissionFactor
+                        "
+                      />
+                    </div>
+                    @if (
+                      homeOfficeInfo.controls.isUsingModelEmissionFactor.value
+                    ) {
+                      <div class="mb-3">
+                        <span class="fw-500">
+                          {{ "ColumnHeader.EmissionFactor" | translate }}
+                        </span>
+                        {{
+                          homeOfficeElectricalList
+                            | getListItemValue
+                              : homeOfficeInfo.controls.electricityPackage.value
+                        }}
+                      </div>
+                    }
+                    @if (
+                      homeOfficeInfo.controls.isUsingModelEmissionFactor
+                        .value === false
+                    ) {
+                      <div class="mb-3">
+                        <span class="fw-500">
+                          {{ "ColumnHeader.OtherEmissionFactor" | translate }}
+                        </span>
+                        <input
+                          type="text"
+                          class="form-control"
+                          [formControl]="
+                            homeOfficeInfo.controls.otherEmissionFactor
+                          "
+                        />
+                      </div>
+                    }
+                    <div class="mb-3">
+                      <span class="fw-500">
+                        {{ "ColumnHeader.EmissionsKG" | translate }}
+                      </span>
+                      {{ homeOfficeInfo.controls.kgCO2Footprint.value }}
+                      <span class="fw-500">kg CO2 ekv</span>
+                    </div>
+                    <div>
+                      <span class="fw-500">
+                        {{ "ColumnHeader.EmissionsT" | translate }}
+                      </span>
+                      {{
+                        homeOfficeInfo.controls.kgCO2Footprint.value | roundTons
+                      }}
+                      <span class="fw-500">t CO2 ekv</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  @if (yearlyForm.controls.homeOffice.length > 0) {
+                    <span
+                      (click)="removeHomeOfficeField(yearlyForm, i)"
+                      (keydown.enter)="removeHomeOfficeField(yearlyForm, i)"
+                      role="button"
+                      tabindex="0"
+                      class="text-link fw-500 text-danger"
+                      ><mat-icon class="pt-1">remove</mat-icon>
+                      {{ "PageThree.RemoveRow" | translate }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+            @if (yearlyForm.controls.homeOffice.length <= 10) {
+              <span
+                (click)="addHomeOfficeField(yearlyForm)"
+                (keydown.enter)="addHomeOfficeField(yearlyForm)"
+                role="button"
+                tabindex="0"
+                class="text-link fw-500"
+                ><mat-icon class="pt-1">add</mat-icon>
+                {{ "PageThree.AddRow" | translate }}</span
+              >
+            }
+          </article>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mb-3">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ "PageFive.ProductsHeading" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <article class="mb-4">
+            @for (
+              productInfo of yearlyForm.controls.products.controls;
+              track productInfo;
+              let i = $index
+            ) {
+              <div class="mb-3 entry">
+                <div class="row row-cols-1 row-cols-md-2">
+                  <div class="col-md-4">
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "ColumnHeader.UnitNumber" | translate
+                      }}</span>
+                      <div class="w-50">
+                        <app-dropdown
+                          [control]="productInfo.controls.unitNumber"
+                          [simpleList]="
+                            getUnitsByYear(yearlyForm.controls.year.value)
+                          "
+                        ></app-dropdown>
+                      </div>
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">
+                        {{ "PageFive.ColumnHeader.BoughtOrSold" | translate }}
+                      </span>
+                      <app-dropdown
+                        [simpleList]="BOUGHT_OR_SOLD"
+                        [control]="productInfo.controls.soldOrBought"
+                      ></app-dropdown>
+                    </div>
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        productInfo.controls.soldOrBought.value === "Müüdud"
+                          ? ("PageFive.ColumnHeader.SoldDevice" | translate)
+                          : ("PageFive.ColumnHeader.BoughtDevice" | translate)
+                      }}</span>
+                      <input
+                        class="form-control"
+                        [formControl]="productInfo.controls.product"
+                        type="text"
+                      />
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.AmountOfProduct" | translate
+                      }}</span>
+                      <input
+                        class="form-control w-50"
+                        [formControl]="productInfo.controls.amount"
+                        type="text"
+                      />
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.Price" | translate
+                      }}</span>
+                      <input
+                        class="form-control"
+                        [formControl]="productInfo.controls.price"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <span class="fw-500">
+                        {{
+                          "PageFive.ColumnHeader.ProductEmissionFactor"
+                            | translate
+                        }}
+                      </span>
+                      <input
+                        class="form-control w-50"
+                        [formControl]="productInfo.controls.emissionFactor"
+                        type="text"
+                      />
+                    </div>
+                    <div class="mb-3">
+                      <span class="fw-500">
+                        {{ "ColumnHeader.EmissionsKG" | translate }}
+                      </span>
+                      {{ productInfo.controls.kgCO2Footprint.value }}
+                      <span class="fw-500">kg CO2 ekv</span>
+                    </div>
+                    <div>
+                      <span class="fw-500">
+                        {{ "ColumnHeader.EmissionsT" | translate }}
+                      </span>
+                      {{
+                        productInfo.controls.kgCO2Footprint.value | roundTons
+                      }}
+                      <span class="fw-500">t CO2 ekv</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  @if (yearlyForm.controls.products.length > 0) {
+                    <span
+                      (click)="removeProductsField(yearlyForm, i)"
+                      (keydown.enter)="removeProductsField(yearlyForm, i)"
+                      role="button"
+                      tabindex="0"
+                      class="text-link fw-500 text-danger"
+                      ><mat-icon class="pt-1">remove</mat-icon>
+                      {{ "PageThree.RemoveRow" | translate }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+            @if (yearlyForm.controls.products.length <= 10) {
+              <span
+                (click)="addProductField(yearlyForm)"
+                (keydown.enter)="addProductField(yearlyForm)"
+                role="button"
+                tabindex="0"
+                class="text-link fw-500"
+                ><mat-icon class="pt-1">add</mat-icon>
+                {{ "PageThree.AddRow" | translate }}</span
+              >
+            }
+          </article>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mb-3">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ "PageFive.VehicleFuelsHeading" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <article class="mb-4">
+            @for (
+              vehicleFuelInfo of yearlyForm.controls.vehicleFuels.controls;
+              track vehicleFuelInfo;
+              let i = $index
+            ) {
+              <div class="mb-3 entry">
+                <div class="row row-cols-1 row-cols-md-2">
+                  <div class="col-md-4">
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "ColumnHeader.UnitNumber" | translate
+                      }}</span>
+                      <div class="w-50">
+                        <app-dropdown
+                          [control]="vehicleFuelInfo.controls.unitNumber"
+                          [simpleList]="
+                            getUnitsByYear(yearlyForm.controls.year.value)
+                          "
+                        ></app-dropdown>
+                      </div>
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.VehicleFuelType" | translate
+                      }}</span>
+                      <app-dropdown
+                        [control]="vehicleFuelInfo.controls.vehicleFuelsType"
+                        [simpleList]="VEHICLE_FUELS_UPSTREAM_TYPES"
+                      ></app-dropdown>
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.VehicleFuel" | translate
+                      }}</span>
+                      <input
+                        class="form-control"
+                        [formControl]="vehicleFuelInfo.controls.fuel"
+                        type="text"
+                      />
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.AmountOfFuel" | translate
+                      }}</span>
+                      <input
+                        class="form-control w-50"
+                        [formControl]="vehicleFuelInfo.controls.amount"
+                        type="text"
+                      />
+                    </div>
+
+                    @if (
+                      vehicleFuelInfo.controls.vehicleFuelsType.value ===
+                      "M1-sõidukid"
+                    ) {
+                      <div class="mb-2">
+                        <span class="fw-500">{{
+                          "PageFive.ColumnHeader.DistanceOfVehicle" | translate
+                        }}</span>
+                        <input
+                          class="form-control"
+                          [formControl]="vehicleFuelInfo.controls.distance"
+                          type="text"
+                        />
+                      </div>
+                    }
+                  </div>
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <span class="fw-500">
+                        {{
+                          "PageFive.ColumnHeader.ProductEmissionFactor"
+                            | translate
+                        }}
+                      </span>
+                      <input
+                        class="form-control w-50"
+                        [formControl]="vehicleFuelInfo.controls.emissionFactor"
+                        type="text"
+                      />
+                    </div>
+                    <div class="mb-3">
+                      <span class="fw-500">
+                        {{ "ColumnHeader.EmissionsKG" | translate }}
+                      </span>
+                      {{ vehicleFuelInfo.controls.kgCO2Footprint.value }}
+                      <span class="fw-500">kg CO2 ekv</span>
+                    </div>
+                    <div>
+                      <span class="fw-500">
+                        {{ "ColumnHeader.EmissionsT" | translate }}
+                      </span>
+                      {{
+                        vehicleFuelInfo.controls.kgCO2Footprint.value
+                          | roundTons
+                      }}
+                      <span class="fw-500">t CO2 ekv</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  @if (yearlyForm.controls.vehicleFuels.length > 0) {
+                    <span
+                      (click)="removeVehicleFuelsField(yearlyForm, i)"
+                      (keydown.enter)="removeVehicleFuelsField(yearlyForm, i)"
+                      role="button"
+                      tabindex="0"
+                      class="text-link fw-500 text-danger"
+                      ><mat-icon class="pt-1">remove</mat-icon>
+                      {{ "PageThree.RemoveRow" | translate }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+            @if (yearlyForm.controls.vehicleFuels.length <= 10) {
+              <span
+                (click)="addVehicleFuelsField(yearlyForm)"
+                (keydown.enter)="addVehicleFuelsField(yearlyForm)"
+                role="button"
+                tabindex="0"
+                class="text-link fw-500"
+                ><mat-icon class="pt-1">add</mat-icon>
+                {{ "PageThree.AddRow" | translate }}</span
+              >
+            }
+          </article>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mb-3">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ "PageFive.DiffuseEmissionHeading" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <article class="mb-4">
+            @for (
+              diffuseEmissionInfo of yearlyForm.controls.diffuseEmissions
+                .controls;
+              track diffuseEmissionInfo;
+              let i = $index
+            ) {
+              <div class="mb-3 entry">
+                <div class="row row-cols-1 row-cols-md-2">
+                  <div class="col-md-4">
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "ColumnHeader.UnitNumber" | translate
+                      }}</span>
+                      <div class="w-50">
+                        <app-dropdown
+                          [control]="diffuseEmissionInfo.controls.unitNumber"
+                          [simpleList]="
+                            getUnitsByYear(yearlyForm.controls.year.value)
+                          "
+                        ></app-dropdown>
+                      </div>
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.DiffuseEmissionSource"
+                          | translate
+                      }}</span>
+                      <input
+                        class="form-control"
+                        [formControl]="
+                          diffuseEmissionInfo.controls.sourceOfEmission
+                        "
+                        type="text"
+                      />
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.DiffuseEmissionAmount"
+                          | translate
+                      }}</span>
+                      <input
+                        class="form-control"
+                        [formControl]="diffuseEmissionInfo.controls.amount"
+                        type="text"
+                      />
+                    </div>
+
+                    <div class="mb-2">
+                      <span class="fw-500">{{
+                        "PageFive.ColumnHeader.DiffuseEmissionUnit" | translate
+                      }}</span>
+                      <input
+                        class="form-control w-50"
+                        [formControl]="diffuseEmissionInfo.controls.unit"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="mb-3">
+                      <span class="fw-500">
+                        {{
+                          "PageFive.ColumnHeader.ProductEmissionFactor"
+                            | translate
+                        }}
+                      </span>
+                      <input
+                        class="form-control"
+                        [formControl]="
+                          diffuseEmissionInfo.controls.emissionFactor
+                        "
+                        type="text"
+                      />
+                    </div>
+                    <div class="mb-3">
+                      <span class="fw-500">
+                        {{ "ColumnHeader.EmissionsKG" | translate }}
+                      </span>
+                      {{ diffuseEmissionInfo.controls.kgCO2Footprint.value }}
+                      <span class="fw-500">kg CO2 ekv</span>
+                    </div>
+                    <div>
+                      <span class="fw-500">
+                        {{ "ColumnHeader.EmissionsT" | translate }}
+                      </span>
+                      {{
+                        diffuseEmissionInfo.controls.kgCO2Footprint.value
+                          | roundTons
+                      }}
+                      <span class="fw-500">t CO2 ekv</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  @if (yearlyForm.controls.diffuseEmissions.length > 0) {
+                    <span
+                      (click)="removeDiffuseEmissionField(yearlyForm, i)"
+                      (keydown.enter)="
+                        removeDiffuseEmissionField(yearlyForm, i)
+                      "
+                      role="button"
+                      tabindex="0"
+                      class="text-link fw-500 text-danger"
+                      ><mat-icon class="pt-1">remove</mat-icon>
+                      {{ "PageThree.RemoveRow" | translate }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+            @if (yearlyForm.controls.diffuseEmissions.length <= 10) {
+              <span
+                (click)="addDiffuseEmissionField(yearlyForm)"
+                (keydown.enter)="addDiffuseEmissionField(yearlyForm)"
+                role="button"
+                tabindex="0"
+                class="text-link fw-500"
+                ><mat-icon class="pt-1">add</mat-icon>
+                {{ "PageThree.AddRow" | translate }}</span
+              >
+            }
+          </article>
+        </mat-expansion-panel>
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ "PageFive.InvestmentsHeading" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <article class="mb-4">
+            @for (
+              investmentInfo of yearlyForm.controls.investments.controls;
+              track investmentInfo;
+              let i = $index
+            ) {
+              <div class="mb-3 entry">
+                <app-m3-investments
+                  [investmentForm]="investmentInfo"
+                  [year]="yearlyForm.controls.year.value"
+                ></app-m3-investments>
+                <div class="col">
+                  @if (yearlyForm.controls.investments.length > 0) {
+                    <span
+                      (click)="removeInvestmentField(yearlyForm, i)"
+                      (keydown.enter)="removeInvestmentField(yearlyForm, i)"
+                      role="button"
+                      tabindex="0"
+                      class="text-link fw-500 text-danger"
+                      ><mat-icon class="pt-1">remove</mat-icon>
+                      {{ "PageThree.RemoveRow" | translate }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+            @if (yearlyForm.controls.investments.length <= 10) {
+              <span
+                (click)="addInvestmentField(yearlyForm)"
+                (keydown.enter)="addInvestmentField(yearlyForm)"
+                role="button"
+                tabindex="0"
+                class="text-link fw-500"
+                ><mat-icon class="pt-1">add</mat-icon>
+                {{ "PageThree.AddRow" | translate }}</span
+              >
+            }
+          </article>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
+  }
+  @if (M3OtherItemsForm.controls.yearlyInfo.length > 0) {
+    <button
+      type="button"
+      class="btn btn-secondary btn-sm me-3"
+      (click)="showPrevYear()"
+      [disabled]="currentYearIndex === 0"
+    >
+      Previous
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="showNextYear()"
+      [disabled]="
+        currentYearIndex >= M3OtherItemsForm.controls.yearlyInfo.length - 1
+      "
+    >
+      Next
+    </button>
   }
 </form>

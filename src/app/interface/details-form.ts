@@ -8,4 +8,5 @@ export type DetailsForm = FormGroup<{
   emissionFactor: FormControl<number>;
   otherEmissionFactor: FormControl<string | undefined>;
   kgCO2Footprint: FormControl<number>;
+  workHomeType?: FormControl<string>;
 }>;

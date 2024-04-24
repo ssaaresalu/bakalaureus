@@ -3,7 +3,7 @@
   <div class="overlay"></div>
 }
 <div class="main-container row">
-  <div class="col-md-6 order-md-1 order-2 left">
+  <div class="col-md-6 order-md-1 order-2 left" [@slideAnimation]="pageIndex">
     @switch (pageIndex) {
       @case (Pages.ORGANIZATION) {
         <app-page-one></app-page-one>
@@ -20,9 +20,12 @@
       @case (Pages.M3_PAGE_TWO) {
         <app-m3-page-two-component></app-m3-page-two-component>
       }
+      @case (Pages.RESULTS) {
+        <app-results></app-results>
+      }
     }
     <div class="btn--btns-left">
-      @if (pageIndex !== 4) {
+      @if (pageIndex !== 5) {
         <button type="button" class="btn btn-primary" (click)="nextPage()">
           Continue
         </button>

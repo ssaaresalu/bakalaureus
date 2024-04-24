@@ -7,378 +7,449 @@
   ) {
     <div [hidden]="i !== currentYearIndex" class="mb-5">
       <p>{{ yearlyForm.controls.year.value }}</p>
-      <h4 class="h4 mb-3">
-        {{ "PageFour.BoughtTransportEmissionsHeading" | translate }}
-      </h4>
-      <article class="mb-4">
-        <h6 class="h6 mb-3">{{ "PageFour.Vans" | translate }}</h6>
-        @for (
-          vanInfo of yearlyForm.controls.vans.controls;
-          track vanInfo;
-          let i = $index
-        ) {
-          <div class="mb-3">
-            <app-row
-              [transportFormGroup]="vanInfo"
-              [emissionList]="emissionsLists.vans"
-              [year]="yearlyForm.controls.year.value"
-              [translationPrefix]="'PageFour.ColumnHeader.Vans'"
-              [isTransport]="true"
-            ></app-row>
-            <div class="col">
-              @if (yearlyForm.controls.vans.length > 0) {
-                <span
-                  (click)="removeField(yearlyForm, i, 'vans')"
-                  (keydown.enter)="removeField(yearlyForm, i, 'vans')"
-                  role="button"
-                  tabindex="0"
-                  class="text-link fw-500 text-danger"
-                  ><mat-icon class="pt-1">remove</mat-icon>
-                  {{ "PageThree.RemoveRow" | translate }}
-                </span>
-              }
-            </div>
-          </div>
-        }
-        @if (yearlyForm.controls.vans.length <= 10) {
-          <span
-            (click)="
-              addField(yearlyForm, 'vans', true, false, emissionsLists.vans)
-            "
-            (keydown.enter)="
-              addField(yearlyForm, 'vans', true, false, emissionsLists.vans)
-            "
-            role="button"
-            tabindex="0"
-            class="text-link fw-500"
-            ><mat-icon class="pt-1">add</mat-icon>
-            {{ "PageThree.AddRow" | translate }}</span
-          >
-        }
-      </article>
-      <hr class="opacity-25" />
-      <article class="mb-4">
-        <h6 class="h6 mb-3">{{ "PageFour.RigidTrucks" | translate }}</h6>
-        @for (
-          rigidTruckInfo of yearlyForm.controls.rigidTrucks.controls;
-          track rigidTruckInfo;
-          let i = $index
-        ) {
-          <div class="mb-3">
-            <app-row
-              [transportFormGroup]="rigidTruckInfo"
-              [capacityListName]="'rigidTrucks'"
-              [year]="yearlyForm.controls.year.value"
-              [translationPrefix]="'PageFour.ColumnHeader.RigidTrucks'"
-              [isTransport]="true"
-            ></app-row>
-            <div class="col">
-              @if (yearlyForm.controls.rigidTrucks.length > 0) {
-                <span
-                  (click)="removeField(yearlyForm, i, 'rigidTrucks')"
-                  (keydown.enter)="removeField(yearlyForm, i, 'rigidTrucks')"
-                  role="button"
-                  tabindex="0"
-                  class="text-link fw-500 text-danger"
-                  ><mat-icon class="pt-1">remove</mat-icon>
-                  {{ "PageThree.RemoveRow" | translate }}
-                </span>
-              }
-            </div>
-          </div>
-        }
-        @if (yearlyForm.controls.rigidTrucks.length <= 10) {
-          <span
-            (click)="addField(yearlyForm, 'rigidTrucks', true, true)"
-            (keydown.enter)="addField(yearlyForm, 'rigidTrucks', true, true)"
-            role="button"
-            tabindex="0"
-            class="text-link fw-500"
-            ><mat-icon class="pt-1">add</mat-icon>
-            {{ "PageThree.AddRow" | translate }}</span
-          >
-        }
-      </article>
-      <hr class="opacity-25" />
-      <article class="mb-4">
-        <h6 class="h6 mb-3">{{ "PageFour.ArticulatedTrucks" | translate }}</h6>
-        @for (
-          articulatedTruckInfo of yearlyForm.controls.articulatedTrucks
-            .controls;
-          track articulatedTruckInfo;
-          let i = $index
-        ) {
-          <div class="mb-3">
-            <app-row
-              [transportFormGroup]="articulatedTruckInfo"
-              [capacityListName]="'articulatedTrucks'"
-              [year]="yearlyForm.controls.year.value"
-              [translationPrefix]="'PageFour.ColumnHeader.ArticulatedTrucks'"
-              [isTransport]="true"
-            ></app-row>
-            <div class="col">
-              @if (yearlyForm.controls.articulatedTrucks.length > 0) {
-                <span
-                  (click)="removeField(yearlyForm, i, 'articulatedTrucks')"
-                  (keydown.enter)="
-                    removeField(yearlyForm, i, 'articulatedTrucks')
-                  "
-                  role="button"
-                  tabindex="0"
-                  class="text-link fw-500 text-danger"
-                  ><mat-icon class="pt-1">remove</mat-icon>
-                  {{ "PageThree.RemoveRow" | translate }}
-                </span>
-              }
-            </div>
-          </div>
-        }
-        @if (yearlyForm.controls.articulatedTrucks.length <= 10) {
-          <span
-            (click)="addField(yearlyForm, 'articulatedTrucks', true, true)"
-            (keydown.enter)="
-              addField(yearlyForm, 'articulatedTrucks', true, true)
-            "
-            role="button"
-            tabindex="0"
-            class="text-link fw-500"
-            ><mat-icon class="pt-1">add</mat-icon>
-            {{ "PageThree.AddRow" | translate }}</span
-          >
-        }
-      </article>
-      <hr class="opacity-25" />
-      <article class="mb-4">
-        <h6 class="h6 mb-3">
-          {{ "PageFour.ArticulatedRigidTrucks" | translate }}
-        </h6>
-        @for (
-          articulatedRigidTruckInfo of yearlyForm.controls
-            .articulatedRigidTrucks.controls;
-          track articulatedRigidTruckInfo;
-          let i = $index
-        ) {
-          <div class="mb-3">
-            <app-row
-              [transportFormGroup]="articulatedRigidTruckInfo"
-              [capacityListName]="'articulatedRigidTrucks'"
-              [year]="yearlyForm.controls.year.value"
-              [translationPrefix]="
-                'PageFour.ColumnHeader.ArticulatedRigidTrucks'
-              "
-              [isTransport]="true"
-            ></app-row>
-            <div class="col">
-              @if (yearlyForm.controls.articulatedRigidTrucks.length > 0) {
-                <span
-                  (click)="removeField(yearlyForm, i, 'articulatedRigidTrucks')"
-                  (keydown.enter)="
-                    removeField(yearlyForm, i, 'articulatedRigidTrucks')
-                  "
-                  role="button"
-                  tabindex="0"
-                  class="text-link fw-500 text-danger"
-                  ><mat-icon class="pt-1">remove</mat-icon>
-                  {{ "PageThree.RemoveRow" | translate }}
-                </span>
-              }
-            </div>
-          </div>
-        }
-        @if (yearlyForm.controls.articulatedRigidTrucks.length <= 10) {
-          <span
-            (click)="addField(yearlyForm, 'articulatedRigidTrucks', true, true)"
-            (keydown.enter)="
-              addField(yearlyForm, 'articulatedRigidTrucks', true, true)
-            "
-            role="button"
-            tabindex="0"
-            class="text-link fw-500"
-            ><mat-icon class="pt-1">add</mat-icon>
-            {{ "PageThree.AddRow" | translate }}</span
-          >
-        }
-      </article>
-      <hr class="opacity-25" />
-      <article class="mb-4">
-        <h6 class="h6 mb-3">
-          {{ "PageFour.TransportEmissionsHeading" | translate }}
-        </h6>
-        @for (
-          busInfo of yearlyForm.controls.transportBus.controls;
-          track busInfo;
-          let i = $index
-        ) {
-          <div class="mb-3">
-            <app-row
-              [transportFormGroup]="busInfo"
-              [emissionList]="emissionsLists.transportBus"
-              [year]="yearlyForm.controls.year.value"
-              [translationPrefix]="'PageFour.ColumnHeader.TransportBus'"
-              [isTransport]="true"
-            ></app-row>
-            <div class="col">
-              @if (yearlyForm.controls.transportBus.length > 0) {
-                <span
-                  (click)="removeField(yearlyForm, i, 'transportBus')"
-                  (keydown.enter)="removeField(yearlyForm, i, 'transportBus')"
-                  role="button"
-                  tabindex="0"
-                  class="text-link fw-500 text-danger"
-                  ><mat-icon class="pt-1">remove</mat-icon>
-                  {{ "PageThree.RemoveRow" | translate }}
-                </span>
-              }
-            </div>
-          </div>
-        }
-        @if (yearlyForm.controls.transportBus.length <= 10) {
-          <span
-            (click)="addField(yearlyForm, 'transportBus', false, false)"
-            (keydown.enter)="addField(yearlyForm, 'transportBus', false, false)"
-            role="button"
-            tabindex="0"
-            class="text-link fw-500"
-            ><mat-icon class="pt-1">add</mat-icon>
-            {{ "PageThree.AddRow" | translate }}</span
-          >
-        }
-      </article>
-      <hr class="opacity-75" />
-      <h4 class="h4 mb-3">
-        {{ "PageFour.TrainHeading" | translate }}
-      </h4>
-      <article class="mb-4">
-        @for (
-          trainInfo of yearlyForm.controls.trains.controls;
-          track trainInfo;
-          let i = $index
-        ) {
-          <div class="mb-3">
-            <app-row
-              [transportFormGroup]="trainInfo"
-              [emissionList]="emissionsLists.trains"
-              [year]="yearlyForm.controls.year.value"
-              [translationPrefix]="'PageFour.ColumnHeader.Train'"
-              [isTransport]="true"
-            ></app-row>
-            <div class="col">
-              @if (yearlyForm.controls.trains.length > 0) {
-                <span
-                  (click)="removeField(yearlyForm, i, 'trains')"
-                  (keydown.enter)="removeField(yearlyForm, i, 'trains')"
-                  role="button"
-                  tabindex="0"
-                  class="text-link fw-500 text-danger"
-                  ><mat-icon class="pt-1">remove</mat-icon>
-                  {{ "PageThree.RemoveRow" | translate }}
-                </span>
-              }
-            </div>
-          </div>
-        }
-        @if (yearlyForm.controls.trains.length <= 10) {
-          <span
-            (click)="addField(yearlyForm, 'trains', true, false)"
-            (keydown.enter)="addField(yearlyForm, 'trains', true, false)"
-            role="button"
-            tabindex="0"
-            class="text-link fw-500"
-            ><mat-icon class="pt-1">add</mat-icon>
-            {{ "PageThree.AddRow" | translate }}</span
-          >
-        }
-      </article>
-      <hr class="opacity-75" />
-      <h4 class="h4 mb-3">
-        {{ "PageFour.PlaneHeading" | translate }}
-      </h4>
-      <article class="mb-4">
-        @for (
-          planeInfo of yearlyForm.controls.planes.controls;
-          track planeInfo;
-          let i = $index
-        ) {
-          <div class="mb-3">
-            <app-row
-              [transportFormGroup]="planeInfo"
-              [emissionList]="emissionsLists.planes"
-              [year]="yearlyForm.controls.year.value"
-              [translationPrefix]="'PageFour.ColumnHeader.Plane'"
-              [isTransport]="true"
-            ></app-row>
-            <div class="col">
-              @if (yearlyForm.controls.planes.length > 0) {
-                <span
-                  (click)="removeField(yearlyForm, i, 'planes')"
-                  (keydown.enter)="removeField(yearlyForm, i, 'planes')"
-                  role="button"
-                  tabindex="0"
-                  class="text-link fw-500 text-danger"
-                  ><mat-icon class="pt-1">remove</mat-icon>
-                  {{ "PageThree.RemoveRow" | translate }}
-                </span>
-              }
-            </div>
-          </div>
-        }
-        @if (yearlyForm.controls.planes.length <= 10) {
-          <span
-            (click)="addField(yearlyForm, 'planes', true, false)"
-            (keydown.enter)="addField(yearlyForm, 'planes', true, false)"
-            role="button"
-            tabindex="0"
-            class="text-link fw-500"
-            ><mat-icon class="pt-1">add</mat-icon>
-            {{ "PageThree.AddRow" | translate }}</span
-          >
-        }
-      </article>
-      <hr class="opacity-75" />
-      <h4 class="h4 mb-3">
-        {{ "PageFour.ShipHeading" | translate }}
-      </h4>
-      <article class="mb-4">
-        @for (
-          shipInfo of yearlyForm.controls.ships.controls;
-          track shipInfo;
-          let i = $index
-        ) {
-          <div class="mb-3">
-            <app-row
-              [transportFormGroup]="shipInfo"
-              [emissionList]="emissionsLists.ships"
-              [year]="yearlyForm.controls.year.value"
-              [translationPrefix]="'PageFour.ColumnHeader.Ship'"
-              [isTransport]="true"
-            ></app-row>
-            <div class="col">
-              @if (yearlyForm.controls.ships.length > 0) {
-                <span
-                  (click)="removeField(yearlyForm, i, 'ships')"
-                  (keydown.enter)="removeField(yearlyForm, i, 'ships')"
-                  role="button"
-                  tabindex="0"
-                  class="text-link fw-500 text-danger"
-                  ><mat-icon class="pt-1">remove</mat-icon>
-                  {{ "PageThree.RemoveRow" | translate }}
-                </span>
-              }
-            </div>
-          </div>
-        }
-        @if (yearlyForm.controls.ships.length <= 10) {
-          <span
-            (click)="addField(yearlyForm, 'ships', true, false)"
-            (keydown.enter)="addField(yearlyForm, 'ships', true, false)"
-            role="button"
-            tabindex="0"
-            class="text-link fw-500"
-            ><mat-icon class="pt-1">add</mat-icon>
-            {{ "PageThree.AddRow" | translate }}</span
-          >
-        }
-      </article>
+      <mat-accordion multi>
+        <mat-expansion-panel class="mb-3">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ "PageFour.BoughtTransportEmissionsHeading" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-accordion multi>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ "PageFour.Vans" | translate }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <article class="mb-4">
+                @for (
+                  vanInfo of yearlyForm.controls.vans.controls;
+                  track vanInfo;
+                  let i = $index
+                ) {
+                  <div class="mb-3 entry">
+                    <app-entry
+                      [transportFormGroup]="vanInfo"
+                      [emissionList]="emissionsLists.vans"
+                      [year]="yearlyForm.controls.year.value"
+                      [translationPrefix]="'PageFour.ColumnHeader.Vans'"
+                      [isTransport]="true"
+                    ></app-entry>
+                    <div class="col">
+                      @if (yearlyForm.controls.vans.length > 0) {
+                        <span
+                          (click)="removeField(yearlyForm, i, 'vans')"
+                          (keydown.enter)="removeField(yearlyForm, i, 'vans')"
+                          role="button"
+                          tabindex="0"
+                          class="text-link fw-500 text-danger"
+                          ><mat-icon class="pt-1">remove</mat-icon>
+                          {{ "PageThree.RemoveRow" | translate }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+                @if (yearlyForm.controls.vans.length <= 10) {
+                  <span
+                    (click)="
+                      addField(
+                        yearlyForm,
+                        'vans',
+                        true,
+                        false,
+                        emissionsLists.vans
+                      )
+                    "
+                    (keydown.enter)="
+                      addField(
+                        yearlyForm,
+                        'vans',
+                        true,
+                        false,
+                        emissionsLists.vans
+                      )
+                    "
+                    role="button"
+                    tabindex="0"
+                    class="text-link fw-500"
+                    ><mat-icon class="pt-1">add</mat-icon>
+                    {{ "PageThree.AddRow" | translate }}</span
+                  >
+                }
+              </article>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ "PageFour.RigidTrucks" | translate }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <article class="mb-4">
+                @for (
+                  rigidTruckInfo of yearlyForm.controls.rigidTrucks.controls;
+                  track rigidTruckInfo;
+                  let i = $index
+                ) {
+                  <div class="mb-3 entry">
+                    <app-entry
+                      [transportFormGroup]="rigidTruckInfo"
+                      [capacityListName]="'rigidTrucks'"
+                      [year]="yearlyForm.controls.year.value"
+                      [translationPrefix]="'PageFour.ColumnHeader.RigidTrucks'"
+                      [isTransport]="true"
+                    ></app-entry>
+                    <div class="col">
+                      @if (yearlyForm.controls.rigidTrucks.length > 0) {
+                        <span
+                          (click)="removeField(yearlyForm, i, 'rigidTrucks')"
+                          (keydown.enter)="
+                            removeField(yearlyForm, i, 'rigidTrucks')
+                          "
+                          role="button"
+                          tabindex="0"
+                          class="text-link fw-500 text-danger"
+                          ><mat-icon class="pt-1">remove</mat-icon>
+                          {{ "PageThree.RemoveRow" | translate }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+                @if (yearlyForm.controls.rigidTrucks.length <= 10) {
+                  <span
+                    (click)="addField(yearlyForm, 'rigidTrucks', true, true)"
+                    (keydown.enter)="
+                      addField(yearlyForm, 'rigidTrucks', true, true)
+                    "
+                    role="button"
+                    tabindex="0"
+                    class="text-link fw-500"
+                    ><mat-icon class="pt-1">add</mat-icon>
+                    {{ "PageThree.AddRow" | translate }}</span
+                  >
+                }
+              </article>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ "PageFour.ArticulatedTrucks" | translate }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <article class="mb-4">
+                @for (
+                  articulatedTruckInfo of yearlyForm.controls.articulatedTrucks
+                    .controls;
+                  track articulatedTruckInfo;
+                  let i = $index
+                ) {
+                  <div class="mb-3 entry">
+                    <app-entry
+                      [transportFormGroup]="articulatedTruckInfo"
+                      [capacityListName]="'articulatedTrucks'"
+                      [year]="yearlyForm.controls.year.value"
+                      [translationPrefix]="
+                        'PageFour.ColumnHeader.ArticulatedTrucks'
+                      "
+                      [isTransport]="true"
+                    ></app-entry>
+                    <div class="col">
+                      @if (yearlyForm.controls.articulatedTrucks.length > 0) {
+                        <span
+                          (click)="
+                            removeField(yearlyForm, i, 'articulatedTrucks')
+                          "
+                          (keydown.enter)="
+                            removeField(yearlyForm, i, 'articulatedTrucks')
+                          "
+                          role="button"
+                          tabindex="0"
+                          class="text-link fw-500 text-danger"
+                          ><mat-icon class="pt-1">remove</mat-icon>
+                          {{ "PageThree.RemoveRow" | translate }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+                @if (yearlyForm.controls.articulatedTrucks.length <= 10) {
+                  <span
+                    (click)="
+                      addField(yearlyForm, 'articulatedTrucks', true, true)
+                    "
+                    (keydown.enter)="
+                      addField(yearlyForm, 'articulatedTrucks', true, true)
+                    "
+                    role="button"
+                    tabindex="0"
+                    class="text-link fw-500"
+                    ><mat-icon class="pt-1">add</mat-icon>
+                    {{ "PageThree.AddRow" | translate }}</span
+                  >
+                }
+              </article>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ "PageFour.ArticulatedRigidTrucks" | translate }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <article class="mb-4">
+                @for (
+                  articulatedRigidTruckInfo of yearlyForm.controls
+                    .articulatedRigidTrucks.controls;
+                  track articulatedRigidTruckInfo;
+                  let i = $index
+                ) {
+                  <div class="mb-3 entry">
+                    <app-entry
+                      [transportFormGroup]="articulatedRigidTruckInfo"
+                      [capacityListName]="'articulatedRigidTrucks'"
+                      [year]="yearlyForm.controls.year.value"
+                      [translationPrefix]="
+                        'PageFour.ColumnHeader.ArticulatedRigidTrucks'
+                      "
+                      [isTransport]="true"
+                    ></app-entry>
+                    <div class="col">
+                      @if (
+                        yearlyForm.controls.articulatedRigidTrucks.length > 0
+                      ) {
+                        <span
+                          (click)="
+                            removeField(yearlyForm, i, 'articulatedRigidTrucks')
+                          "
+                          (keydown.enter)="
+                            removeField(yearlyForm, i, 'articulatedRigidTrucks')
+                          "
+                          role="button"
+                          tabindex="0"
+                          class="text-link fw-500 text-danger"
+                          ><mat-icon class="pt-1">remove</mat-icon>
+                          {{ "PageThree.RemoveRow" | translate }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+                @if (yearlyForm.controls.articulatedRigidTrucks.length <= 10) {
+                  <span
+                    (click)="
+                      addField(yearlyForm, 'articulatedRigidTrucks', true, true)
+                    "
+                    (keydown.enter)="
+                      addField(yearlyForm, 'articulatedRigidTrucks', true, true)
+                    "
+                    role="button"
+                    tabindex="0"
+                    class="text-link fw-500"
+                    ><mat-icon class="pt-1">add</mat-icon>
+                    {{ "PageThree.AddRow" | translate }}</span
+                  >
+                }
+              </article>
+            </mat-expansion-panel>
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{ "PageFour.TransportEmissionsHeading" | translate }}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <article class="mb-4">
+                @for (
+                  busInfo of yearlyForm.controls.transportBus.controls;
+                  track busInfo;
+                  let i = $index
+                ) {
+                  <div class="mb-3 entry">
+                    <app-entry
+                      [transportFormGroup]="busInfo"
+                      [emissionList]="emissionsLists.transportBus"
+                      [year]="yearlyForm.controls.year.value"
+                      [translationPrefix]="'PageFour.ColumnHeader.TransportBus'"
+                      [isTransport]="true"
+                    ></app-entry>
+                    <div class="col">
+                      @if (yearlyForm.controls.transportBus.length > 0) {
+                        <span
+                          (click)="removeField(yearlyForm, i, 'transportBus')"
+                          (keydown.enter)="
+                            removeField(yearlyForm, i, 'transportBus')
+                          "
+                          role="button"
+                          tabindex="0"
+                          class="text-link fw-500 text-danger"
+                          ><mat-icon class="pt-1">remove</mat-icon>
+                          {{ "PageThree.RemoveRow" | translate }}
+                        </span>
+                      }
+                    </div>
+                  </div>
+                }
+                @if (yearlyForm.controls.transportBus.length <= 10) {
+                  <span
+                    (click)="addField(yearlyForm, 'transportBus', false, false)"
+                    (keydown.enter)="
+                      addField(yearlyForm, 'transportBus', false, false)
+                    "
+                    role="button"
+                    tabindex="0"
+                    class="text-link fw-500"
+                    ><mat-icon class="pt-1">add</mat-icon>
+                    {{ "PageThree.AddRow" | translate }}</span
+                  >
+                }
+              </article>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mb-3">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ "PageFour.TrainHeading" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <article class="mb-4">
+            @for (
+              trainInfo of yearlyForm.controls.trains.controls;
+              track trainInfo;
+              let i = $index
+            ) {
+              <div class="mb-3 entry">
+                <app-entry
+                  [transportFormGroup]="trainInfo"
+                  [emissionList]="emissionsLists.trains"
+                  [year]="yearlyForm.controls.year.value"
+                  [translationPrefix]="'PageFour.ColumnHeader.Train'"
+                  [isTransport]="true"
+                ></app-entry>
+                <div class="col">
+                  @if (yearlyForm.controls.trains.length > 0) {
+                    <span
+                      (click)="removeField(yearlyForm, i, 'trains')"
+                      (keydown.enter)="removeField(yearlyForm, i, 'trains')"
+                      role="button"
+                      tabindex="0"
+                      class="text-link fw-500 text-danger"
+                      ><mat-icon class="pt-1">remove</mat-icon>
+                      {{ "PageThree.RemoveRow" | translate }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+            @if (yearlyForm.controls.trains.length <= 10) {
+              <span
+                (click)="addField(yearlyForm, 'trains', true, false)"
+                (keydown.enter)="addField(yearlyForm, 'trains', true, false)"
+                role="button"
+                tabindex="0"
+                class="text-link fw-500"
+                ><mat-icon class="pt-1">add</mat-icon>
+                {{ "PageThree.AddRow" | translate }}</span
+              >
+            }
+          </article>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mb-3">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ "PageFour.PlaneHeading" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <article class="mb-4">
+            @for (
+              planeInfo of yearlyForm.controls.planes.controls;
+              track planeInfo;
+              let i = $index
+            ) {
+              <div class="mb-3 entry">
+                <app-entry
+                  [transportFormGroup]="planeInfo"
+                  [emissionList]="emissionsLists.planes"
+                  [year]="yearlyForm.controls.year.value"
+                  [translationPrefix]="'PageFour.ColumnHeader.Plane'"
+                  [isTransport]="true"
+                ></app-entry>
+                <div class="col">
+                  @if (yearlyForm.controls.planes.length > 0) {
+                    <span
+                      (click)="removeField(yearlyForm, i, 'planes')"
+                      (keydown.enter)="removeField(yearlyForm, i, 'planes')"
+                      role="button"
+                      tabindex="0"
+                      class="text-link fw-500 text-danger"
+                      ><mat-icon class="pt-1">remove</mat-icon>
+                      {{ "PageThree.RemoveRow" | translate }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+            @if (yearlyForm.controls.planes.length <= 10) {
+              <span
+                (click)="addField(yearlyForm, 'planes', true, false)"
+                (keydown.enter)="addField(yearlyForm, 'planes', true, false)"
+                role="button"
+                tabindex="0"
+                class="text-link fw-500"
+                ><mat-icon class="pt-1">add</mat-icon>
+                {{ "PageThree.AddRow" | translate }}</span
+              >
+            }
+          </article>
+        </mat-expansion-panel>
+        <mat-expansion-panel class="mb-3">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ "PageFour.ShipHeading" | translate }}
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <article class="mb-4">
+            @for (
+              shipInfo of yearlyForm.controls.ships.controls;
+              track shipInfo;
+              let i = $index
+            ) {
+              <div class="mb-3 entry">
+                <app-entry
+                  [transportFormGroup]="shipInfo"
+                  [emissionList]="emissionsLists.ships"
+                  [year]="yearlyForm.controls.year.value"
+                  [translationPrefix]="'PageFour.ColumnHeader.Ship'"
+                  [isTransport]="true"
+                ></app-entry>
+                <div class="col">
+                  @if (yearlyForm.controls.ships.length > 0) {
+                    <span
+                      (click)="removeField(yearlyForm, i, 'ships')"
+                      (keydown.enter)="removeField(yearlyForm, i, 'ships')"
+                      role="button"
+                      tabindex="0"
+                      class="text-link fw-500 text-danger"
+                      ><mat-icon class="pt-1">remove</mat-icon>
+                      {{ "PageThree.RemoveRow" | translate }}
+                    </span>
+                  }
+                </div>
+              </div>
+            }
+            @if (yearlyForm.controls.ships.length <= 10) {
+              <span
+                (click)="addField(yearlyForm, 'ships', true, false)"
+                (keydown.enter)="addField(yearlyForm, 'ships', true, false)"
+                role="button"
+                tabindex="0"
+                class="text-link fw-500"
+                ><mat-icon class="pt-1">add</mat-icon>
+                {{ "PageThree.AddRow" | translate }}</span
+              >
+            }
+          </article>
+        </mat-expansion-panel>
+      </mat-accordion>
     </div>
   }
   @if (M3TransportForm.controls.yearlyInfo.length > 0) {

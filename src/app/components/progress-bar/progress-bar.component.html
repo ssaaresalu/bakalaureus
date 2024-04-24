@@ -15,7 +15,7 @@
     </div>
     <div
       class="progress-bar-indicator"
-      [ngClass]="i < pageIndex ? 'completed-page' : 'inactive-page'"
+      [ngClass]="i - 1 < pageIndex ? 'completed-page' : 'inactive-page'"
     ></div>
   </div>
 </div>

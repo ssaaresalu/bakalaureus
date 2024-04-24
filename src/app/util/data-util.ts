@@ -72,7 +72,7 @@ export function getListItemValue(label: string, list: ListValueItem[]): number {
 
 export function getFootprintInKilos(
   factor?: number | string,
-  amount?: string,
+  amount?: string | number,
 ): number {
   return Math.round(+(amount ?? '') * +(factor ?? '') * 1e3) / 1e3;
 }
