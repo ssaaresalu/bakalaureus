@@ -65,9 +65,11 @@ export class OrganizationComponent
           const emissionsInfo = organization.yearlyInfo.map((yi) => ({
             year: yi.year,
           }));
-
-          this.dataService.M1EmissionsInfo.next({
-            yearlyInfo: emissionsInfo,
+          this.dataService.organizationEmissions$.next({
+            M1_emissions: { yearlyInfo: emissionsInfo },
+            M2_emissions: { yearlyInfo: emissionsInfo },
+            M3_transportEmissions: { yearlyInfo: emissionsInfo },
+            M3_otherEmissions: { yearlyInfo: emissionsInfo },
           });
         }
       });

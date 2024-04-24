@@ -12,7 +12,7 @@ import { GetListItemValuePipe } from '../../shared/pipes/get-list-item-value.pip
 import { Subject } from 'rxjs';
 import { RoundTonsPipe } from '../../shared/pipes/round-tons.pipe';
 import { DetailsForm } from '../../interface/details-form';
-import { EntryComponent } from '../../shared/components/row/entry.component';
+import { EntryComponent } from '../../shared/components/entry/entry.component';
 import { ListValueItem } from '../../interface/list-value-item';
 import {
   MatAccordion,
@@ -21,7 +21,8 @@ import {
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
 import { MatFormField } from '@angular/material/form-field';
-import { M1Emissions, M1YearlyInfo } from '../../interface/m1-emissions';
+import { M1YearlyInfo } from '../../interface/m1-emissions';
+import { OrganisationEmissions } from '../../interface/organisation-emissions';
 
 @Component({
   selector: 'app-m1-page',
@@ -44,7 +45,7 @@ import { M1Emissions, M1YearlyInfo } from '../../interface/m1-emissions';
   styleUrl: './m1-page.component.css',
 })
 export class M1PageComponent extends PageComponentAbstract implements OnInit {
-  M1EmissionsInfo = this.dataService.M1EmissionsInfo.value;
+  M1EmissionsInfo = this.dataService.organizationEmissions$.value.M1_emissions;
   M1Form = new FormGroup<M1EmissionsForm>({
     yearlyInfo: new FormArray<M1EmissionsYearForm>([]),
   });
@@ -72,10 +73,12 @@ export class M1PageComponent extends PageComponentAbstract implements OnInit {
     this.dataService.saveFields(this.savedFootprintData);
   }
 
-  protected get savedFootprintData(): M1Emissions {
+  protected get savedFootprintData(): OrganisationEmissions {
     return {
-      ...this.M1EmissionsInfo,
-      yearlyInfo: this.getYearlyInfoValues(),
+      ...this.dataService.organizationEmissions$.value,
+      M1_emissions: {
+        yearlyInfo: this.getYearlyInfoValues(),
+      },
     };
   }
 
@@ -83,7 +86,7 @@ export class M1PageComponent extends PageComponentAbstract implements OnInit {
     return this.M1Form.controls.yearlyInfo.controls.map((yearlyInfoForm) => {
       return {
         ...yearlyInfoForm.value,
-        year: yearlyInfoForm.value.year ?? undefined,
+        year: yearlyInfoForm.value.year ?? '',
         energy: this.getDetailsFormValues(yearlyInfoForm.controls.energy),
         vehicleFuels1: this.getDetailsFormValues(
           yearlyInfoForm.controls.vehicleFuels1,

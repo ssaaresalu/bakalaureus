@@ -129,9 +129,10 @@
         </span>
         <app-dropdown
           [control]="transportFormGroup.controls.type"
-          [emissionList]="(capacityList$ | async)!"
+          [emissionList]="emissionList"
         ></app-dropdown>
       </div>
+
       <div class="mb-2">
         <span class="fw-500">
           {{ "ColumnHeader.Distance" | translate }}

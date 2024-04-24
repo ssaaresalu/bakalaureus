@@ -45,7 +45,6 @@ export class EntryComponent extends PageComponentAbstract implements OnInit {
   @Input() isWorkHomeForm = false;
   @Input() isDistanceLabel = false;
   @Input() isWasteMass = false;
-  capacityList$ = this.dataService.capacityList$;
 
   constructor(
     fb: NonNullableFormBuilder,
@@ -57,20 +56,34 @@ export class EntryComponent extends PageComponentAbstract implements OnInit {
   ngOnInit(): void {
     if (this.isTransport) {
       if (this.transportFormGroup.controls.capacity) {
+        if (!this.transportFormGroup.controls.capacity.value)
+          this.emissionList = [];
+        else {
+          this.emissionList = this.pipe.transform(
+            this.capacityListName,
+            this.transportFormGroup.controls.capacity.value,
+          );
+          this.subscribeToTransportFormGroupFields(
+            this.transportFormGroup,
+            this.destroy$,
+            this.emissionList,
+          );
+        }
         this.transportFormGroup.controls.capacity.valueChanges
           .pipe(takeUntil(this.destroy$))
           .subscribe((capacity) => {
             this.transportFormGroup.controls.type.setValue('');
-            console.log(this.capacityListName);
-            const newList = this.pipe.transform(
+            this.emissionList = this.pipe.transform(
               this.capacityListName,
               capacity,
             );
-            console.log(newList);
-            this.capacityList$.next(newList);
-            this.emissionList = newList;
+            this.subscribeToTransportFormGroupFields(
+              this.transportFormGroup,
+              this.destroy$,
+              this.emissionList,
+            );
           });
-      } else this.capacityList$.next(this.emissionList);
+      }
     }
   }
 }

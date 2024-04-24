@@ -5,7 +5,7 @@ export interface M2Emissions {
 }
 
 export interface M2YearlyInfo {
-  year: string;
-  boughtElectricalEnergy: EmissionsDetails[];
-  boughtHeatEnergy: EmissionsDetails[];
+  year?: string;
+  boughtElectricalEnergy?: EmissionsDetails[];
+  boughtHeatEnergy?: EmissionsDetails[];
 }

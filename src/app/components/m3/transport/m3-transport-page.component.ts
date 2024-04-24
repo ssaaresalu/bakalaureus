@@ -13,7 +13,7 @@ import {
   TransportDetailsForm,
 } from '../../../interface/m3-transport-form';
 import { Subject } from 'rxjs';
-import { EntryComponent } from '../../../shared/components/row/entry.component';
+import { EntryComponent } from '../../../shared/components/entry/entry.component';
 import { DetailsForm } from '../../../interface/details-form';
 import { MatIcon } from '@angular/material/icon';
 import { ListValueItem } from '../../../interface/list-value-item';
@@ -24,6 +24,8 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
+import { M3TransportYearlyInfo } from '../../../interface/m3-transport-emissions';
+import { OrganisationEmissions } from '../../../interface/organisation-emissions';
 
 @Component({
   selector: 'app-m3-transport-page',
@@ -46,6 +48,8 @@ export class M3TransportPageComponent
   extends PageComponentAbstract
   implements OnInit
 {
+  M3TransportEmissionsInfo =
+    this.dataService.organizationEmissions$.value.M3_transportEmissions;
   M3TransportForm = new FormGroup<M3TransportForm>({
     yearlyInfo: new FormArray<M3TransportYearForm>([]),
   });
@@ -60,9 +64,130 @@ export class M3TransportPageComponent
 
   ngOnInit(): void {
     this.initYearlyInfoForm();
+    this.addValuesToForms();
   }
 
-  submit() {}
+  submit() {
+    this.dataService.saveFields(this.savedFootprintData);
+  }
+
+  protected get savedFootprintData(): OrganisationEmissions {
+    return {
+      ...this.dataService.organizationEmissions$.value,
+      M3_transportEmissions: {
+        yearlyInfo: this.getYearlyInfoValues(),
+      },
+    };
+  }
+
+  private getYearlyInfoValues(): M3TransportYearlyInfo[] {
+    return this.M3TransportForm.controls.yearlyInfo.controls.map(
+      (yearlyInfoForm) => {
+        return {
+          ...yearlyInfoForm.value,
+          year: yearlyInfoForm.value.year ?? '',
+          vans: this.getTransportDetailsFormValues(
+            yearlyInfoForm.controls.vans,
+          ),
+          rigidTrucks: this.getTransportDetailsFormValues(
+            yearlyInfoForm.controls.rigidTrucks,
+          ),
+          articulatedTrucks: this.getTransportDetailsFormValues(
+            yearlyInfoForm.controls.articulatedTrucks,
+          ),
+          articulatedRigidTrucks: this.getTransportDetailsFormValues(
+            yearlyInfoForm.controls.articulatedRigidTrucks,
+          ),
+          transportBus: this.getTransportDetailsFormValues(
+            yearlyInfoForm.controls.transportBus,
+          ),
+          trains: this.getTransportDetailsFormValues(
+            yearlyInfoForm.controls.trains,
+          ),
+          planes: this.getTransportDetailsFormValues(
+            yearlyInfoForm.controls.planes,
+          ),
+          ships: this.getTransportDetailsFormValues(
+            yearlyInfoForm.controls.ships,
+          ),
+        };
+      },
+    );
+  }
+
+  private addValuesToForms(): void {
+    this.M3TransportEmissionsInfo.yearlyInfo.forEach((yearlyInfo) => {
+      const M3TransportEmissionsYearForm =
+        this.M3TransportForm.controls.yearlyInfo.controls.find(
+          (yearForm) => yearForm.controls.year.value === yearlyInfo.year,
+        );
+      yearlyInfo.vans?.forEach((vanData) =>
+        M3TransportEmissionsYearForm?.controls.vans.push(
+          this.addTransportDataDetailsToForm(
+            vanData,
+            true,
+            false,
+            this.emissionsLists.vans,
+          ),
+        ),
+      );
+      yearlyInfo.rigidTrucks?.forEach((rigidTruck) =>
+        M3TransportEmissionsYearForm?.controls.rigidTrucks.push(
+          this.addTransportDataDetailsToForm(rigidTruck, true, true),
+        ),
+      );
+      yearlyInfo.articulatedTrucks?.forEach((articulatedTruck) =>
+        M3TransportEmissionsYearForm?.controls.articulatedTrucks.push(
+          this.addTransportDataDetailsToForm(articulatedTruck, true, true),
+        ),
+      );
+      yearlyInfo.articulatedRigidTrucks?.forEach((articulatedRigidTruck) =>
+        M3TransportEmissionsYearForm?.controls.articulatedRigidTrucks.push(
+          this.addTransportDataDetailsToForm(articulatedRigidTruck, true, true),
+        ),
+      );
+      yearlyInfo.transportBus?.forEach((transportBus) =>
+        M3TransportEmissionsYearForm?.controls.transportBus.push(
+          this.addTransportDataDetailsToForm(
+            transportBus,
+            false,
+            false,
+            this.emissionsLists.transportBus,
+          ),
+        ),
+      );
+      yearlyInfo.trains?.forEach((train) =>
+        M3TransportEmissionsYearForm?.controls.trains.push(
+          this.addTransportDataDetailsToForm(
+            train,
+            true,
+            false,
+            this.emissionsLists.trains,
+          ),
+        ),
+      );
+      yearlyInfo.planes?.forEach((plane) =>
+        M3TransportEmissionsYearForm?.controls.planes.push(
+          this.addTransportDataDetailsToForm(
+            plane,
+            true,
+            false,
+            this.emissionsLists.planes,
+          ),
+        ),
+      );
+      yearlyInfo.ships?.forEach((ship) =>
+        M3TransportEmissionsYearForm?.controls.ships.push(
+          this.addTransportDataDetailsToForm(
+            ship,
+            true,
+            false,
+            this.emissionsLists.ships,
+          ),
+        ),
+      );
+    });
+  }
 
   private initYearlyInfoForm() {
     this.organizationData.yearlyInfo?.forEach((yearlyInfo) => {

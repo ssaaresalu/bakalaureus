@@ -36,8 +36,13 @@ export class DropdownComponent implements OnChanges {
       if (this.chosenArea !== '') {
         this.filterList();
       } else this.filteredList = this.simpleList;
-    } else
-      this.filteredList = this.emissionList.map((emission) => emission.label);
+    } else {
+      this.emissionList
+        ? (this.filteredList = this.emissionList.map(
+            (emission) => emission.label,
+          ))
+        : [];
+    }
   }
 
   filterList(): void {

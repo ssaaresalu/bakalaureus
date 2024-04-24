@@ -290,9 +290,23 @@
                 }
                 @if (yearlyForm.controls.transportBus.length <= 10) {
                   <span
-                    (click)="addField(yearlyForm, 'transportBus', false, false)"
+                    (click)="
+                      addField(
+                        yearlyForm,
+                        'transportBus',
+                        false,
+                        false,
+                        emissionsLists.transportBus
+                      )
+                    "
                     (keydown.enter)="
-                      addField(yearlyForm, 'transportBus', false, false)
+                      addField(
+                        yearlyForm,
+                        'transportBus',
+                        false,
+                        false,
+                        emissionsLists.transportBus
+                      )
                     "
                     role="button"
                     tabindex="0"
@@ -342,8 +356,24 @@
             }
             @if (yearlyForm.controls.trains.length <= 10) {
               <span
-                (click)="addField(yearlyForm, 'trains', true, false)"
-                (keydown.enter)="addField(yearlyForm, 'trains', true, false)"
+                (click)="
+                  addField(
+                    yearlyForm,
+                    'trains',
+                    true,
+                    false,
+                    emissionsLists.trains
+                  )
+                "
+                (keydown.enter)="
+                  addField(
+                    yearlyForm,
+                    'trains',
+                    true,
+                    false,
+                    emissionsLists.trains
+                  )
+                "
                 role="button"
                 tabindex="0"
                 class="text-link fw-500"
@@ -390,8 +420,24 @@
             }
             @if (yearlyForm.controls.planes.length <= 10) {
               <span
-                (click)="addField(yearlyForm, 'planes', true, false)"
-                (keydown.enter)="addField(yearlyForm, 'planes', true, false)"
+                (click)="
+                  addField(
+                    yearlyForm,
+                    'planes',
+                    true,
+                    false,
+                    emissionsLists.planes
+                  )
+                "
+                (keydown.enter)="
+                  addField(
+                    yearlyForm,
+                    'planes',
+                    true,
+                    false,
+                    emissionsLists.planes
+                  )
+                "
                 role="button"
                 tabindex="0"
                 class="text-link fw-500"
@@ -438,8 +484,24 @@
             }
             @if (yearlyForm.controls.ships.length <= 10) {
               <span
-                (click)="addField(yearlyForm, 'ships', true, false)"
-                (keydown.enter)="addField(yearlyForm, 'ships', true, false)"
+                (click)="
+                  addField(
+                    yearlyForm,
+                    'ships',
+                    true,
+                    false,
+                    emissionsLists.ships
+                  )
+                "
+                (keydown.enter)="
+                  addField(
+                    yearlyForm,
+                    'ships',
+                    true,
+                    false,
+                    emissionsLists.ships
+                  )
+                "
                 role="button"
                 tabindex="0"
                 class="text-link fw-500"
@@ -453,23 +515,26 @@
     </div>
   }
   @if (M3TransportForm.controls.yearlyInfo.length > 0) {
-    <button
-      type="button"
-      class="btn btn-secondary btn-sm me-3"
-      (click)="showPrevYear()"
-      [disabled]="currentYearIndex === 0"
-    >
-      Previous
-    </button>
-    <button
-      type="button"
-      class="btn btn-primary btn-sm"
-      (click)="showNextYear()"
-      [disabled]="
-        currentYearIndex >= M3TransportForm.controls.yearlyInfo.length - 1
-      "
-    >
-      Next
-    </button>
+    <div class="mb-3">
+      <button
+        type="button"
+        class="btn btn-secondary btn-sm me-3"
+        (click)="showPrevYear()"
+        [disabled]="currentYearIndex === 0"
+      >
+        Previous
+      </button>
+      <button
+        type="button"
+        class="btn btn-primary btn-sm"
+        (click)="showNextYear()"
+        [disabled]="
+          currentYearIndex >= M3TransportForm.controls.yearlyInfo.length - 1
+        "
+      >
+        Next
+      </button>
+    </div>
   }
+  <button type="submit" class="btn btn-primary">Save</button>
 </form>

@@ -3,15 +3,15 @@ export interface M3TransportEmissions {
 }
 
 export interface M3TransportYearlyInfo {
-  year: string;
-  vans: TransportEmissions[];
-  rigidTrucks: TransportEmissions[];
-  articulatedTrucks: TransportEmissions[];
-  articulatedRigidTrucks: TransportEmissions[];
-  transportBus: TransportEmissions[];
-  trains: TransportEmissions[];
-  planes: TransportEmissions[];
-  ships: TransportEmissions[];
+  year?: string;
+  vans?: TransportEmissions[];
+  rigidTrucks?: TransportEmissions[];
+  articulatedTrucks?: TransportEmissions[];
+  articulatedRigidTrucks?: TransportEmissions[];
+  transportBus?: TransportEmissions[];
+  trains?: TransportEmissions[];
+  planes?: TransportEmissions[];
+  ships?: TransportEmissions[];
 }
 
 export interface TransportEmissions {

@@ -6,6 +6,10 @@ import { emptyEmissionLists } from '../../util/data-util';
 import { OrganizationData } from '../../interface/organization-data';
 import { ListValueItem } from '../../interface/list-value-item';
 import { M1Emissions } from '../../interface/m1-emissions';
+import { M2Emissions } from '../../interface/m2-emissions';
+import { M3TransportEmissions } from '../../interface/m3-transport-emissions';
+import { M3OtherItems } from '../../interface/m3-other-items';
+import { OrganisationEmissions } from '../../interface/organisation-emissions';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +31,16 @@ export class DataService {
   M2_emissionsKg = new BehaviorSubject<number>(0);
   M3_emissionsKg = new BehaviorSubject<number>(0);
 
-  M1EmissionsInfo = new BehaviorSubject<M1Emissions>({} as M1Emissions);
+  M1EmissionsInfo$ = new BehaviorSubject<M1Emissions>({} as M1Emissions);
+  M2EmissionsInfo$ = new BehaviorSubject<M2Emissions>({} as M2Emissions);
+  M3TransportEmissionsInfo$ = new BehaviorSubject<M3TransportEmissions>(
+    {} as M3TransportEmissions,
+  );
+  M3OtherEmissionsInfo$ = new BehaviorSubject<M3OtherItems>({} as M3OtherItems);
+
+  organizationEmissions$ = new BehaviorSubject<OrganisationEmissions>(
+    {} as OrganisationEmissions,
+  );
 
   get organizationData(): OrganizationData {
     return this.organizationData$.value;
@@ -43,7 +56,8 @@ export class DataService {
     });
   }
 
-  saveFields(savedFootprintData: M1Emissions) {
-    this.M1EmissionsInfo.next(savedFootprintData);
+  saveFields(savedFootprintData: OrganisationEmissions) {
+    this.organizationEmissions$.next(savedFootprintData);
+    console.log(this.organizationEmissions$.value);
   }
 }

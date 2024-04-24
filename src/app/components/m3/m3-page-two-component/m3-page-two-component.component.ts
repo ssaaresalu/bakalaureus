@@ -25,7 +25,7 @@ import {
 import { combineLatestWith, startWith, Subject, takeUntil } from 'rxjs';
 import { DetailsForm } from '../../../interface/details-form';
 import { ListValueItem } from '../../../interface/list-value-item';
-import { EntryComponent } from '../../../shared/components/row/entry.component';
+import { EntryComponent } from '../../../shared/components/entry/entry.component';
 import { MatIcon } from '@angular/material/icon';
 import { DropdownComponent } from '../../../shared/components/dropdown/dropdown.component';
 import { GetListItemValuePipe } from '../../../shared/pipes/get-list-item-value.pipe';
@@ -42,6 +42,16 @@ import {
   VEHICLE_FUELS_UPSTREAM_TYPES,
 } from '../../../util/lists';
 import { M3InvestmentsComponent } from '../m3-investments/m3-investments.component';
+import {
+  AverageMethod,
+  DiffuseEmissions,
+  HomeOfficeEmissions,
+  Investments,
+  M3OtherItemsYearlyInfo,
+  ProductsEmissions,
+  VehicleFuelEmissions,
+} from '../../../interface/m3-other-items';
+import { OrganisationEmissions } from '../../../interface/organisation-emissions';
 
 @Component({
   selector: 'app-m3-page-two-component',
@@ -68,6 +78,8 @@ export class M3PageTwoComponentComponent
   extends PageComponentAbstract
   implements OnInit
 {
+  M3OtherItems =
+    this.dataService.organizationEmissions$.value.M3_otherEmissions;
   M3OtherItemsForm = new FormGroup<M3OtherItemsForm>({
     yearlyInfo: new FormArray<M3OtherItemsYearForm>([]),
   });
@@ -109,9 +121,119 @@ export class M3PageTwoComponentComponent
 
   ngOnInit(): void {
     this.initYearlyInfoForm();
+    this.addValuesToForms();
   }
 
-  submit() {}
+  submit() {
+    this.dataService.saveFields(this.savedFootprintData);
+  }
+
+  protected get savedFootprintData(): OrganisationEmissions {
+    return {
+      ...this.dataService.organizationEmissions$.value,
+      M3_otherEmissions: {
+        yearlyInfo: this.getYearlyInfoValues(),
+      },
+    };
+  }
+
+  private getYearlyInfoValues(): M3OtherItemsYearlyInfo[] {
+    return this.M3OtherItemsForm.controls.yearlyInfo.controls.map(
+      (yearlyInfoForm) => {
+        return {
+          ...yearlyInfoForm.value,
+          year: yearlyInfoForm.value.year ?? '',
+          businessTripsSmall: this.getDetailsFormValues(
+            yearlyInfoForm.controls.businessTripsSmall,
+          ),
+          businessTripsLarge: this.getDetailsFormValues(
+            yearlyInfoForm.controls.businessTripsLarge,
+          ),
+          workHomeTransportSmall: this.getDetailsFormValues(
+            yearlyInfoForm.controls.workHomeTransportSmall,
+          ),
+          workHomeTransportLarge: this.getDetailsFormValues(
+            yearlyInfoForm.controls.workHomeTransportLarge,
+          ),
+          waste: this.getDetailsFormValues(yearlyInfoForm.controls.waste),
+          homeOffice: this.getHomeOfficeValues(
+            yearlyInfoForm.controls.homeOffice,
+          ),
+          products: this.getProductsValues(yearlyInfoForm.controls.products),
+          vehicleFuels: this.getVehicleFuelsValues(
+            yearlyInfoForm.controls.vehicleFuels,
+          ),
+          diffuseEmissions: this.getDiffuseEmissionsValues(
+            yearlyInfoForm.controls.diffuseEmissions,
+          ),
+          investments: this.getInvestmentsValues(
+            yearlyInfoForm.controls.investments,
+          ),
+        };
+      },
+    );
+  }
+
+  private addValuesToForms(): void {
+    this.M3OtherItems.yearlyInfo.forEach((yearlyInfo) => {
+      const M3OtherItemsYearForm =
+        this.M3OtherItemsForm.controls.yearlyInfo.controls.find(
+          (yearForm) => yearForm.controls.year.value === yearlyInfo.year,
+        );
+      yearlyInfo.businessTripsSmall?.forEach((smallTrip) =>
+        M3OtherItemsYearForm?.controls.businessTripsSmall.push(
+          this.addDataDetailsToForm(
+            this.emissionsLists.businessTripsSmall,
+            smallTrip,
+          ),
+        ),
+      );
+      yearlyInfo.businessTripsLarge?.forEach((largeTrip) =>
+        M3OtherItemsYearForm?.controls.businessTripsLarge.push(
+          this.addDataDetailsToForm(
+            this.emissionsLists.businessTripsBig,
+            largeTrip,
+          ),
+        ),
+      );
+      yearlyInfo.workHomeTransportSmall?.forEach((workHomeSmall) =>
+        M3OtherItemsYearForm?.controls.workHomeTransportSmall.push(
+          this.addDataDetailsToForm(
+            this.emissionsLists.workHomeSmallVehicle,
+            workHomeSmall,
+          ),
+        ),
+      );
+      yearlyInfo.workHomeTransportLarge?.forEach((workHomeLarge) =>
+        M3OtherItemsYearForm?.controls.workHomeTransportLarge.push(
+          this.addDataDetailsToForm(
+            this.emissionsLists.workHomeBigVehicle,
+            workHomeLarge,
+          ),
+        ),
+      );
+      yearlyInfo.waste?.forEach((wasteData) =>
+        M3OtherItemsYearForm?.controls.waste.push(
+          this.addDataDetailsToForm(this.emissionsLists.waste, wasteData),
+        ),
+      );
+      yearlyInfo.homeOffice?.forEach((homeOffice) =>
+        this.addHomeOfficeField(M3OtherItemsYearForm, homeOffice),
+      );
+      yearlyInfo.products?.forEach((product) =>
+        this.addProductField(M3OtherItemsYearForm, product),
+      );
+      yearlyInfo.vehicleFuels?.forEach((vehicle) =>
+        this.addVehicleFuelsField(M3OtherItemsYearForm, vehicle),
+      );
+      yearlyInfo.diffuseEmissions?.forEach((diffuseEmission) =>
+        this.addDiffuseEmissionField(M3OtherItemsYearForm, diffuseEmission),
+      );
+      yearlyInfo.investments?.forEach((investment) =>
+        this.addInvestmentField(M3OtherItemsYearForm, investment),
+      );
+    });
+  }
 
   private initYearlyInfoForm() {
     this.organizationData.yearlyInfo?.forEach((yearlyInfo) => {
@@ -185,32 +307,36 @@ export class M3PageTwoComponentComponent
     }
   }
 
-  addHomeOfficeField(yearlyForm: M3OtherItemsYearForm) {
+  addHomeOfficeField(
+    yearlyForm?: M3OtherItemsYearForm,
+    details?: HomeOfficeEmissions,
+  ) {
     const data = new FormGroup({
-      unitNumber: this.fb.control<string>(''),
-      usedDevice: this.fb.control<string>(''),
-      amountOfDevices: this.fb.control<string>(''),
-      deviceElectricityAmount: this.fb.control<string>(''),
-      amountOfHours: this.fb.control<string>(''),
-      electricityPackage: this.fb.control<string>(''),
-      amount_kWh: this.fb.control<number>(0),
-      isUsingModelEmissionFactor: this.fb.control<boolean | undefined>(
-        undefined,
+      unitNumber: this.fb.control<string>(details?.unitNumber ?? ''),
+      usedDevice: this.fb.control<string>(details?.usedDevice ?? ''),
+      amountOfDevices: this.fb.control<string>(details?.amountOfDevices ?? ''),
+      deviceElectricityAmount: this.fb.control<string>(
+        details?.deviceElectricityAmount ?? '',
       ),
-      emissionFactor: this.fb.control<number>(0),
-      otherEmissionFactor: this.fb.control<string | undefined>(undefined),
-      kgCO2Footprint: this.fb.control<number>(0),
+      amountOfHours: this.fb.control<string>(details?.amountOfHours ?? ''),
+      electricityPackage: this.fb.control<string>(
+        details?.electricityPackage ?? '',
+      ),
+      amount_kWh: this.fb.control<number>(details?.amount_kWh ?? 0),
+      isUsingModelEmissionFactor: this.fb.control<boolean | undefined>(
+        details?.isUsingModelEmissionFactor ?? undefined,
+      ),
+      emissionFactor: this.fb.control<number>(details?.emissionFactor ?? 0),
+      otherEmissionFactor: this.fb.control<string | undefined>(
+        details?.otherEmissionFactor ?? undefined,
+      ),
+      kgCO2Footprint: this.fb.control<number>(details?.kgCO2Footprint ?? 0),
     }) as HomeOfficeForm;
-    yearlyForm.controls.homeOffice.push(data);
-    const index = yearlyForm.controls.homeOffice.length - 1;
+    if (yearlyForm) yearlyForm.controls.homeOffice.push(data);
+
     const destroy$ = new Subject<void>();
-    this.formSubjects.get('homeOffice')?.set(index, destroy$);
-    const controlAtIndex = yearlyForm.controls.homeOffice.at(index);
-    this.subscribeToHomeOfficeElectricityAmountChanges(
-      controlAtIndex,
-      destroy$,
-    );
-    this.subscribeToHomeOfficeEmissionsChanges(controlAtIndex, destroy$);
+    this.subscribeToHomeOfficeElectricityAmountChanges(data, destroy$);
+    this.subscribeToHomeOfficeEmissionsChanges(data, destroy$);
   }
 
   private subscribeToHomeOfficeElectricityAmountChanges(
@@ -218,11 +344,17 @@ export class M3PageTwoComponentComponent
     destroy$: Subject<void>,
   ) {
     const deviceAmountChanges$ =
-      controlAtIndex.controls.amountOfDevices.valueChanges;
+      controlAtIndex.controls.amountOfDevices.valueChanges.pipe(
+        startWith(controlAtIndex.controls.amountOfDevices.value),
+      );
     const deviceElectricityAmountChanges$ =
-      controlAtIndex.controls.deviceElectricityAmount.valueChanges;
+      controlAtIndex.controls.deviceElectricityAmount.valueChanges.pipe(
+        startWith(controlAtIndex.controls.deviceElectricityAmount.value),
+      );
     const amountOfHoursChanges$ =
-      controlAtIndex.controls.amountOfHours.valueChanges;
+      controlAtIndex.controls.amountOfHours.valueChanges.pipe(
+        startWith(controlAtIndex.controls.amountOfHours.value),
+      );
     deviceAmountChanges$
       .pipe(
         combineLatestWith(
@@ -248,9 +380,13 @@ export class M3PageTwoComponentComponent
         startWith(controlAtIndex.controls.amount_kWh.value),
       );
     const electricityPackageValueChanges$ =
-      controlAtIndex.controls.electricityPackage.valueChanges;
+      controlAtIndex.controls.electricityPackage.valueChanges.pipe(
+        startWith(controlAtIndex.controls.electricityPackage.value),
+      );
     const isUsingModelEmissionFactorChanges$ =
-      controlAtIndex.controls.isUsingModelEmissionFactor.valueChanges;
+      controlAtIndex.controls.isUsingModelEmissionFactor.valueChanges.pipe(
+        startWith(controlAtIndex.controls.isUsingModelEmissionFactor.value),
+      );
     const otherEmissionFactorChanges$ =
       controlAtIndex.controls.otherEmissionFactor.valueChanges.pipe(
         startWith(controlAtIndex.controls.otherEmissionFactor.value),
@@ -288,22 +424,19 @@ export class M3PageTwoComponentComponent
     }
   }
 
-  addProductField(form: M3OtherItemsYearForm) {
+  addProductField(form?: M3OtherItemsYearForm, details?: ProductsEmissions) {
     const data = new FormGroup({
-      soldOrBought: this.fb.control<string>(''),
-      unitNumber: this.fb.control<string>(''),
-      product: this.fb.control<string>(''),
-      amount: this.fb.control<string>(''),
-      price: this.fb.control<string>(''),
-      emissionFactor: this.fb.control<string>(''),
-      kgCO2Footprint: this.fb.control<number>(0),
+      soldOrBought: this.fb.control<string>(details?.soldOrBought ?? ''),
+      unitNumber: this.fb.control<string>(details?.unitNumber ?? ''),
+      product: this.fb.control<string>(details?.product ?? ''),
+      amount: this.fb.control<string>(details?.amount ?? ''),
+      price: this.fb.control<string>(details?.price ?? ''),
+      emissionFactor: this.fb.control<string>(details?.emissionFactor ?? ''),
+      kgCO2Footprint: this.fb.control<number>(details?.kgCO2Footprint ?? 0),
     }) as ProductsForm;
-    form.controls.products.push(data);
-    const index = form.controls.products.length - 1;
+    if (form) form.controls.products.push(data);
     const destroy$ = new Subject<void>();
-    this.formSubjects.get('products')?.set(index, destroy$);
-    const controlAtIndex = form.controls.products.at(index);
-    this.subscribeToProductsEmissionsChanges(controlAtIndex, destroy$);
+    this.subscribeToProductsEmissionsChanges(data, destroy$);
   }
 
   private subscribeToProductsEmissionsChanges(
@@ -317,7 +450,9 @@ export class M3PageTwoComponentComponent
       startWith(controlAtIndex.controls.price.value),
     );
     const emissionFactorChanges$ =
-      controlAtIndex.controls.emissionFactor.valueChanges;
+      controlAtIndex.controls.emissionFactor.valueChanges.pipe(
+        startWith(controlAtIndex.controls.emissionFactor.value),
+      );
     amountChanges$
       .pipe(
         takeUntil(destroy$),
@@ -342,22 +477,24 @@ export class M3PageTwoComponentComponent
     }
   }
 
-  addVehicleFuelsField(form: M3OtherItemsYearForm) {
+  addVehicleFuelsField(
+    form?: M3OtherItemsYearForm,
+    details?: VehicleFuelEmissions,
+  ) {
     const data = new FormGroup({
-      unitNumber: this.fb.control<string>(''),
-      vehicleFuelsType: this.fb.control<string>(''),
-      fuel: this.fb.control<string>(''),
-      amount: this.fb.control<string>(''),
-      distance: this.fb.control<string>(''),
-      emissionFactor: this.fb.control<string>(''),
-      kgCO2Footprint: this.fb.control<number>(0),
+      unitNumber: this.fb.control<string>(details?.unitNumber ?? ''),
+      vehicleFuelsType: this.fb.control<string>(
+        details?.vehicleFuelsType ?? '',
+      ),
+      fuel: this.fb.control<string>(details?.fuel ?? ''),
+      amount: this.fb.control<string>(details?.amount ?? ''),
+      distance: this.fb.control<string>(details?.distance ?? ''),
+      emissionFactor: this.fb.control<string>(details?.emissionFactor ?? ''),
+      kgCO2Footprint: this.fb.control<number>(details?.kgCO2Footprint ?? 0),
     }) as VehicleFuelsForm;
-    form.controls.vehicleFuels.push(data);
-    const index = form.controls.vehicleFuels.length - 1;
+    if (form) form.controls.vehicleFuels.push(data);
     const destroy$ = new Subject<void>();
-    this.formSubjects.get('vehicleFuels')?.set(index, destroy$);
-    const controlAtIndex = form.controls.vehicleFuels.at(index);
-    this.subscribeToVehicleFuelsEmissionsChanges(controlAtIndex, destroy$);
+    this.subscribeToVehicleFuelsEmissionsChanges(data, destroy$);
   }
 
   private subscribeToVehicleFuelsEmissionsChanges(
@@ -371,7 +508,9 @@ export class M3PageTwoComponentComponent
       startWith(controlAtIndex.controls.distance.value),
     );
     const emissionFactorChanges$ =
-      controlAtIndex.controls.emissionFactor.valueChanges;
+      controlAtIndex.controls.emissionFactor.valueChanges.pipe(
+        startWith(controlAtIndex.controls.emissionFactor.value),
+      );
     amountChanges$
       .pipe(
         takeUntil(destroy$),
@@ -396,30 +535,36 @@ export class M3PageTwoComponentComponent
     }
   }
 
-  addDiffuseEmissionField(form: M3OtherItemsYearForm) {
+  addDiffuseEmissionField(
+    form?: M3OtherItemsYearForm,
+    details?: DiffuseEmissions,
+  ) {
     const data = new FormGroup({
-      unitNumber: this.fb.control<string>(''),
-      sourceOfEmission: this.fb.control<string>(''),
-      amount: this.fb.control<string>(''),
-      unit: this.fb.control<string>(''),
-      emissionFactor: this.fb.control<string>(''),
-      kgCO2Footprint: this.fb.control<number>(0),
+      unitNumber: this.fb.control<string>(details?.unitNumber ?? ''),
+      sourceOfEmission: this.fb.control<string>(
+        details?.sourceOfEmission ?? '',
+      ),
+      amount: this.fb.control<string>(details?.amount ?? ''),
+      unit: this.fb.control<string>(details?.unit ?? ''),
+      emissionFactor: this.fb.control<string>(details?.emissionFactor ?? ''),
+      kgCO2Footprint: this.fb.control<number>(details?.kgCO2Footprint ?? 0),
     }) as DiffuseEmissionsForm;
-    form.controls.diffuseEmissions.push(data);
-    const index = form.controls.diffuseEmissions.length - 1;
+    if (form) form.controls.diffuseEmissions.push(data);
     const destroy$ = new Subject<void>();
-    this.formSubjects.get('diffuseEmissions')?.set(index, destroy$);
-    const controlAtIndex = form.controls.diffuseEmissions.at(index);
-    this.subscribeToDiffuseEmissionsChanges(controlAtIndex, destroy$);
+    this.subscribeToDiffuseEmissionsChanges(data, destroy$);
   }
 
   private subscribeToDiffuseEmissionsChanges(
     controlAtIndex: DiffuseEmissionsForm,
     destroy$: Subject<void>,
   ) {
-    const amountChanges$ = controlAtIndex.controls.amount.valueChanges;
+    const amountChanges$ = controlAtIndex.controls.amount.valueChanges.pipe(
+      startWith(controlAtIndex.controls.amount.value),
+    );
     const emissionFactorChanges$ =
-      controlAtIndex.controls.emissionFactor.valueChanges;
+      controlAtIndex.controls.emissionFactor.valueChanges.pipe(
+        startWith(controlAtIndex.controls.emissionFactor.value),
+      );
     amountChanges$
       .pipe(takeUntil(destroy$), combineLatestWith(emissionFactorChanges$))
       .subscribe(([amount, emissionFactor]) => {
@@ -438,27 +583,28 @@ export class M3PageTwoComponentComponent
     }
   }
 
-  addInvestmentField(yearlyForm: M3OtherItemsYearForm) {
+  addInvestmentField(yearlyForm?: M3OtherItemsYearForm, details?: Investments) {
     const data = this.fb.group({
-      unitNumber: this.fb.control<string>(''),
-      investment: this.fb.control<string>(''),
-      calculationMethod: this.fb.control<string>(''),
-      kgCO2Footprint: this.fb.control<number>(0),
+      unitNumber: this.fb.control<string>(details?.unitNumber ?? ''),
+      investment: this.fb.control<string>(details?.investment ?? ''),
+      calculationMethod: this.fb.control<string>(
+        details?.calculationMethod ?? '',
+      ),
+      kgCO2Footprint: this.fb.control<number>(details?.kgCO2Footprint ?? 0),
     }) as InvestmentsForm;
-    yearlyForm.controls.investments.push(data);
-    const index = yearlyForm.controls.investments.length - 1;
+    if (yearlyForm) yearlyForm.controls.investments.push(data);
     const destroy$ = new Subject<void>();
-    this.formSubjects.get('investments')?.set(index, destroy$);
-    const controlAtIndex = yearlyForm.controls.investments.at(index);
     this.subscribeToInvestmentFormCalculationMethodChanges(
-      controlAtIndex,
+      data,
       destroy$,
+      details,
     );
   }
 
   subscribeToInvestmentFormCalculationMethodChanges(
     controlAtIndex: InvestmentsForm,
     destroy$: Subject<void>,
+    details?: Investments,
   ) {
     controlAtIndex.controls.calculationMethod.valueChanges
       .pipe(
@@ -470,6 +616,7 @@ export class M3PageTwoComponentComponent
           controlAtIndex,
           calculationMethod,
           destroy$,
+          details,
         );
       });
   }
@@ -478,6 +625,7 @@ export class M3PageTwoComponentComponent
     controlAtIndex: InvestmentsForm,
     calculationMethod: string,
     destroy$: Subject<void>,
+    details?: Investments,
   ) {
     if (
       calculationMethod === 'Investeeringu- või projektispetsiifilise meetod'
@@ -485,9 +633,10 @@ export class M3PageTwoComponentComponent
       controlAtIndex.addControl(
         'investmentMethod',
         this.fb.group({
-          M1_M2_emissions: [''],
-          percentageOfExpenses: [''],
-          equityShare: [''],
+          M1_M2_emissions: details?.investmentMethod?.M1_M2_emissions ?? '',
+          percentageOfExpenses:
+            details?.investmentMethod?.percentageOfExpenses ?? '',
+          equityShare: details?.investmentMethod?.equityShare ?? '',
         }),
       );
       controlAtIndex.removeControl('averageMethod');
@@ -499,7 +648,7 @@ export class M3PageTwoComponentComponent
       );
     } else if (calculationMethod === 'Keskmiste andmete meetod') {
       const averageMethodGroup: AverageMethodFormGroup = this.fb.group({
-        averageMethodType: [''],
+        averageMethodType: details?.averageMethod?.averageMethodType ?? '',
       });
 
       averageMethodGroup.controls.averageMethodType.valueChanges
@@ -512,11 +661,12 @@ export class M3PageTwoComponentComponent
             averageMethodGroup,
             type,
             controlAtIndex,
+            details?.averageMethod,
           );
         });
 
       controlAtIndex.addControl('averageMethod', averageMethodGroup);
-      controlAtIndex.controls.kgCO2Footprint.setValue(0);
+      if (!details) controlAtIndex.controls.kgCO2Footprint.setValue(0);
       controlAtIndex.removeControl('investmentMethod');
     } else {
       controlAtIndex.removeControl('investmentMethod');
@@ -528,6 +678,7 @@ export class M3PageTwoComponentComponent
     averageMethodGroup: AverageMethodFormGroup,
     type: string,
     controlAtIndex: InvestmentsForm,
+    details?: AverageMethod,
   ) {
     const formNames = [
       'companyProfitEmissionsForm',
@@ -551,9 +702,11 @@ export class M3PageTwoComponentComponent
         averageMethodGroup.addControl(
           'companyProfitEmissionsForm',
           this.fb.group({
-            companyTotalIncome: [''],
-            equityShare: [''],
-            emissionFactor: [''],
+            companyTotalIncome:
+              details?.companyProfitEmissionsForm?.companyTotalIncome ?? '',
+            equityShare: details?.companyProfitEmissionsForm?.equityShare ?? '',
+            emissionFactor:
+              details?.companyProfitEmissionsForm?.emissionFactor ?? '',
           }),
         );
         averageMethodGroup.removeControl('investmentBuildingEmissionsForm');
@@ -568,9 +721,14 @@ export class M3PageTwoComponentComponent
         averageMethodGroup.addControl(
           'investmentBuildingEmissionsForm',
           this.fb.group({
-            projectBuildingCost: [''],
-            percentageOfTotalExpenses: [''],
-            emissionFactor: [''],
+            projectBuildingCost:
+              details?.investmentBuildingEmissionsForm?.projectBuildingCost ??
+              '',
+            percentageOfTotalExpenses:
+              details?.investmentBuildingEmissionsForm?.projectBuildingCost ??
+              '',
+            emissionFactor:
+              details?.investmentBuildingEmissionsForm?.emissionFactor ?? '',
           }),
         );
         averageMethodGroup.removeControl('companyProfitEmissionsForm');
@@ -585,9 +743,13 @@ export class M3PageTwoComponentComponent
         averageMethodGroup.addControl(
           'investmentUsingEmissionsForm',
           this.fb.group({
-            projectProfit: [''],
-            percentageOfTotalExpenses: [''],
-            emissionFactor: [''],
+            projectProfit:
+              details?.investmentUsingEmissionsForm?.projectProfit ?? '',
+            percentageOfTotalExpenses:
+              details?.investmentUsingEmissionsForm
+                ?.percentageOfTotalExpenses ?? '',
+            emissionFactor:
+              details?.investmentUsingEmissionsForm?.emissionFactor ?? '',
           }),
         );
         averageMethodGroup.removeControl('investmentBuildingEmissionsForm');
@@ -618,6 +780,7 @@ export class M3PageTwoComponentComponent
       investmentMethodForm.controls.M1_M2_emissions.valueChanges
         .pipe(
           takeUntil(destroy$),
+          startWith(investmentMethodForm.controls.M1_M2_emissions.value),
           combineLatestWith(
             percentageOfExpensesValueChanges$,
             equityValueChanges$,
@@ -658,6 +821,9 @@ export class M3PageTwoComponentComponent
         );
       companyProfitEmissionsForm.controls.companyTotalIncome.valueChanges
         .pipe(
+          startWith(
+            companyProfitEmissionsForm.controls.companyTotalIncome.value,
+          ),
           combineLatestWith(equityValueChanges$, emissionFactorValueChanges),
         )
         .subscribe(([income, equity, emissionFactor]) => {
@@ -690,6 +856,9 @@ export class M3PageTwoComponentComponent
         );
       investmentBuildingEmissionsForm.controls.projectBuildingCost.valueChanges
         .pipe(
+          startWith(
+            investmentBuildingEmissionsForm.controls.projectBuildingCost.value,
+          ),
           combineLatestWith(
             totalExpensesValueChanges$,
             emissionFactorValueChanges,
@@ -723,6 +892,7 @@ export class M3PageTwoComponentComponent
         );
       investmentUsingEmissionsForm.controls.projectProfit.valueChanges
         .pipe(
+          startWith(investmentUsingEmissionsForm.controls.projectProfit.value),
           combineLatestWith(
             totalExpensesValueChanges$,
             emissionFactorValueChanges,
@@ -736,5 +906,126 @@ export class M3PageTwoComponentComponent
           controlAtIndex.controls.kgCO2Footprint.setValue(footprint);
         });
     }
+  }
+
+  private getHomeOfficeValues(
+    homeOffice: FormArray<HomeOfficeForm>,
+  ): HomeOfficeEmissions[] {
+    return homeOffice.controls.map((details) => {
+      return {
+        unitNumber: details.value.unitNumber ?? '',
+        usedDevice: details.value.usedDevice ?? '',
+        amountOfDevices: details.value.amountOfDevices ?? '',
+        deviceElectricityAmount: details.value.deviceElectricityAmount ?? '',
+        amountOfHours: details.value.amountOfHours ?? '',
+        electricityPackage: details.value.electricityPackage ?? '',
+        amount_kWh: details.value.amount_kWh ?? 0,
+        isUsingModelEmissionFactor:
+          details.value.isUsingModelEmissionFactor ?? undefined,
+        emissionFactor: details.value.emissionFactor ?? 0,
+        otherEmissionFactor: details.value.otherEmissionFactor ?? '',
+        kgCO2Footprint: details.value.kgCO2Footprint ?? 0,
+      };
+    });
+  }
+
+  private getProductsValues(
+    products: FormArray<ProductsForm>,
+  ): ProductsEmissions[] {
+    return products.controls.map((details) => {
+      return {
+        soldOrBought: details.value.soldOrBought ?? '',
+        unitNumber: details.value.unitNumber ?? '',
+        product: details.value.product ?? '',
+        amount: details.value.amount ?? '',
+        price: details.value.price ?? '',
+        emissionFactor: details.value.emissionFactor ?? '',
+        kgCO2Footprint: details.value.kgCO2Footprint ?? 0,
+      };
+    });
+  }
+
+  private getVehicleFuelsValues(
+    vehicleFuels: FormArray<VehicleFuelsForm>,
+  ): VehicleFuelEmissions[] {
+    return vehicleFuels.controls.map((fuelInfo) => {
+      return {
+        vehicleFuelsType: fuelInfo.value.vehicleFuelsType ?? '',
+        unitNumber: fuelInfo.value.unitNumber ?? '',
+        fuel: fuelInfo.value.fuel ?? '',
+        amount: fuelInfo.value.amount ?? '',
+        distance: fuelInfo.value.distance ?? '',
+        emissionFactor: fuelInfo.value.emissionFactor ?? '',
+        kgCO2Footprint: fuelInfo.value.kgCO2Footprint ?? 0,
+      };
+    });
+  }
+
+  private getDiffuseEmissionsValues(
+    diffuseEmissions: FormArray<DiffuseEmissionsForm>,
+  ): DiffuseEmissions[] {
+    return diffuseEmissions.controls.map((diffuseEmission) => {
+      return {
+        unitNumber: diffuseEmission.value.unitNumber ?? '',
+        sourceOfEmission: diffuseEmission.value.sourceOfEmission ?? '',
+        amount: diffuseEmission.value.amount ?? '',
+        unit: diffuseEmission.value.unit ?? '',
+        emissionFactor: diffuseEmission.value.emissionFactor ?? '',
+        kgCO2Footprint: diffuseEmission.value.kgCO2Footprint ?? 0,
+      };
+    });
+  }
+
+  private getInvestmentsValues(
+    investments: FormArray<InvestmentsForm>,
+  ): Investments[] {
+    const investmentsData = [] as Investments[];
+    investments.controls.forEach((investment) => {
+      const data = investment.getRawValue();
+      if (data.calculationMethod.trim().length === 0) {
+        delete data.investmentMethod;
+        delete data.averageMethod;
+        delete data.initialInvestmentYear;
+      }
+      if (
+        data.calculationMethod ===
+        'Investeeringu- või projektispetsiifilise meetod'
+      ) {
+        delete data.averageMethod;
+        delete data.initialInvestmentYear;
+      }
+      if (data.calculationMethod === 'Keskmiste andmete meetod') {
+        delete data.investmentMethod;
+        delete data.initialInvestmentYear;
+        if (data.averageMethod?.averageMethodType.length === 0) {
+          delete data.averageMethod.investmentUsingEmissionsForm;
+          delete data.averageMethod.companyProfitEmissionsForm;
+          delete data.averageMethod.investmentBuildingEmissionsForm;
+        }
+        if (
+          data.averageMethod?.averageMethodType ===
+          'Investeeringu objektiks olev äriühing'
+        ) {
+          delete data.averageMethod.investmentBuildingEmissionsForm;
+          delete data.averageMethod.investmentUsingEmissionsForm;
+        }
+        if (
+          data.averageMethod?.averageMethodType ===
+          'Võlainvesteeringud ja projektide rahastamine - ehitusetapp'
+        ) {
+          delete data.averageMethod.investmentUsingEmissionsForm;
+          delete data.averageMethod.companyProfitEmissionsForm;
+        }
+        if (
+          data.averageMethod?.averageMethodType ===
+          'Võlainvesteeringud ja projektide rahastamine - kasutusetapp'
+        ) {
+          delete data.averageMethod.companyProfitEmissionsForm;
+          delete data.averageMethod.investmentBuildingEmissionsForm;
+        }
+      }
+      investmentsData.push(data);
+    });
+    return investmentsData;
   }
 }
