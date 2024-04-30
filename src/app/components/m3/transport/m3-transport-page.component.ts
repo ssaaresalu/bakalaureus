@@ -24,8 +24,14 @@ import {
   MatExpansionPanelHeader,
   MatExpansionPanelTitle,
 } from '@angular/material/expansion';
-import { M3TransportYearlyInfo } from '../../../interface/m3-transport-emissions';
-import { OrganisationEmissions } from '../../../interface/organisation-emissions';
+import {
+  M3TransportYearlyInfo,
+  TransportEmissions,
+} from '../../../interface/m3-transport-emissions';
+import {
+  OrganizationEmissions,
+  OrganizationEmissionsYearlyInfo,
+} from '../../../interface/organization-emissions';
 
 @Component({
   selector: 'app-m3-transport-page',
@@ -48,8 +54,6 @@ export class M3TransportPageComponent
   extends PageComponentAbstract
   implements OnInit
 {
-  M3TransportEmissionsInfo =
-    this.dataService.organizationEmissions$.value.M3_transportEmissions;
   M3TransportForm = new FormGroup<M3TransportForm>({
     yearlyInfo: new FormArray<M3TransportYearForm>([]),
   });
@@ -71,57 +75,88 @@ export class M3TransportPageComponent
     this.dataService.saveFields(this.savedFootprintData);
   }
 
-  protected get savedFootprintData(): OrganisationEmissions {
+  protected get savedFootprintData(): OrganizationEmissions {
     return {
-      ...this.dataService.organizationEmissions$.value,
-      M3_transportEmissions: {
-        yearlyInfo: this.getYearlyInfoValues(),
-      },
+      ...this.emissionsData,
+      organizationEmissionsYearlyInfo:
+        this.emissionsData.organizationEmissionsYearlyInfo.map((yearInfo) => {
+          const info = {
+            ...yearInfo,
+            M3_transportEmissions: this.getYearlyInfoValues(yearInfo),
+          };
+          info.M3TotalEmissions =
+            (info.M3_transportEmissions.totalEmissions ?? 0) +
+            (yearInfo.M3_otherEmissions?.totalEmissions ?? 0);
+          info.totalOrganizationEmissions =
+            (info.M3TotalEmissions ?? 0) +
+            (yearInfo.M1_emissions?.totalEmissions ?? 0) +
+            (yearInfo.M2_emissions?.totalEmissions ?? 0);
+          return info;
+        }),
     };
   }
 
-  private getYearlyInfoValues(): M3TransportYearlyInfo[] {
-    return this.M3TransportForm.controls.yearlyInfo.controls.map(
-      (yearlyInfoForm) => {
-        return {
-          ...yearlyInfoForm.value,
-          year: yearlyInfoForm.value.year ?? '',
-          vans: this.getTransportDetailsFormValues(
-            yearlyInfoForm.controls.vans,
-          ),
-          rigidTrucks: this.getTransportDetailsFormValues(
-            yearlyInfoForm.controls.rigidTrucks,
-          ),
-          articulatedTrucks: this.getTransportDetailsFormValues(
-            yearlyInfoForm.controls.articulatedTrucks,
-          ),
-          articulatedRigidTrucks: this.getTransportDetailsFormValues(
-            yearlyInfoForm.controls.articulatedRigidTrucks,
-          ),
-          transportBus: this.getTransportDetailsFormValues(
-            yearlyInfoForm.controls.transportBus,
-          ),
-          trains: this.getTransportDetailsFormValues(
-            yearlyInfoForm.controls.trains,
-          ),
-          planes: this.getTransportDetailsFormValues(
-            yearlyInfoForm.controls.planes,
-          ),
-          ships: this.getTransportDetailsFormValues(
-            yearlyInfoForm.controls.ships,
-          ),
-        };
-      },
+  private getYearlyInfoValues(
+    yearlyInfoForm: OrganizationEmissionsYearlyInfo,
+  ): M3TransportYearlyInfo {
+    const yearForm = this.M3TransportForm.controls.yearlyInfo.controls.find(
+      (form) => form.controls.year.value === yearlyInfoForm.year,
     );
+    if (yearForm) {
+      const info: M3TransportYearlyInfo = {
+        vans: this.getTransportDetailsFormValues(yearForm.controls.vans),
+        rigidTrucks: this.getTransportDetailsFormValues(
+          yearForm.controls.rigidTrucks,
+        ),
+        articulatedTrucks: this.getTransportDetailsFormValues(
+          yearForm.controls.articulatedTrucks,
+        ),
+        articulatedRigidTrucks: this.getTransportDetailsFormValues(
+          yearForm.controls.articulatedRigidTrucks,
+        ),
+        transportBus: this.getTransportDetailsFormValues(
+          yearForm.controls.transportBus,
+        ),
+        trains: this.getTransportDetailsFormValues(yearForm.controls.trains),
+        planes: this.getTransportDetailsFormValues(yearForm.controls.planes),
+        ships: this.getTransportDetailsFormValues(yearForm.controls.ships),
+      };
+      info.totalEmissions = this.getTotalEmissions(info);
+      yearlyInfoForm.M3TotalEmissions =
+        yearlyInfoForm.M3_otherEmissions?.totalEmissions ?? 0;
+      yearlyInfoForm.M3TotalEmissions += info.totalEmissions;
+      return info;
+    }
+    return {} as M3TransportYearlyInfo;
+  }
+
+  private getTotalEmissions(info: M3TransportYearlyInfo): number {
+    let total = 0;
+    const sumEmissions = (
+      details: TransportEmissions[] | undefined,
+    ): number => {
+      return (
+        details?.reduce((acc, detail) => acc + detail.kgCO2Footprint, 0) ?? 0
+      );
+    };
+    total += sumEmissions(info.vans);
+    total += sumEmissions(info.rigidTrucks);
+    total += sumEmissions(info.articulatedTrucks);
+    total += sumEmissions(info.articulatedRigidTrucks);
+    total += sumEmissions(info.transportBus);
+    total += sumEmissions(info.trains);
+    total += sumEmissions(info.planes);
+    total += sumEmissions(info.ships);
+    return total;
   }
 
   private addValuesToForms(): void {
-    this.M3TransportEmissionsInfo.yearlyInfo.forEach((yearlyInfo) => {
+    this.emissionsData.organizationEmissionsYearlyInfo.forEach((yearlyInfo) => {
       const M3TransportEmissionsYearForm =
         this.M3TransportForm.controls.yearlyInfo.controls.find(
           (yearForm) => yearForm.controls.year.value === yearlyInfo.year,
         );
-      yearlyInfo.vans?.forEach((vanData) =>
+      yearlyInfo.M3_transportEmissions?.vans?.forEach((vanData) =>
         M3TransportEmissionsYearForm?.controls.vans.push(
           this.addTransportDataDetailsToForm(
             vanData,
@@ -131,22 +166,28 @@ export class M3TransportPageComponent
           ),
         ),
       );
-      yearlyInfo.rigidTrucks?.forEach((rigidTruck) =>
+      yearlyInfo.M3_transportEmissions?.rigidTrucks?.forEach((rigidTruck) =>
         M3TransportEmissionsYearForm?.controls.rigidTrucks.push(
           this.addTransportDataDetailsToForm(rigidTruck, true, true),
         ),
       );
-      yearlyInfo.articulatedTrucks?.forEach((articulatedTruck) =>
-        M3TransportEmissionsYearForm?.controls.articulatedTrucks.push(
-          this.addTransportDataDetailsToForm(articulatedTruck, true, true),
-        ),
+      yearlyInfo.M3_transportEmissions?.articulatedTrucks?.forEach(
+        (articulatedTruck) =>
+          M3TransportEmissionsYearForm?.controls.articulatedTrucks.push(
+            this.addTransportDataDetailsToForm(articulatedTruck, true, true),
+          ),
       );
-      yearlyInfo.articulatedRigidTrucks?.forEach((articulatedRigidTruck) =>
-        M3TransportEmissionsYearForm?.controls.articulatedRigidTrucks.push(
-          this.addTransportDataDetailsToForm(articulatedRigidTruck, true, true),
-        ),
+      yearlyInfo.M3_transportEmissions?.articulatedRigidTrucks?.forEach(
+        (articulatedRigidTruck) =>
+          M3TransportEmissionsYearForm?.controls.articulatedRigidTrucks.push(
+            this.addTransportDataDetailsToForm(
+              articulatedRigidTruck,
+              true,
+              true,
+            ),
+          ),
       );
-      yearlyInfo.transportBus?.forEach((transportBus) =>
+      yearlyInfo.M3_transportEmissions?.transportBus?.forEach((transportBus) =>
         M3TransportEmissionsYearForm?.controls.transportBus.push(
           this.addTransportDataDetailsToForm(
             transportBus,
@@ -156,7 +197,7 @@ export class M3TransportPageComponent
           ),
         ),
       );
-      yearlyInfo.trains?.forEach((train) =>
+      yearlyInfo.M3_transportEmissions?.trains?.forEach((train) =>
         M3TransportEmissionsYearForm?.controls.trains.push(
           this.addTransportDataDetailsToForm(
             train,
@@ -166,7 +207,7 @@ export class M3TransportPageComponent
           ),
         ),
       );
-      yearlyInfo.planes?.forEach((plane) =>
+      yearlyInfo.M3_transportEmissions?.planes?.forEach((plane) =>
         M3TransportEmissionsYearForm?.controls.planes.push(
           this.addTransportDataDetailsToForm(
             plane,
@@ -176,7 +217,7 @@ export class M3TransportPageComponent
           ),
         ),
       );
-      yearlyInfo.ships?.forEach((ship) =>
+      yearlyInfo.M3_transportEmissions?.ships?.forEach((ship) =>
         M3TransportEmissionsYearForm?.controls.ships.push(
           this.addTransportDataDetailsToForm(
             ship,

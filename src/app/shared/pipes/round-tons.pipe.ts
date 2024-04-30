@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
 })
 export class RoundTonsPipe implements PipeTransform {
-  transform(footprint: string | number): number {
-    return Math.round(+footprint * 0.001 * 1e3) / 1e3;
+  transform(footprint?: number): number {
+    return Math.round(+(footprint ?? 0) * 0.001 * 1e3) / 1e3;
   }
 }

@@ -1,9 +1,4 @@
-export interface M3TransportEmissions {
-  yearlyInfo: M3TransportYearlyInfo[];
-}
-
 export interface M3TransportYearlyInfo {
-  year?: string;
   vans?: TransportEmissions[];
   rigidTrucks?: TransportEmissions[];
   articulatedTrucks?: TransportEmissions[];
@@ -12,6 +7,7 @@ export interface M3TransportYearlyInfo {
   trains?: TransportEmissions[];
   planes?: TransportEmissions[];
   ships?: TransportEmissions[];
+  totalEmissions?: number;
 }
 
 export interface TransportEmissions {

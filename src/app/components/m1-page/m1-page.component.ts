@@ -22,7 +22,11 @@ import {
 } from '@angular/material/expansion';
 import { MatFormField } from '@angular/material/form-field';
 import { M1YearlyInfo } from '../../interface/m1-emissions';
-import { OrganisationEmissions } from '../../interface/organisation-emissions';
+import {
+  OrganizationEmissions,
+  OrganizationEmissionsYearlyInfo,
+} from '../../interface/organization-emissions';
+import { EmissionsDetails } from '../../interface/emissions-details';
 
 @Component({
   selector: 'app-m1-page',
@@ -45,7 +49,6 @@ import { OrganisationEmissions } from '../../interface/organisation-emissions';
   styleUrl: './m1-page.component.css',
 })
 export class M1PageComponent extends PageComponentAbstract implements OnInit {
-  M1EmissionsInfo = this.dataService.organizationEmissions$.value.M1_emissions;
   M1Form = new FormGroup<M1EmissionsForm>({
     yearlyInfo: new FormArray<M1EmissionsYearForm>([]),
   });
@@ -73,36 +76,66 @@ export class M1PageComponent extends PageComponentAbstract implements OnInit {
     this.dataService.saveFields(this.savedFootprintData);
   }
 
-  protected get savedFootprintData(): OrganisationEmissions {
+  protected get savedFootprintData(): OrganizationEmissions {
     return {
-      ...this.dataService.organizationEmissions$.value,
-      M1_emissions: {
-        yearlyInfo: this.getYearlyInfoValues(),
-      },
+      ...this.emissionsData,
+      organizationEmissionsYearlyInfo:
+        this.emissionsData.organizationEmissionsYearlyInfo.map((yearInfo) => {
+          const info = {
+            ...yearInfo,
+            M1_emissions: this.getYearlyInfoValues(yearInfo),
+          };
+          info.totalOrganizationEmissions =
+            (info.M1_emissions.totalEmissions ?? 0) +
+            (yearInfo.M2_emissions?.totalEmissions ?? 0) +
+            (yearInfo.M3TotalEmissions ?? 0);
+          return info;
+        }),
     };
   }
 
-  private getYearlyInfoValues(): M1YearlyInfo[] {
-    return this.M1Form.controls.yearlyInfo.controls.map((yearlyInfoForm) => {
-      return {
-        ...yearlyInfoForm.value,
-        year: yearlyInfoForm.value.year ?? '',
-        energy: this.getDetailsFormValues(yearlyInfoForm.controls.energy),
+  private getYearlyInfoValues(
+    yearlyInfoForm: OrganizationEmissionsYearlyInfo,
+  ): M1YearlyInfo {
+    const yearForm = this.M1Form.controls.yearlyInfo.controls.find(
+      (form) => form.controls.year.value === yearlyInfoForm.year,
+    );
+    if (yearForm) {
+      const info: M1YearlyInfo = {
+        energy: this.getDetailsFormValues(yearForm?.controls.energy),
         vehicleFuels1: this.getDetailsFormValues(
-          yearlyInfoForm.controls.vehicleFuels1,
+          yearForm.controls.vehicleFuels1,
         ),
         vehicleFuels2: this.getDetailsFormValues(
-          yearlyInfoForm.controls.vehicleFuels2,
+          yearForm.controls.vehicleFuels2,
         ),
         vehicleFuels3: this.getDetailsFormValues(
-          yearlyInfoForm.controls.vehicleFuels3,
+          yearForm.controls.vehicleFuels3,
         ),
         dispersedEmissions: this.getDetailsFormValues(
-          yearlyInfoForm.controls.dispersedEmissions,
+          yearForm.controls.dispersedEmissions,
         ),
       };
-    });
+      info.totalEnergyEmissions = this.sumEmissions(info.energy);
+      info.totalVehicleEmissions =
+        this.sumEmissions(info.vehicleFuels1) +
+        this.sumEmissions(info.vehicleFuels2) +
+        this.sumEmissions(info.vehicleFuels3);
+      info.totalDispersedEmissions = this.sumEmissions(info.dispersedEmissions);
+      info.totalEmissions =
+        info.totalEnergyEmissions +
+        info.totalVehicleEmissions +
+        info.totalDispersedEmissions;
+      return info;
+    }
+    return {} as M1YearlyInfo;
   }
+
+  private sumEmissions = (details: EmissionsDetails[] | undefined): number => {
+    return (
+      details?.reduce((acc, detail) => acc + detail.kgCO2Footprint, 0) ?? 0
+    );
+  };
 
   initYearlyInfoForm(): void {
     this.organizationData.yearlyInfo?.forEach((yearlyInfo) => {
@@ -124,16 +157,16 @@ export class M1PageComponent extends PageComponentAbstract implements OnInit {
   }
 
   private addValuesToForms(): void {
-    this.M1EmissionsInfo.yearlyInfo.forEach((yearlyInfo) => {
+    this.emissionsData.organizationEmissionsYearlyInfo.forEach((yearlyInfo) => {
       const M1EmissionsYearForm = this.M1Form.controls.yearlyInfo.controls.find(
         (yearForm) => yearForm.controls.year.value === yearlyInfo.year,
       );
-      yearlyInfo.energy?.forEach((energyData) =>
+      yearlyInfo.M1_emissions?.energy?.forEach((energyData) =>
         M1EmissionsYearForm?.controls.energy.push(
           this.addDataDetailsToForm(this.emissionsLists.energy, energyData),
         ),
       );
-      yearlyInfo.vehicleFuels1?.forEach((vehicleData1) => {
+      yearlyInfo.M1_emissions?.vehicleFuels1?.forEach((vehicleData1) => {
         M1EmissionsYearForm?.controls.vehicleFuels1.push(
           this.addDataDetailsToForm(
             this.emissionsLists.vehicleFuels1,
@@ -141,7 +174,7 @@ export class M1PageComponent extends PageComponentAbstract implements OnInit {
           ),
         );
       });
-      yearlyInfo.vehicleFuels2?.forEach((vehicleData2) => {
+      yearlyInfo.M1_emissions?.vehicleFuels2?.forEach((vehicleData2) => {
         M1EmissionsYearForm?.controls.vehicleFuels2.push(
           this.addDataDetailsToForm(
             this.emissionsLists.vehicleFuels2,
@@ -149,7 +182,7 @@ export class M1PageComponent extends PageComponentAbstract implements OnInit {
           ),
         );
       });
-      yearlyInfo.vehicleFuels3?.forEach((vehicleData3) => {
+      yearlyInfo.M1_emissions?.vehicleFuels3?.forEach((vehicleData3) => {
         M1EmissionsYearForm?.controls.vehicleFuels3.push(
           this.addDataDetailsToForm(
             this.emissionsLists.vehicleFuels3,
@@ -157,14 +190,16 @@ export class M1PageComponent extends PageComponentAbstract implements OnInit {
           ),
         );
       });
-      yearlyInfo.dispersedEmissions?.forEach((dispersedEmissionsData) => {
-        M1EmissionsYearForm?.controls.dispersedEmissions.push(
-          this.addDataDetailsToForm(
-            this.emissionsLists.dispersedEmissions,
-            dispersedEmissionsData,
-          ),
-        );
-      });
+      yearlyInfo.M1_emissions?.dispersedEmissions?.forEach(
+        (dispersedEmissionsData) => {
+          M1EmissionsYearForm?.controls.dispersedEmissions.push(
+            this.addDataDetailsToForm(
+              this.emissionsLists.dispersedEmissions,
+              dispersedEmissionsData,
+            ),
+          );
+        },
+      );
     });
   }
 

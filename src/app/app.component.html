@@ -2,8 +2,16 @@
   <div class="spinner"></div>
   <div class="overlay"></div>
 }
+<div class="header">
+  <app-progress-bar
+    (pageIdEmitter)="pageIndex = $event"
+    [pageIndex]="pageIndex"
+  ></app-progress-bar>
+</div>
+
 <div class="main-container row">
-  <div class="col-md-6 order-md-1 order-2 left" [@slideAnimation]="pageIndex">
+  <div class="col-md-3 left d-none d-md-block"></div>
+  <div class="col-md-6 right">
     @switch (pageIndex) {
       @case (Pages.ORGANIZATION) {
         <app-page-one></app-page-one>
@@ -36,12 +44,6 @@
         </button>
       }
     </div>
-  </div>
-  <div class="col-md-6 order-md-2 order-1 right">
-    <app-progress-bar
-      [pageIndex]="pageIndex"
-      (pageIdEmitter)="pageIndex = $event"
-    ></app-progress-bar>
   </div>
 </div>
 <app-footer></app-footer>

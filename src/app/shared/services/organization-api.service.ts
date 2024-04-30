@@ -11,11 +11,9 @@ export class OrganizationApiService {
   private http = inject(HttpClient);
   private apiServerUrl = environment.apiBaseUrl;
 
-  constructor() {}
-
-  getOrganization(id: number): Observable<OrganizationData[]> {
+  getOrganizations(): Observable<OrganizationData[]> {
     return this.http.get<OrganizationData[]>(
-      `${this.apiServerUrl}/organization/find/` + id,
+      `${this.apiServerUrl}/organization/all`,
     );
   }
 

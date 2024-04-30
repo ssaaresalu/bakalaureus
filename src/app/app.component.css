@@ -5,6 +5,7 @@
 
 .row {
   --bs-gutter-x: 0;
+  background-color: #fffffc;
 }
 
 .btn--btns-left {
@@ -26,6 +27,11 @@
   padding: 2rem;
 }
 
-.right {
-  background-color: #2a2a2a;
+.left {
+  background-color: #757780;
+}
+
+.header {
+  background-color: #001011;
+  padding: 2rem;
 }

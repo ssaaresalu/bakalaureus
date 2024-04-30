@@ -8,7 +8,8 @@
     "Name": "Organisatsiooni/ettevõtte nimi:",
     "ReportingPeriodStart": "KHG jalajälje aruandlusperioodi algusaasta:",
     "ReportingPeriodEnd": "KHG jalajälje aruandlusperioodi lõppaasta:",
-    "RelativeIndicator": "Muud andmed:",
+    "RelativeIndicator": "Töötajate arv:",
+    "AllOrganizationsLabel": "Valige varasemalt lisatud ettevõtte:",
     "Units": {
       "StructuralUnits": "Organisatsiooni ulatuse määratlemine:",
       "UnitNumber": "Üksuse number:",
@@ -41,6 +42,7 @@
       "VehicleType1": "Kütuseliik ja koguse ühik",
       "VehicleType2": "Kütuseliik, sõidukitüüp ja kütuse koguse ühik",
       "VehicleType3": "Kütuseliik ja sõiduauto tüüp",
+      "Distance": "Läbisõit (km)",
       "DispersedEmissions": "Kasutatav F-gaas"
     }
   },
@@ -147,7 +149,21 @@
     "ProgressBar_0": "Organisatsioon",
     "ProgressBar_1": "M1 andmed",
     "ProgressBar_2": "M2 andmed",
-    "ProgressBar_3": "M3 andmed",
-    "ProgressBar_4": "Tulemused"
+    "ProgressBar_3": "M3 andmed - transport",
+    "ProgressBar_4": "M3 andmed - muu",
+    "ProgressBar_5": "Tulemused"
+  },
+  "ResultsPage": {
+    "Header": "Tulemused",
+    "M3Header": "Mõjuala 3",
+    "M3Transport": "Kauba- või inimeste veoks sisseostetud transport",
+    "M3BusinessTrips": "Töötajate tööreisid",
+    "VehicleFuels": "Sõidukikütuste ülesvoolu KHG heide",
+    "WorkHomeTransport": "Töötajate tööle-koju / koju-tööle liikumine",
+    "Products": "Ostetud / müüdud tooted",
+    "M1Total": "Mõjuala 1 kokku",
+    "M2Total": "Mõjuala 2 kokku",
+    "M3Total": "Mõjuala 3 kokku",
+    "TotalEmissions": "KHG jalajälg kokku"
   }
 }

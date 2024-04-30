@@ -1,1 +1,272 @@
-<p>results works!</p>
+<h2 class="h2">{{ "ResultsPage.Header" | translate }}</h2>
+<hr />
+<h3 class="h3">
+  {{ "Organization.Name" | translate }} {{ organizationData.name }}
+</h3>
+<hr />
+@for (
+  yearlyInfo of emissionsData.organizationEmissionsYearlyInfo;
+  track yearlyInfo;
+  let i = $index
+) {
+  <div [hidden]="i !== currentYearIndex" class="mb-5">
+    <p class="heading-3">{{ yearlyInfo.year }}</p>
+    <div class="container mb-4">
+      <h2 class="heading-3">{{ "PageTwo.Heading" | translate }}</h2>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "PageTwo.EnergyHeading" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{ yearlyInfo.M1_emissions?.totalEnergyEmissions | roundTons }} t
+            CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "PageTwo.VehicleFuelsHeading" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{ yearlyInfo.M1_emissions?.totalVehicleEmissions | roundTons }} t
+            CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "PageTwo.DispersedEmissionsHeading" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{
+              yearlyInfo.M1_emissions?.totalDispersedEmissions | roundTons
+            }}
+            t CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "ResultsPage.M1Total" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{ yearlyInfo.M1_emissions?.totalEmissions | roundTons }} t CO2
+            ekv</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="container mb-4">
+      <h2 class="heading-3">{{ "PageThree.Heading" | translate }}</h2>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "PageThree.BoughtElectricalHeading" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{
+              yearlyInfo.M2_emissions?.totalBoughtElectricalEnergyEmissions
+                | roundTons
+            }}
+            t CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "PageThree.BoughtHeatHeading" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{
+              yearlyInfo.M2_emissions?.totalBoughtHeatEnergyEmissions
+                | roundTons
+            }}
+            t CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "ResultsPage.M2Total" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{ yearlyInfo.M2_emissions?.totalEmissions | roundTons }} t CO2
+            ekv</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="container mb-4">
+      <h2 class="heading-3">{{ "ResultsPage.M3Header" | translate }}</h2>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "ResultsPage.M3Transport" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{
+              yearlyInfo.M3_transportEmissions?.totalEmissions | roundTons
+            }}
+            t CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "ResultsPage.M3BusinessTrips" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{
+              yearlyInfo.M3_otherEmissions?.totalBusinessTripEmissions
+                | roundTons
+            }}
+            t CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "ResultsPage.WorkHomeTransport" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{
+              yearlyInfo.M3_otherEmissions?.totalWorkHomeTransportEmissions
+                | roundTons
+            }}
+            t CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "PageFive.HomeOffice" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{
+              yearlyInfo.M3_otherEmissions?.totalHomeOfficeEmissions | roundTons
+            }}
+            t CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "PageFive.WasteHeading" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{
+              yearlyInfo.M3_otherEmissions?.totalWasteEmissions | roundTons
+            }}
+            t CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "ResultsPage.Products" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{
+              yearlyInfo.M3_otherEmissions?.totalProductsEmissions | roundTons
+            }}
+            t CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "PageFive.InvestmentsHeading" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{
+              yearlyInfo.M3_otherEmissions?.totalInvestmentEmissions | roundTons
+            }}
+            t CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "ResultsPage.VehicleFuels" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{
+              yearlyInfo.M3_otherEmissions?.totalVehicleEmissions | roundTons
+            }}
+            t CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "PageFive.DiffuseEmissionHeading" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{
+              yearlyInfo.M3_otherEmissions?.totalDiffuseEmissions | roundTons
+            }}
+            t CO2 ekv</span
+          >
+        </div>
+      </div>
+      <div class="row table-row">
+        <div class="col-sm-6">
+          {{ "ResultsPage.M3Total" | translate }}
+        </div>
+        <div class="col-sm-6">
+          <span class="fw-500"
+            >{{ yearlyInfo.M3TotalEmissions | roundTons }} t CO2 ekv</span
+          >
+        </div>
+      </div>
+    </div>
+    <div class="row table-row">
+      <div class="col-sm-6">
+        {{ "ResultsPage.TotalEmissions" | translate }}
+      </div>
+      <div class="col-sm-6">
+        <span class="fw-500"
+          >{{ yearlyInfo.totalOrganizationEmissions | roundTons }} t CO2
+          ekv</span
+        >
+      </div>
+    </div>
+  </div>
+}
+@if (organisationEmissions.organizationEmissionsYearlyInfo.length > 0) {
+  <div class="mb-3">
+    <button
+      type="button"
+      class="btn btn-secondary btn-sm me-3"
+      (click)="showPrevYear()"
+      [disabled]="currentYearIndex === 0"
+    >
+      Previous
+    </button>
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      (click)="showNextYear()"
+      [disabled]="
+        currentYearIndex >=
+        organisationEmissions.organizationEmissionsYearlyInfo.length - 1
+      "
+    >
+      Next
+    </button>
+  </div>
+}

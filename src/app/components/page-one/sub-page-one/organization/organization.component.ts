@@ -19,6 +19,13 @@ import { DropdownComponent } from '../../../../shared/components/dropdown/dropdo
 import { AREAS, CATEGORIES } from '../../../../util/lists';
 import { OrganizationApiService } from '../../../../shared/services/organization-api.service';
 import { PageComponentAbstract } from '../../../../shared/components/page-component-abstract';
+import {
+  GhgAssessmentScopes,
+  OrganizationData,
+  OrganizationYearlyInfo,
+  StructuralUnits,
+} from '../../../../interface/organization-data';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-organization',
@@ -43,6 +50,9 @@ export class OrganizationComponent
   readonly MAX_NR_OF_UNITS = 10;
   protected readonly categoriesList = CATEGORIES;
   protected readonly areas = AREAS;
+  protected allOrganizationNames: string[] = [];
+  protected allOrganizations: OrganizationData[] = [];
+  protected chosenOrganization: OrganizationData = {} as OrganizationData;
 
   organizationForm = new FormGroup<OrganizationForm>({
     id: this.fb.control<number>(0),
@@ -53,10 +63,79 @@ export class OrganizationComponent
   });
 
   ngOnInit(): void {
+    this.loadOrganizations();
+    this.initOrganizationInfo();
     this.subscribeToReportingPeriods();
   }
 
-  onOrganizationSubmit() {
+  private loadOrganizations(): void {
+    this.organizationApiService
+      .getOrganizations()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((organizationsData) => {
+        this.allOrganizationNames = organizationsData
+          .map((data) => data.name ?? '')
+          .filter((name) => name !== this.organizationData.name);
+        this.allOrganizations = organizationsData;
+      });
+  }
+
+  private initOrganizationInfo(): void {
+    this.organizationForm.controls.name.setValue(
+      this.organizationData.name ?? '',
+    );
+    this.organizationForm.controls.id.setValue(this.organizationData.id ?? 0);
+    this.organizationForm.controls.reportingPeriodStart.setValue(
+      this.organizationData.reportingPeriodStart ?? '',
+    );
+    this.organizationForm.controls.reportingPeriodEnd.setValue(
+      this.organizationData.reportingPeriodEnd ?? '',
+    );
+    this.organizationData.yearlyInfo?.forEach((yearlyInfo) => {
+      this.organizationForm.controls.yearlyInfo.push(
+        this.newYearlyInfoForm(yearlyInfo),
+      );
+    });
+  }
+
+  private newYearlyInfoForm(
+    info: OrganizationYearlyInfo,
+  ): OrganizationYearlyInfoForm {
+    return this.fb.group({
+      year: info.year ?? '',
+      nrOfEmployees: info.nrOfEmployees ?? '',
+      structuralUnits: this.fb.array(
+        info.structuralUnits?.map((unitInfo) =>
+          this.setStructuralUnits(unitInfo),
+        ) ?? [],
+      ),
+      ghgAssessmentScopes: this.fb.array(
+        info.ghgAssessmentScopes?.map((assessmentInfo) =>
+          this.setGhgAssessmentScopes(assessmentInfo),
+        ) ?? [],
+      ),
+    });
+  }
+
+  private setStructuralUnits(info: StructuralUnits): StructuralUnitForm {
+    return this.fb.group({
+      number: info.number ?? '',
+      name: info.name ?? '',
+      location: info.location ?? '',
+    });
+  }
+
+  private setGhgAssessmentScopes(
+    info: GhgAssessmentScopes,
+  ): GhgAssessmentScopeForm {
+    return this.fb.group({
+      unitNumber: info.unitNumber ?? '',
+      influenceArea: info.influenceArea ?? '',
+      category: info.category ?? '',
+    });
+  }
+
+  onOrganizationSubmit(): void {
     this.organizationApiService
       .saveOrganization(this.organizationForm.value)
       .subscribe((organization) => {
@@ -66,10 +145,7 @@ export class OrganizationComponent
             year: yi.year,
           }));
           this.dataService.organizationEmissions$.next({
-            M1_emissions: { yearlyInfo: emissionsInfo },
-            M2_emissions: { yearlyInfo: emissionsInfo },
-            M3_transportEmissions: { yearlyInfo: emissionsInfo },
-            M3_otherEmissions: { yearlyInfo: emissionsInfo },
+            organizationEmissionsYearlyInfo: emissionsInfo,
           });
         }
       });
@@ -83,13 +159,13 @@ export class OrganizationComponent
     return this.currentYearIndex > 0;
   }
 
-  showNextYear() {
+  showNextYear(): void {
     if (this.canShowNextYear) {
       this.currentYearIndex++;
     }
   }
 
-  showPrevYear() {
+  showPrevYear(): void {
     if (this.canShowPrevYear) {
       this.currentYearIndex--;
     }
@@ -100,20 +176,22 @@ export class OrganizationComponent
     return [...Array(unitsLength)].map((_, i) => (i + 1).toString());
   }
 
-  private subscribeToReportingPeriods() {
+  private subscribeToReportingPeriods(): void {
     this.organizationForm
       .get('reportingPeriodStart')!
-      .valueChanges.subscribe(() => {
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
         this.updateYearRangeBlocks();
       });
     this.organizationForm
       .get('reportingPeriodEnd')!
-      .valueChanges.subscribe(() => {
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
         this.updateYearRangeBlocks();
       });
   }
 
-  private updateYearRangeBlocks() {
+  private updateYearRangeBlocks(): void {
     const startYear = parseInt(
       this.organizationForm.get('reportingPeriodStart')!.value,
     );
@@ -132,7 +210,7 @@ export class OrganizationComponent
     }
   }
 
-  private initYearlyInfoForm() {
+  private initYearlyInfoForm(): void {
     while (this.organizationForm.controls.yearlyInfo.length !== 0) {
       (this.organizationForm.get('yearlyInfo') as FormArray).removeAt(0);
     }
@@ -143,17 +221,19 @@ export class OrganizationComponent
         structuralUnits: new FormArray<StructuralUnitForm>([]),
         ghgAssessmentScopes: new FormArray<GhgAssessmentScopeForm>([]),
       });
-      this.organizationForm.controls.yearlyInfo.push(
-        yearlyInfoFormGroup as OrganizationYearlyInfoForm,
-      );
+      if (!this.chosenOrganization.name) {
+        this.organizationForm.controls.yearlyInfo.push(
+          yearlyInfoFormGroup as OrganizationYearlyInfoForm,
+        );
+      }
     });
   }
 
-  get yearlyInfo() {
+  get yearlyInfo(): FormArray<OrganizationYearlyInfoForm> {
     return this.organizationForm.controls.yearlyInfo;
   }
 
-  addStructuralUnit(yearGroup: OrganizationYearlyInfoForm) {
+  addStructuralUnit(yearGroup: OrganizationYearlyInfoForm): void {
     if (yearGroup.controls.structuralUnits) {
       const data = new FormGroup({
         number: this.fb.control<string>(
@@ -166,11 +246,14 @@ export class OrganizationComponent
     }
   }
 
-  removeStructuralUnit(yearGroup: OrganizationYearlyInfoForm, index: number) {
+  removeStructuralUnit(
+    yearGroup: OrganizationYearlyInfoForm,
+    index: number,
+  ): void {
     yearGroup.controls.structuralUnits?.removeAt(index);
   }
 
-  addGhgAssessmentScope(yearGroup: OrganizationYearlyInfoForm) {
+  addGhgAssessmentScope(yearGroup: OrganizationYearlyInfoForm): void {
     const data = new FormGroup({
       unitNumber: this.fb.control<string>(''),
       influenceArea: this.fb.control<string>(''),
@@ -179,7 +262,18 @@ export class OrganizationComponent
     yearGroup.controls.ghgAssessmentScopes?.push(data);
   }
 
-  removeGhgAssessmentScope(yearGroup: OrganizationYearlyInfoForm, i: number) {
+  removeGhgAssessmentScope(
+    yearGroup: OrganizationYearlyInfoForm,
+    i: number,
+  ): void {
     yearGroup.controls.ghgAssessmentScopes?.removeAt(i);
+  }
+
+  protected fillFieldsByChosenOrganization(organizationName: string): void {
+    this.chosenOrganization =
+      this.allOrganizations.find((org) => org.name === organizationName) ??
+      ({} as OrganizationData);
+    this.organizationData = this.chosenOrganization;
+    this.initOrganizationInfo();
   }
 }

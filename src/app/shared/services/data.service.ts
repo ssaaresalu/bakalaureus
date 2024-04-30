@@ -5,11 +5,7 @@ import { EmissionLists } from '../../interface/emission-lists';
 import { emptyEmissionLists } from '../../util/data-util';
 import { OrganizationData } from '../../interface/organization-data';
 import { ListValueItem } from '../../interface/list-value-item';
-import { M1Emissions } from '../../interface/m1-emissions';
-import { M2Emissions } from '../../interface/m2-emissions';
-import { M3TransportEmissions } from '../../interface/m3-transport-emissions';
-import { M3OtherItems } from '../../interface/m3-other-items';
-import { OrganisationEmissions } from '../../interface/organisation-emissions';
+import { OrganizationEmissions } from '../../interface/organization-emissions';
 
 @Injectable({
   providedIn: 'root',
@@ -23,27 +19,24 @@ export class DataService {
     {} as OrganizationData,
   );
 
+  allOrganizationsData$ = new BehaviorSubject<OrganizationData[]>(
+    [] as OrganizationData[],
+  );
+
   capacityList$: BehaviorSubject<ListValueItem[]> = new BehaviorSubject<
     ListValueItem[]
   >([]);
 
-  M1_emissionsKg = new BehaviorSubject<number>(0);
-  M2_emissionsKg = new BehaviorSubject<number>(0);
-  M3_emissionsKg = new BehaviorSubject<number>(0);
-
-  M1EmissionsInfo$ = new BehaviorSubject<M1Emissions>({} as M1Emissions);
-  M2EmissionsInfo$ = new BehaviorSubject<M2Emissions>({} as M2Emissions);
-  M3TransportEmissionsInfo$ = new BehaviorSubject<M3TransportEmissions>(
-    {} as M3TransportEmissions,
-  );
-  M3OtherEmissionsInfo$ = new BehaviorSubject<M3OtherItems>({} as M3OtherItems);
-
-  organizationEmissions$ = new BehaviorSubject<OrganisationEmissions>(
-    {} as OrganisationEmissions,
+  organizationEmissions$ = new BehaviorSubject<OrganizationEmissions>(
+    {} as OrganizationEmissions,
   );
 
   get organizationData(): OrganizationData {
     return this.organizationData$.value;
+  }
+
+  set organizationData(org: OrganizationData) {
+    this.organizationData$.next(org);
   }
 
   get emissionsLists(): EmissionLists {
@@ -56,7 +49,7 @@ export class DataService {
     });
   }
 
-  saveFields(savedFootprintData: OrganisationEmissions) {
+  saveFields(savedFootprintData: OrganizationEmissions) {
     this.organizationEmissions$.next(savedFootprintData);
     console.log(this.organizationEmissions$.value);
   }

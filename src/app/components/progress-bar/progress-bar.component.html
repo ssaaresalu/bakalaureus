@@ -1,7 +1,7 @@
 <div class="progress-bar-container">
   <div
-    class="progress-bar-step"
-    *ngFor="let section of [].constructor(5); let i = index"
+    class="progress-bar-step text-truncate"
+    *ngFor="let section of [].constructor(6); let i = index"
     [id]="'progress-bar-step_' + i"
     (click)="navigate(i)"
     (keydown.space)="navigate(i)"

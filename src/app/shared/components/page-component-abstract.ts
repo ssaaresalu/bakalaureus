@@ -27,6 +27,7 @@ export abstract class PageComponentAbstract implements OnDestroy {
   public dataService = inject(DataService);
   public emissionsLists = this.dataService.emissionsLists;
   public organizationData = this.dataService.organizationData;
+  public emissionsData = this.dataService.organizationEmissions$.value;
 
   constructor(protected fb: NonNullableFormBuilder) {}
 

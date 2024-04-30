@@ -5,7 +5,6 @@ export interface M3OtherItems {
 }
 
 export interface M3OtherItemsYearlyInfo {
-  year?: string;
   businessTripsSmall?: EmissionsDetails[];
   businessTripsLarge?: EmissionsDetails[];
   workHomeTransportSmall?: EmissionsDetails[];
@@ -16,6 +15,15 @@ export interface M3OtherItemsYearlyInfo {
   vehicleFuels?: VehicleFuelEmissions[];
   diffuseEmissions?: DiffuseEmissions[];
   investments?: Investments[];
+  totalBusinessTripEmissions?: number;
+  totalWorkHomeTransportEmissions?: number;
+  totalHomeOfficeEmissions?: number;
+  totalWasteEmissions?: number;
+  totalProductsEmissions?: number;
+  totalInvestmentEmissions?: number;
+  totalVehicleEmissions?: number;
+  totalDiffuseEmissions?: number;
+  totalEmissions?: number;
 }
 
 export interface HomeOfficeEmissions {

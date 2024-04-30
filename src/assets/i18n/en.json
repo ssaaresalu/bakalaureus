@@ -1,6 +1,169 @@
 {
   "Introductory": {
-    "Heading": "Welcome to Rohemõõdik",
-    "Objective": "Rohemõõdik is a calculator based on the GHG footprint calculation model made by the Ministry of Climate, which offers a universal framework for organizations to calculate the greenhouse gas (GHG) footprint"
+    "Heading": "Welcome to the Green Measure",
+    "Objective": "This model provides a universal framework for organizations to calculate their greenhouse gas (GHG) footprint. The model relies on the most commonly used international (primarily Greenhouse Gas Protocol, https://ghgprotocol.org) GHG footprint calculation methodological guidelines and standards. Additionally, the model considers Estonia-centric assumptions and conditions (including specific emission factors), which create a unified methodological basis and dataset for Estonian organizations to calculate their GHG footprint. Alongside the calculation model, a GHG footprint assessment guidance document has been compiled, which provides more detailed guidelines and tips for assessing GHG footprints and reporting the results in organizations. Both the GHG footprint calculation model and the corresponding guide were compiled by the Stockholm Environment Institute's Tallinn Center on behalf of the Ministry of the Environment."
+  },
+  "Organization": {
+    "Heading": "Organization Data and Footprint Assessment Scope",
+    "Name": "Organization/company name:",
+    "ReportingPeriodStart": "Start year of the GHG footprint reporting period:",
+    "ReportingPeriodEnd": "End year of the GHG footprint reporting period:",
+    "RelativeIndicator": "Number of employees:",
+    "AllOrganizationsLabel": "Select a previously added company:",
+    "Units": {
+      "StructuralUnits": "Defining the scope of the organization:",
+      "UnitNumber": "Unit number:",
+      "AddUnit": "Add unit",
+      "RemoveUnit": "Remove unit",
+      "UnitName": "Unit name:",
+      "UnitLocation": "Location (address, city):"
+    },
+    "Scope": {
+      "AssessmentScope": "Defining the scope of GHG footprint",
+      "UnitNumber": "Unit number:",
+      "AreaOfInfluence": "Area of Influence",
+      "Category": "Category (activity/source of emissions)",
+      "AddScope": "Add",
+      "RemoveUnit": "Remove"
+    }
+  },
+  "PageTwo": {
+    "Heading": "Area of Influence 1",
+    "EnergyHeading": "Energy produced by the organization",
+    "VehicleFuelsHeading": "Fuel for organization's vehicles",
+    "AddRow": "Add entry",
+    "RemoveRow": "Remove entry",
+    "VehicleFuelsHeading1": "GHG emissions calculated based on fuel type and consumed fuel quantity",
+    "VehicleFuelsHeading2": "GHG emissions calculated based on fuel type, type of road vehicle, and consumed fuel quantity",
+    "VehicleFuelsHeading3": "GHG emissions calculated based on car type, fuel type, and mileage",
+    "DispersedEmissionsHeading": "GHG emissions from the use of fluorinated greenhouse gases",
+    "ColumnHeader": {
+      "EnergyType": "Type of fuel/energy",
+      "VehicleType1": "Fuel type and quantity unit",
+      "VehicleType2": "Fuel type, vehicle type, and quantity unit",
+      "VehicleType3": "Fuel type and car type",
+      "Distance": "Distance (km)",
+      "DispersedEmissions": "F-gas used"
+    }
+  },
+  "PageThree": {
+    "Heading": "Area of Influence 2",
+    "BoughtElectricalHeading": "Purchased electricity",
+    "BoughtHeatHeading": "Purchased heat energy",
+    "AddRow": "Add entry",
+    "RemoveRow": "Remove entry",
+    "ColumnHeader": {
+      "BoughtElectrical": "Renewable or conventional electricity",
+      "BoughtHeat": "Origin of heat energy"
+    }
+  },
+  "PageFour": {
+    "Heading": "Area of Influence 3 - Transport",
+    "BoughtTransportEmissionsHeading": "GHG emissions from purchased road transport",
+    "Vans": "Van",
+    "RigidTrucks": "Rigid truck",
+    "ArticulatedTrucks": "Articulated truck",
+    "ArticulatedRigidTrucks": "Truck type and size unknown",
+    "TransportEmissionsHeading": "GHG emissions from people transport",
+    "TrainHeading": "GHG emissions from purchased rail transport",
+    "PlaneHeading": "GHG emissions from purchased air transport",
+    "ShipHeading": "GHG emissions from purchased maritime transport",
+    "ColumnHeader": {
+      "Vans": "Van fuel and transport unit",
+      "RigidTrucks": "Rigid truck: size (gross weight), fuel and transport unit ",
+      "ArticulatedTrucks": "Articulated truck: size (gross weight), fuel and transport unit ",
+      "ArticulatedRigidTrucks": "Unknown truck type and size, fuel and transport unit",
+      "TransportBus": "Vehicle type",
+      "Train": "Train type",
+      "Plane": "Aircraft type",
+      "Ship": "Ship type"
+    }
+  },
+  "PageFive": {
+    "Heading": "M3",
+    "BusinessTripsHeading": "Business trips",
+    "BusinessTripSmallVehicles": "Car, motorcycle, moped, taxi",
+    "BusinessTripLargeVehicles": "Bus, rail transport, airplane, ship",
+    "WorkHomeHeading": "Work-home / Home-work",
+    "WorkHomeSmallHeading": "Car, bicycle, taxi, motorcycle, moped, on foot",
+    "WorkHomeLargeHeading": "Public transport (bus, tram, trolley, train, taxi)",
+    "WasteHeading": "Waste",
+    "HomeOffice": "Home office",
+    "ProductsHeading": "Purchased / sold products",
+    "VehicleFuelsHeading": "Vehicle fuels",
+    "DiffuseEmissionHeading": "Diffuse emissions",
+    "InvestmentsHeading": "Financial investments",
+    "ColumnHeader": {
+      "BusinessTripsSmall": "Vehicle type and fuel type",
+      "BusinessTripsLarge": "Vehicle type and fuel type",
+      "WorkHomeSmall": "Mode of transport and fuel type",
+      "WorkHomeLarge": "Vehicle type",
+      "Waste": "Type of waste",
+      "UsedDevice": "Used devices",
+      "AmountOfDevices": "Number of devices",
+      "DeviceElectricityAmount": "Average electricity consumption of devices (W)",
+      "AmountOfHours": "Number of home office working hours (h)",
+      "ElectricityPackage": "Electricity package",
+      "Amount": "Amount (kWh)",
+      "BoughtOrSold": "Is the product purchased or sold?:",
+      "BoughtDevice": "Purchased goods and services",
+      "SoldDevice": "Sold goods and services",
+      "AmountOfProduct": "Amount (kg or pcs)",
+      "Price": "Cost (€)",
+      "ProductEmissionFactor": "Specific emission factor",
+      "VehicleFuelType": "Type of vehicle:",
+      "VehicleFuel": "Fuel",
+      "AmountOfFuel": "Fuel amount (l or kg)",
+      "DistanceOfVehicle": "Vehicle mileage (km)",
+      "DiffuseEmissionSource": "Source of diffuse emissions",
+      "DiffuseEmissionAmount": "Amount of production or product",
+      "DiffuseEmissionUnit": "Unit",
+      "CalculationMethod": "Method:",
+      "M1_M2_Emissions": "Scope 1 and 2 emissions of the investment or financed project",
+      "EquityShare": "Equity share (%)",
+      "CompanyTotalIncome": "Total income of the invested company (€)",
+      "ProjectBuildingCost": "Project construction cost in the reporting year (€)",
+      "ProjectProfit": "Project revenue in the reporting year (€)",
+      "PercentageOfTotalExpenses": "Company's share of the project's total expenses (%)",
+      "PredictedYearlyEmissions": "Projected annual emissions of the project (t CO2 eq)",
+      "PredictedLifespanOfProject": "Expected lifespan of the project",
+      "InvestedObject": "Type of invested object"
+    }
+  },
+  "ColumnHeader": {
+    "UnitNumber": "Unit number",
+    "Amount": "Amount",
+    "ModelEmissions": "Are you using the calculation model's specific emission factor?",
+    "EmissionFactor": "Model specific emission factor:",
+    "OtherEmissionFactor": "Other specific emission factor (enter here):",
+    "EmissionsKG": "GHG emissions: ",
+    "EmissionsT": "GHG emissions: ",
+    "Capacity": "Truck capacity",
+    "Distance": "Distance (km)",
+    "ProductAmount": "Product amount (km)",
+    "TotalDistanceAmount": "Total tonne-km or km of transport service",
+    "WorkHomeType": "Direction",
+    "WasteMass": "Amount of waste (t)"
+  },
+  "Progress": {
+    "ProgressBar_0": "Organization",
+    "ProgressBar_1": "M1 data",
+    "ProgressBar_2": "M2 data",
+    "ProgressBar_3": "M3 data - transport",
+    "ProgressBar_4": "M3 data - other",
+    "ProgressBar_5": "Results"
+  },
+  "ResultsPage": {
+    "Header": "Results",
+    "M3Header": "Scope 3",
+    "M3Transport": "Transport of goods or people purchased",
+    "M3BusinessTrips": "Employee business trips",
+    "VehicleFuels": "Upstream GHG emissions of vehicle fuels",
+    "WorkHomeTransport": "Employee work-home / home-work commuting",
+    "Products": "Purchased / sold products",
+    "M1Total": "Total Scope 1",
+    "M2Total": "Total Scope 2",
+    "M3Total": "Total Scope 3",
+    "TotalEmissions": "Total GHG footprint"
   }
 }

@@ -60,3 +60,18 @@ body {
   padding: 1rem;
   border-radius: 0.3rem;
 }
+
+.table-row {
+  border-bottom: 1px solid #e9e9e9;
+
+  .col-sm-6 {
+    padding: 1rem;
+  }
+}
+
+.heading-3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.75rem;
+  color: #333;
+}

@@ -51,7 +51,18 @@ import {
   ProductsEmissions,
   VehicleFuelEmissions,
 } from '../../../interface/m3-other-items';
-import { OrganisationEmissions } from '../../../interface/organisation-emissions';
+import {
+  OrganizationEmissions,
+  OrganizationEmissionsYearlyInfo,
+} from '../../../interface/organization-emissions';
+import { EmissionsDetails } from '../../../interface/emissions-details';
+
+export type M3OtherItemsDetails =
+  | HomeOfficeEmissions
+  | ProductsEmissions
+  | VehicleFuelEmissions
+  | DiffuseEmissions
+  | Investments;
 
 @Component({
   selector: 'app-m3-page-two-component',
@@ -78,8 +89,6 @@ export class M3PageTwoComponentComponent
   extends PageComponentAbstract
   implements OnInit
 {
-  M3OtherItems =
-    this.dataService.organizationEmissions$.value.M3_otherEmissions;
   M3OtherItemsForm = new FormGroup<M3OtherItemsForm>({
     yearlyInfo: new FormArray<M3OtherItemsYearForm>([]),
   });
@@ -128,59 +137,107 @@ export class M3PageTwoComponentComponent
     this.dataService.saveFields(this.savedFootprintData);
   }
 
-  protected get savedFootprintData(): OrganisationEmissions {
+  protected get savedFootprintData(): OrganizationEmissions {
     return {
-      ...this.dataService.organizationEmissions$.value,
-      M3_otherEmissions: {
-        yearlyInfo: this.getYearlyInfoValues(),
-      },
+      ...this.emissionsData,
+      organizationEmissionsYearlyInfo:
+        this.emissionsData.organizationEmissionsYearlyInfo.map((yearInfo) => {
+          const info = {
+            ...yearInfo,
+            M3_otherEmissions: this.getYearlyInfoValues(yearInfo),
+          };
+          info.M3TotalEmissions =
+            (info.M3_otherEmissions.totalEmissions ?? 0) +
+            (yearInfo.M3_transportEmissions?.totalEmissions ?? 0);
+          info.totalOrganizationEmissions =
+            (info.M3TotalEmissions ?? 0) +
+            (yearInfo.M1_emissions?.totalEmissions ?? 0) +
+            (yearInfo.M2_emissions?.totalEmissions ?? 0);
+          return info;
+        }),
     };
   }
 
-  private getYearlyInfoValues(): M3OtherItemsYearlyInfo[] {
-    return this.M3OtherItemsForm.controls.yearlyInfo.controls.map(
-      (yearlyInfoForm) => {
-        return {
-          ...yearlyInfoForm.value,
-          year: yearlyInfoForm.value.year ?? '',
-          businessTripsSmall: this.getDetailsFormValues(
-            yearlyInfoForm.controls.businessTripsSmall,
-          ),
-          businessTripsLarge: this.getDetailsFormValues(
-            yearlyInfoForm.controls.businessTripsLarge,
-          ),
-          workHomeTransportSmall: this.getDetailsFormValues(
-            yearlyInfoForm.controls.workHomeTransportSmall,
-          ),
-          workHomeTransportLarge: this.getDetailsFormValues(
-            yearlyInfoForm.controls.workHomeTransportLarge,
-          ),
-          waste: this.getDetailsFormValues(yearlyInfoForm.controls.waste),
-          homeOffice: this.getHomeOfficeValues(
-            yearlyInfoForm.controls.homeOffice,
-          ),
-          products: this.getProductsValues(yearlyInfoForm.controls.products),
-          vehicleFuels: this.getVehicleFuelsValues(
-            yearlyInfoForm.controls.vehicleFuels,
-          ),
-          diffuseEmissions: this.getDiffuseEmissionsValues(
-            yearlyInfoForm.controls.diffuseEmissions,
-          ),
-          investments: this.getInvestmentsValues(
-            yearlyInfoForm.controls.investments,
-          ),
-        };
-      },
+  private getYearlyInfoValues(
+    yearlyInfoForm: OrganizationEmissionsYearlyInfo,
+  ): M3OtherItemsYearlyInfo {
+    const yearForm = this.M3OtherItemsForm.controls.yearlyInfo.controls.find(
+      (form) => form.controls.year.value === yearlyInfoForm.year,
     );
+    if (yearForm) {
+      const info: M3OtherItemsYearlyInfo = {
+        businessTripsSmall: this.getDetailsFormValues(
+          yearForm.controls.businessTripsSmall,
+        ),
+        businessTripsLarge: this.getDetailsFormValues(
+          yearForm.controls.businessTripsLarge,
+        ),
+        workHomeTransportSmall: this.getDetailsFormValues(
+          yearForm.controls.workHomeTransportSmall,
+        ),
+        workHomeTransportLarge: this.getDetailsFormValues(
+          yearForm.controls.workHomeTransportLarge,
+        ),
+        waste: this.getDetailsFormValues(yearForm.controls.waste),
+        homeOffice: this.getHomeOfficeValues(yearForm.controls.homeOffice),
+        products: this.getProductsValues(yearForm.controls.products),
+        vehicleFuels: this.getVehicleFuelsValues(
+          yearForm.controls.vehicleFuels,
+        ),
+        diffuseEmissions: this.getDiffuseEmissionsValues(
+          yearForm.controls.diffuseEmissions,
+        ),
+        investments: this.getInvestmentsValues(yearForm.controls.investments),
+      };
+      info.totalBusinessTripEmissions =
+        this.sumEmissions(info.businessTripsSmall) +
+        this.sumEmissions(info.businessTripsLarge);
+      info.totalWorkHomeTransportEmissions =
+        this.sumEmissions(info.workHomeTransportSmall) +
+        this.sumEmissions(info.workHomeTransportLarge);
+      info.totalHomeOfficeEmissions = this.sumOtherEmissions(info.homeOffice);
+      info.totalProductsEmissions = this.sumOtherEmissions(info.products);
+      info.totalInvestmentEmissions = this.sumOtherEmissions(info.investments);
+      info.totalVehicleEmissions = this.sumOtherEmissions(info.vehicleFuels);
+      info.totalDiffuseEmissions = this.sumOtherEmissions(
+        info.diffuseEmissions,
+      );
+      info.totalEmissions =
+        info.totalHomeOfficeEmissions +
+        info.totalProductsEmissions +
+        info.totalInvestmentEmissions +
+        info.totalVehicleEmissions +
+        info.totalDiffuseEmissions +
+        info.totalBusinessTripEmissions;
+      yearlyInfoForm.M3TotalEmissions =
+        yearlyInfoForm.M3_transportEmissions?.totalEmissions ?? 0;
+      yearlyInfoForm.M3TotalEmissions += info.totalEmissions;
+      return info;
+    }
+    return {};
   }
 
+  private sumEmissions = (details: EmissionsDetails[] | undefined): number => {
+    return (
+      details?.reduce((acc, detail) => acc + detail.kgCO2Footprint, 0) ?? 0
+    );
+  };
+
+  private sumOtherEmissions = (
+    details: M3OtherItemsDetails[] | undefined,
+  ): number => {
+    return (
+      details?.reduce((acc, detail) => acc + detail.kgCO2Footprint, 0) ?? 0
+    );
+  };
+
   private addValuesToForms(): void {
-    this.M3OtherItems.yearlyInfo.forEach((yearlyInfo) => {
+    this.emissionsData.organizationEmissionsYearlyInfo.forEach((yearlyInfo) => {
       const M3OtherItemsYearForm =
         this.M3OtherItemsForm.controls.yearlyInfo.controls.find(
           (yearForm) => yearForm.controls.year.value === yearlyInfo.year,
         );
-      yearlyInfo.businessTripsSmall?.forEach((smallTrip) =>
+      yearlyInfo.M3_otherEmissions?.businessTripsSmall?.forEach((smallTrip) =>
         M3OtherItemsYearForm?.controls.businessTripsSmall.push(
           this.addDataDetailsToForm(
             this.emissionsLists.businessTripsSmall,
@@ -188,7 +245,7 @@ export class M3PageTwoComponentComponent
           ),
         ),
       );
-      yearlyInfo.businessTripsLarge?.forEach((largeTrip) =>
+      yearlyInfo.M3_otherEmissions?.businessTripsLarge?.forEach((largeTrip) =>
         M3OtherItemsYearForm?.controls.businessTripsLarge.push(
           this.addDataDetailsToForm(
             this.emissionsLists.businessTripsBig,
@@ -196,40 +253,43 @@ export class M3PageTwoComponentComponent
           ),
         ),
       );
-      yearlyInfo.workHomeTransportSmall?.forEach((workHomeSmall) =>
-        M3OtherItemsYearForm?.controls.workHomeTransportSmall.push(
-          this.addDataDetailsToForm(
-            this.emissionsLists.workHomeSmallVehicle,
-            workHomeSmall,
+      yearlyInfo.M3_otherEmissions?.workHomeTransportSmall?.forEach(
+        (workHomeSmall) =>
+          M3OtherItemsYearForm?.controls.workHomeTransportSmall.push(
+            this.addDataDetailsToForm(
+              this.emissionsLists.workHomeSmallVehicle,
+              workHomeSmall,
+            ),
           ),
-        ),
       );
-      yearlyInfo.workHomeTransportLarge?.forEach((workHomeLarge) =>
-        M3OtherItemsYearForm?.controls.workHomeTransportLarge.push(
-          this.addDataDetailsToForm(
-            this.emissionsLists.workHomeBigVehicle,
-            workHomeLarge,
+      yearlyInfo.M3_otherEmissions?.workHomeTransportLarge?.forEach(
+        (workHomeLarge) =>
+          M3OtherItemsYearForm?.controls.workHomeTransportLarge.push(
+            this.addDataDetailsToForm(
+              this.emissionsLists.workHomeBigVehicle,
+              workHomeLarge,
+            ),
           ),
-        ),
       );
-      yearlyInfo.waste?.forEach((wasteData) =>
+      yearlyInfo.M3_otherEmissions?.waste?.forEach((wasteData) =>
         M3OtherItemsYearForm?.controls.waste.push(
           this.addDataDetailsToForm(this.emissionsLists.waste, wasteData),
         ),
       );
-      yearlyInfo.homeOffice?.forEach((homeOffice) =>
+      yearlyInfo.M3_otherEmissions?.homeOffice?.forEach((homeOffice) =>
         this.addHomeOfficeField(M3OtherItemsYearForm, homeOffice),
       );
-      yearlyInfo.products?.forEach((product) =>
+      yearlyInfo.M3_otherEmissions?.products?.forEach((product) =>
         this.addProductField(M3OtherItemsYearForm, product),
       );
-      yearlyInfo.vehicleFuels?.forEach((vehicle) =>
+      yearlyInfo.M3_otherEmissions?.vehicleFuels?.forEach((vehicle) =>
         this.addVehicleFuelsField(M3OtherItemsYearForm, vehicle),
       );
-      yearlyInfo.diffuseEmissions?.forEach((diffuseEmission) =>
-        this.addDiffuseEmissionField(M3OtherItemsYearForm, diffuseEmission),
+      yearlyInfo.M3_otherEmissions?.diffuseEmissions?.forEach(
+        (diffuseEmission) =>
+          this.addDiffuseEmissionField(M3OtherItemsYearForm, diffuseEmission),
       );
-      yearlyInfo.investments?.forEach((investment) =>
+      yearlyInfo.M3_otherEmissions?.investments?.forEach((investment) =>
         this.addInvestmentField(M3OtherItemsYearForm, investment),
       );
     });

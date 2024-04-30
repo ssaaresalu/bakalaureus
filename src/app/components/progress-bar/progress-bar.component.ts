@@ -14,7 +14,6 @@ export class ProgressBarComponent {
   @Output() pageIdEmitter = new EventEmitter<number>();
 
   navigate(i: number) {
-    if (i === 4) this.pageIdEmitter.emit(i + 1);
     this.pageIdEmitter.emit(i);
   }
 }

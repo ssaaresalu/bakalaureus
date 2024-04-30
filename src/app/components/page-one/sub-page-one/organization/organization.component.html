@@ -3,6 +3,20 @@
   <form (ngSubmit)="onOrganizationSubmit()" [formGroup]="organizationForm">
     <div class="row">
       <div class="col-md-4">
+        @if (
+          allOrganizationNames.length > 0 &&
+          organizationForm.controls.name.value === ""
+        ) {
+          <div class="mb-3">
+            <label [for]="'allOrganizations'" class="col-form-label fw-500">
+              {{ "Organization.AllOrganizationsLabel" | translate }}
+            </label>
+            <app-dropdown
+              [simpleList]="allOrganizationNames"
+              (chosenValue)="fillFieldsByChosenOrganization($event)"
+            ></app-dropdown>
+          </div>
+        }
         <div class="mb-3">
           <label [for]="'organizationName'" class="col-form-label fw-500">{{
             "Organization.Name" | translate
