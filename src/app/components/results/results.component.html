@@ -255,7 +255,7 @@
       (click)="showPrevYear()"
       [disabled]="currentYearIndex === 0"
     >
-      Previous
+      {{ "General.PrevYear" | translate }}
     </button>
     <button
       type="button"
@@ -266,7 +266,7 @@
         organisationEmissions.organizationEmissionsYearlyInfo.length - 1
       "
     >
-      Next
+      {{ "General.NextYear" | translate }}
     </button>
   </div>
 }

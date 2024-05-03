@@ -7,13 +7,19 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [NgForOf, NgClass, TranslateModule],
   templateUrl: './progress-bar.component.html',
-  styleUrl: './progress-bar.component.css',
+  styleUrls: ['./progress-bar.component.css'],
 })
 export class ProgressBarComponent {
   @Input() pageIndex = 0;
   @Output() pageIdEmitter = new EventEmitter<number>();
 
   navigate(i: number) {
+    this.pageIndex = i;
     this.pageIdEmitter.emit(i);
+  }
+
+  calculateWidth(): string {
+    // Calculate percentage based on the current pageIndex (0-based index)
+    return `${((this.pageIndex + 1) / 6) * 100}%`;
   }
 }

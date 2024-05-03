@@ -522,7 +522,7 @@
         (click)="showPrevYear()"
         [disabled]="currentYearIndex === 0"
       >
-        Previous
+        {{ "General.PrevYear" | translate }}
       </button>
       <button
         type="button"
@@ -532,9 +532,13 @@
           currentYearIndex >= M3TransportForm.controls.yearlyInfo.length - 1
         "
       >
-        Next
+        {{ "General.NextYear" | translate }}
       </button>
     </div>
   }
-  <button type="submit" class="btn btn-primary">Save</button>
+  <div class="mt-5">
+    <button type="submit" class="btn btn-primary">
+      {{ "General.Save" | translate }}
+    </button>
+  </div>
 </form>

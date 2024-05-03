@@ -1,7 +1,7 @@
 {
   "Introductory": {
     "Heading": "Welcome to the Green Measure",
-    "Objective": "This model provides a universal framework for organizations to calculate their greenhouse gas (GHG) footprint. The model relies on the most commonly used international (primarily Greenhouse Gas Protocol, https://ghgprotocol.org) GHG footprint calculation methodological guidelines and standards. Additionally, the model considers Estonia-centric assumptions and conditions (including specific emission factors), which create a unified methodological basis and dataset for Estonian organizations to calculate their GHG footprint. Alongside the calculation model, a GHG footprint assessment guidance document has been compiled, which provides more detailed guidelines and tips for assessing GHG footprints and reporting the results in organizations. Both the GHG footprint calculation model and the corresponding guide were compiled by the Stockholm Environment Institute's Tallinn Center on behalf of the Ministry of the Environment."
+    "Objective": "This model provides a universal framework for organizations to calculate their greenhouse gas (GHG) footprint. The application is built on the basis of the GHG footprint calculation model of the Ministry of Climate. More information about the use of this model can be found at: https://kliimaministeerium.ee/organisatsioonide-khg-jalajalg"
   },
   "Organization": {
     "Heading": "Organization Data and Footprint Assessment Scope",

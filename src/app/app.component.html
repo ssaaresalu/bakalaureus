@@ -35,12 +35,12 @@
     <div class="btn--btns-left">
       @if (pageIndex !== 5) {
         <button type="button" class="btn btn-primary" (click)="nextPage()">
-          Continue
+          {{ "General.Next" | translate }}
         </button>
       }
       @if (pageIndex > 0) {
         <button type="button" class="btn btn-primary" (click)="prevPage()">
-          Back
+          {{ "General.Back" | translate }}
         </button>
       }
     </div>

@@ -4,7 +4,6 @@
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: flex-end;
-  padding-bottom: 2vh;
   width: 100%;
 }
 
@@ -28,13 +27,8 @@
 
 .progress-bar-indicator {
   height: 2px;
-  width: inherit;
-}
-
-.completed-page {
+  width: 0;
   background: white;
-}
-
-.inactive-page {
-  background: rgba(255, 255, 255, 0.61);
+  transition: width 0.5s ease;
+  margin-bottom: 2vh;
 }
