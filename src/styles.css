@@ -56,13 +56,13 @@ body {
 }
 
 .entry {
-  background-color: #efefef;
+  background-color: #eaefe9;
   padding: 1rem;
   border-radius: 0.3rem;
 }
 
 .table-row {
-  border-bottom: 1px solid #e9e9e9;
+  border-bottom: 1px solid #3d3d3d;
 
   .col-sm-6 {
     padding: 1rem;
@@ -74,4 +74,63 @@ body {
   font-weight: 700;
   line-height: 1.75rem;
   color: #333;
+}
+
+p,
+h2,
+h3,
+h4,
+h5,
+h6,
+label,
+span,
+button,
+input {
+  font-family: "Poppins", sans-serif !important;
+}
+
+mat-expansion-panel-header,
+.mat-expansion-panel-body {
+  background-color: #eef4ed;
+}
+
+mat-panel-title {
+  opacity: 0.85;
+}
+
+.btn-primary {
+  background-color: #055b47cc;
+  border-color: #055b47cc;
+}
+
+.btn-primary:hover {
+  background-color: #034838;
+  border-color: #034838;
+}
+
+.btn-primary:active {
+  background-color: #034838 !important;
+  border-color: #034838 !important;
+}
+
+.btn-primary:disabled {
+  background-color: rgba(5, 91, 71, 0.27);
+  border-color: rgba(5, 91, 71, 0.27);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  transition: background-color 1s linear;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

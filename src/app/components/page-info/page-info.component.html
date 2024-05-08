@@ -1,0 +1,47 @@
+<div class="page-info-container">
+  @switch (pageIndex) {
+    @case (Pages.ORGANIZATION) {
+      <div class="upper-half"></div>
+      <div class="lower-half">
+        <p>{{ "PageInfo.OrganizationWhy" | translate }}</p>
+      </div>
+    }
+    @case (Pages.M1_DATA) {
+      <div class="upper-half"></div>
+      <div class="lower-half">
+        <p>{{ "PageInfo.M1Info" | translate }}</p>
+        <p>{{ "PageInfo.M1Energy" | translate }}</p>
+        <p>{{ "PageInfo.M1Vehicles" | translate }}</p>
+        <p>{{ "PageInfo.M1Dispersed" | translate }}</p>
+      </div>
+    }
+    @case (Pages.M2_DATA) {
+      <div class="upper-half"></div>
+      <div class="lower-half">
+        <p>{{ "PageInfo.M2Info" | translate }}</p>
+        <p>{{ "PageInfo.M2ElectricalEnergy" | translate }}</p>
+        <p>{{ "PageInfo.M2HeatEnergy" | translate }}</p>
+      </div>
+    }
+    @case (Pages.M3_TRANSPORT) {
+      <div class="upper-half"></div>
+      <div class="lower-half">
+        <p>{{ "PageInfo.M3Info" | translate }}</p>
+        <p>{{ "PageInfo.M3Transport" | translate }}</p>
+      </div>
+    }
+    @case (Pages.M3_PAGE_TWO) {
+      <div class="upper-half"></div>
+      <div class="lower-half">
+        <p>{{ "PageInfo.M3Info" | translate }}</p>
+        <p>{{ "PageInfo.M3BusinessTrips" | translate }}</p>
+        <p>{{ "PageInfo.M3WorkHome" | translate }}</p>
+        <p>{{ "PageInfo.M3HomeOffice" | translate }}</p>
+        <p>{{ "PageInfo.M3Products" | translate }}</p>
+        <p>{{ "PageInfo.M3Investments" | translate }}</p>
+        <p>{{ "PageInfo.M3Diffuse" | translate }}</p>
+        <p>{{ "PageInfo.M3Waste" | translate }}</p>
+      </div>
+    }
+  }
+</div>

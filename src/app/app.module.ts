@@ -24,6 +24,8 @@ import {
   provideAnimations,
 } from '@angular/platform-browser/animations';
 import { ResultsComponent } from './components/results/results.component';
+import { PageInfoComponent } from './components/page-info/page-info.component';
+import { LanguageSelectionComponent } from './components/footer/language-selection/language-selection.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
@@ -53,6 +55,8 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     ProgressBarComponent,
     BrowserAnimationsModule,
     ResultsComponent,
+    PageInfoComponent,
+    LanguageSelectionComponent,
   ],
   providers: [
     provideAnimations(),

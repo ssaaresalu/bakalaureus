@@ -1,0 +1,12 @@
+@media only screen and (min-width: 62em) {
+  .h1 {
+    font-family: "Poppins", sans-serif;
+    opacity: 0.75;
+    font-size: 4rem;
+    line-height: 6rem;
+  }
+}
+
+p {
+  font-family: "Poppins", sans-serif;
+}

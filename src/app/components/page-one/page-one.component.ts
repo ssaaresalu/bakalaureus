@@ -7,5 +7,6 @@ import { TranslateModule } from '@ngx-translate/core';
   standalone: true,
   imports: [OrganizationComponent, TranslateModule],
   templateUrl: './page-one.component.html',
+  styleUrls: ['./page-one.component.css'],
 })
 export class PageOneComponent {}

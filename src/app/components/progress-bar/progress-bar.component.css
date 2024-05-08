@@ -23,6 +23,7 @@
   height: 32px;
   color: white;
   gap: 3px;
+  font-family: "Poppins", sans-serif;
 }
 
 .progress-bar-indicator {
@@ -31,4 +32,10 @@
   background: white;
   transition: width 0.5s ease;
   margin-bottom: 2vh;
+}
+
+@media only screen and (max-width: 36em) {
+  .header-value {
+    font-size: 0.7rem;
+  }
 }

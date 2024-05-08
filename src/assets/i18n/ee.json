@@ -1,7 +1,28 @@
 {
   "Introductory": {
-    "Heading": "Teretulemast Rohemõõdikusse",
+    "Heading1": "Teretulemast",
+    "Heading2": "Rohemõõdikusse",
     "Objective": "Käesolev mudel pakub universaalse raamistiku organisatsioonidele kasvuhoonegaaside (KHG) jalajälje arvutamiseks. Rakendus on ehitatud Kliimaministeeriumi KHG jalajälje arvutusmudeli põhjal. Rohkem infot käes oleva mudeli kasutamise kohta leiab aadressil: https://kliimaministeerium.ee/organisatsioonide-khg-jalajalg"
+  },
+  "PageInfo": {
+    "OrganizationWhy": "Esimese sammuna tuleks määratleda ajaline periood (aasta), mille kohta tahetakse KHG jalajälg arvutada. Lisaks määratletakse organisatsiooni ulatus (struktuuriüksused, osakonnad vms), mille KHG jalajälge hindama hakatakse.",
+    "M1Info": "Mõjuala 1 (M1). Hõlmab organisatsiooni otsest KHG heidet, mis pärineb organisatsiooni enda tegevustest/heiteallikatest. Mudel võimaldab arvutada järgmistest tegevustest/heiteallikatest pärinevaid KHG heiteid:",
+    "M1Energy": " ̶ Organisatsiooni enda energiatootmine (M1-Energia);",
+    "M1Vehicles": " ̶ Organisatsiooni enda sõidukite kasutusest tulenev KHG heide (M1-Sõidukid);",
+    "M1Dispersed": " ̶ Organisatsiooni seadmete tekitatud hajusheitmed (M1-Hajusheitmed).",
+    "M2Info": "Mõjuala 2 (M2). Teistelt organisatsioonidelt sisseostetud energia tarbimisest tulenev kaudne KHG heide:",
+    "M2ElectricalEnergy": " ̶ Organisatsiooni ostetud elektrienergia tootmisest tulenev kaudne KHG heide (M2-Ostetud elektrienergia)",
+    "M2HeatEnergy": " ̶   Organisatsiooni ostetud soojusenergia tootmisest tulenev kaudne KHG heide (M2-Ostetud soojusenergia)",
+    "M3Info": "Mõjuala 3 (M3). Muu kaudne heide, mis on põhjustatud organisatsiooni tegevustest, toodetest ja teenustest (v.a ostetud elektri-, soojus- ja jahutusenergia tarbimine ehk mõjuala 2 heide), kuid mille KHG-de heiteallikaid KHG jalajälge hindav organisatsioon ei oma ega kontrolli.",
+    "M3Transport": " ̶  Teistelt organisatsioonidelt sisseostetud transporditeenusest tulenev kaudne KHG heide (M3-Transport)",
+    "M3BusinessTrips": " ̶  Organisatsiooni personali tööreisidest tulenev kaudne KHG heide (M3-Tööreisid)",
+    "M3WorkHome": " ̶  Organisatsiooni personali tööle-koju liikumistest tulenev kaudne KHG heide (M3-Tööle-koju)",
+    "M3HomeOffice": " ̶  Organisatsiooni personali kodukontori kaudne KHG heide (M3-Kodukontor)",
+    "M3Products": " ̶  Ostetud ja müüdud toodetest (n-ö sissetarne ja väljatarne) tulenev kaudne KHG heide (M3-Ostetud tooted ja M3-Müüdud tooted)",
+    "M3Investments": " ̶  Finantsinvesteeringutega seotud kaudne KHG heide (M3-Finantsinvesteeringud)",
+    "M3Diffuse": " ̶  Sõidukikütuste ülesvoolu (toorkütuse kaevandamisest, rafineerimisest ja transpordist tulenev) kaudne KHG heide",
+    "M3Waste": " ̶  Organisatsiooni tarneahela hajusheitmed (M3-Hajusheitmed) "
+
   },
   "Organization": {
     "Heading": "Organisatsiooni andmed ja jalajälje hindamise ulatus",

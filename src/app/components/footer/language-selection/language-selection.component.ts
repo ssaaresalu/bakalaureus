@@ -13,6 +13,7 @@ import {
 } from '@ng-bootstrap/ng-bootstrap';
 import { NgForOf } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-language-selection',
@@ -24,6 +25,7 @@ import { TranslateModule } from '@ngx-translate/core';
     NgbDropdownItem,
     NgForOf,
     TranslateModule,
+    MatIcon,
   ],
   templateUrl: './language-selection.component.html',
   styleUrl: './language-selection.component.css',

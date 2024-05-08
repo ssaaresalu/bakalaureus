@@ -5,7 +5,7 @@
 
 .row {
   --bs-gutter-x: 0;
-  background-color: #fffffc;
+  background: linear-gradient(90deg, #e2efde, 95%, rgb(124, 134, 121));
 }
 
 .btn--btns-left {
@@ -27,11 +27,26 @@
   padding: 2rem;
 }
 
+.right {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 .left {
-  background-color: #757780;
+  background: linear-gradient(to right, #468189, 85%, #031926);
+}
+
+.content {
+  flex-grow: 1;
+}
+
+.navigation {
+  @media only screen and (max-width: 36em) {
+  }
 }
 
 .header {
-  background-color: #001011;
+  background-color: #031926;
   padding: 1rem;
 }

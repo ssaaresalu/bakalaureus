@@ -4,6 +4,7 @@ import { LanguageService } from './shared/services/language.service';
 import { Pages } from './enums/pages.enum';
 import { Observable } from 'rxjs';
 import { SpinnerService } from './shared/services/spinner.service';
+import { scrollToTopOfPage } from './util/general-util';
 
 @Component({
   selector: 'app-root',
@@ -26,12 +27,14 @@ export class AppComponent implements OnInit {
 
   nextPage() {
     if (this.pageIndex < 5) {
+      scrollToTopOfPage();
       this.pageIndex++;
     }
   }
 
   prevPage() {
     if (this.pageIndex > 0) {
+      scrollToTopOfPage();
       this.pageIndex--;
     }
   }
