@@ -1,12 +1,6 @@
 import { Directive, inject, OnDestroy } from '@angular/core';
 import { DataService } from '../services/data.service';
-import {
-  combineLatestWith,
-  Observable,
-  startWith,
-  Subject,
-  takeUntil,
-} from 'rxjs';
+import { combineLatestWith, startWith, Subject, takeUntil } from 'rxjs';
 import { DetailsForm } from '../../interface/details-form';
 import { ListValueItem } from '../../interface/list-value-item';
 import {
@@ -126,7 +120,7 @@ export abstract class PageComponentAbstract implements OnDestroy {
     const totalDistanceProductChanges$ =
       formControl.controls.totalDistanceProductAmount?.valueChanges.pipe(
         startWith(formControl.controls.totalDistanceProductAmount?.value),
-      ) ?? new Observable();
+      ) ?? distanceChanges$;
     typeChanges$
       .pipe(
         combineLatestWith(
