@@ -10,7 +10,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FooterComponent } from './components/footer/footer.component';
 import { PageOneComponent } from './components/page-one/page-one.component';
 import { M1PageComponent } from './components/m1-page/m1-page.component';
 import { ApiRequestInterceptor } from './shared/api-request.interceptor';
@@ -25,7 +24,7 @@ import {
 } from '@angular/platform-browser/animations';
 import { ResultsComponent } from './components/results/results.component';
 import { PageInfoComponent } from './components/page-info/page-info.component';
-import { LanguageSelectionComponent } from './components/footer/language-selection/language-selection.component';
+import { LanguageSelectionComponent } from './components/language-selection/language-selection.component';
 
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
   return new TranslateHttpLoader(http);
@@ -46,7 +45,6 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
       defaultLanguage: 'ee',
     }),
     NgbModule,
-    FooterComponent,
     PageOneComponent,
     M1PageComponent,
     M2PageComponent,

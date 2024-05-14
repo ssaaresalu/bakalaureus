@@ -3,8 +3,8 @@ import {
   getLanguageBasedOnCode,
   getLanguageCode,
   getUserLanguage,
-} from '../../../util/data-util';
-import { LanguageService } from '../../../shared/services/language.service';
+} from '../../util/data-util';
+import { LanguageService } from '../../shared/services/language.service';
 import {
   NgbDropdown,
   NgbDropdownItem,

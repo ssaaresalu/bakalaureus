@@ -15,9 +15,7 @@ export class DataService {
   emissionLists$ = new BehaviorSubject<EmissionLists>(emptyEmissionLists);
   currentLang$ = new BehaviorSubject<string>('');
   lang$ = this.currentLang$.asObservable();
-  organizationData$ = new BehaviorSubject<OrganizationData>(
-    {} as OrganizationData,
-  );
+  organizationData$ = new BehaviorSubject<OrganizationData | null>(null);
 
   allOrganizationsData$ = new BehaviorSubject<OrganizationData[]>(
     [] as OrganizationData[],
@@ -32,11 +30,7 @@ export class DataService {
   );
 
   get organizationData(): OrganizationData {
-    return this.organizationData$.value;
-  }
-
-  set organizationData(org: OrganizationData) {
-    this.organizationData$.next(org);
+    return this.organizationData$.value ?? {};
   }
 
   get emissionsLists(): EmissionLists {

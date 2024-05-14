@@ -243,7 +243,7 @@ export class M1PageComponent extends PageComponentAbstract implements OnInit {
       unitNumber: this.fb.control<string>(''),
       type: this.fb.control<string>(''),
       amountOrDistance: this.fb.control<string | undefined>(undefined),
-      isUsingModelEmissionFactor: this.fb.control<boolean | undefined>(true),
+      isUsingModelEmissionFactor: this.fb.control<boolean>(true),
       emissionFactor: this.fb.control<number>(0),
       otherEmissionFactor: this.fb.control<string | undefined>(undefined),
       kgCO2Footprint: this.fb.control<number>(0),

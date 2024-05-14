@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Pages } from '../../enums/pages.enum';
 import { TranslateModule } from '@ngx-translate/core';
-import { LanguageSelectionComponent } from '../footer/language-selection/language-selection.component';
+import { LanguageSelectionComponent } from '../language-selection/language-selection.component';
 
 @Component({
   selector: 'app-page-info',

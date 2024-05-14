@@ -29,6 +29,7 @@
                   [translationPrefix]="
                     'PageThree.ColumnHeader.BoughtElectrical'
                   "
+                  [isM2]="true"
                 ></app-entry>
                 <div class="col">
                   @if (yearlyForm.controls.boughtElectricalEnergy.length > 0) {
@@ -92,6 +93,7 @@
                   [emissionList]="emissionsLists.boughtHeatEnergy"
                   [year]="yearlyForm.controls.year.value"
                   [translationPrefix]="'PageThree.ColumnHeader.BoughtHeat'"
+                  [isM2]="true"
                 ></app-entry>
                 <div class="col">
                   @if (yearlyForm.controls.boughtHeatEnergy.length > 0) {

@@ -12,15 +12,19 @@
           ></app-dropdown>
         </div>
       }
-      <div class="mb-2">
-        <span class="fw-500">{{ "ColumnHeader.UnitNumber" | translate }}</span>
-        <div class="w-50">
-          <app-dropdown
-            [control]="formGroup.controls.unitNumber"
-            [simpleList]="getUnitsByYear(year)"
-          ></app-dropdown>
+      @if (unitListByYear.length > 0) {
+        <div class="mb-2">
+          <span class="fw-500">{{
+            "ColumnHeader.UnitNumber" | translate
+          }}</span>
+          <div class="w-50">
+            <app-dropdown
+              [control]="formGroup.controls.unitNumber"
+              [simpleList]="unitListByYear"
+            ></app-dropdown>
+          </div>
         </div>
-      </div>
+      }
       <div class="mb-2">
         <span class="fw-500">
           {{ translationPrefix | translate }}
@@ -66,14 +70,33 @@
       @if (formGroup.controls.isUsingModelEmissionFactor.value) {
         <div class="mb-3">
           <span class="fw-500">
-            {{ "ColumnHeader.EmissionFactor" | translate }}
+            @if (isDispersedEmissions) {
+              {{ "ColumnHeader.GWP" | translate }}
+            } @else {
+              {{ "ColumnHeader.EmissionFactor" | translate }}
+            }
           </span>
           {{ emissionList | getListItemValue: formGroup.controls.type.value }}
+          <span class="fw-500">
+            @if (isVehicleFuels3) {
+              kg CO2 ekv/km
+            } @else if (isM2) {
+              kg CO2 ekv/kWh
+            } @else if (isWasteMass) {
+              kg CO2 ekv/t
+            } @else if (isKmEmissions) {
+              kg CO2 ekv/km
+            } @else if (isPassengerEmissions) {
+              kg CO2 ekv/sõitja-km
+            } @else {
+              {{ formGroup.controls.type.value | getMeasurementUnitForFactor }}
+            }
+          </span>
         </div>
       }
       @if (
         !isDispersedEmissions &&
-        formGroup.controls.isUsingModelEmissionFactor.value === false
+        !formGroup.controls.isUsingModelEmissionFactor.value
       ) {
         <div class="mb-3">
           <span class="fw-500">
@@ -105,13 +128,17 @@
 } @else if (isTransport) {
   <div class="row row-cols-1 row-cols-md-2">
     <div class="col-md-4">
-      <div class="mb-2">
-        <span class="fw-500">{{ "ColumnHeader.UnitNumber" | translate }}</span>
-        <app-dropdown
-          [control]="transportFormGroup.controls.unitNumber"
-          [simpleList]="getUnitsByYear(year)"
-        ></app-dropdown>
-      </div>
+      @if (unitListByYear.length > 0) {
+        <div class="mb-2">
+          <span class="fw-500">{{
+            "ColumnHeader.UnitNumber" | translate
+          }}</span>
+          <app-dropdown
+            [control]="transportFormGroup.controls.unitNumber"
+            [simpleList]="unitListByYear"
+          ></app-dropdown>
+        </div>
+      }
       @if (transportFormGroup.controls.capacity) {
         <div class="mb-2">
           <span class="fw-500">
@@ -183,10 +210,20 @@
             emissionList
               | getListItemValue: transportFormGroup.controls.type.value
           }}
+          <span class="fw-500">
+            @if (isTonnKmEmissions) {
+              kg CO2 ekv/tonn-km
+            } @else {
+              {{
+                transportFormGroup.controls.type.value
+                  | getMeasurementUnitForFactor
+              }}
+            }
+          </span>
         }
         @if (
           !isDispersedEmissions &&
-          transportFormGroup.controls.isUsingModelEmissionFactor.value === false
+          !transportFormGroup.controls.isUsingModelEmissionFactor.value
         ) {
           <div class="mb-3">
             <span class="fw-500">

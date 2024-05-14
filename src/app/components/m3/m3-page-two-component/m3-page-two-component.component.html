@@ -37,6 +37,7 @@
                         'PageFive.ColumnHeader.BusinessTripsSmall'
                       "
                       [isDistanceLabel]="true"
+                      [isKmEmissions]="true"
                     ></app-entry>
                     <div class="col">
                       @if (yearlyForm.controls.businessTripsSmall.length > 0) {
@@ -104,6 +105,7 @@
                         'PageFive.ColumnHeader.BusinessTripsLarge'
                       "
                       [isDistanceLabel]="true"
+                      [isPassengerEmissions]="true"
                     ></app-entry>
                     <div class="col">
                       @if (yearlyForm.controls.businessTripsLarge.length > 0) {
@@ -181,6 +183,7 @@
                       "
                       [isWorkHomeForm]="true"
                       [isDistanceLabel]="true"
+                      [isKmEmissions]="true"
                     ></app-entry>
                     <div class="col">
                       @if (
@@ -253,6 +256,7 @@
                       "
                       [isWorkHomeForm]="true"
                       [isDistanceLabel]="true"
+                      [isPassengerEmissions]="true"
                     ></app-entry>
                     <div class="col">
                       @if (
@@ -369,19 +373,23 @@
               <div class="mb-3 entry">
                 <div class="row row-cols-1 row-cols-md-2">
                   <div class="col-md-4">
-                    <div class="mb-2">
-                      <span class="fw-500">{{
-                        "ColumnHeader.UnitNumber" | translate
-                      }}</span>
-                      <div class="w-50">
-                        <app-dropdown
-                          [control]="homeOfficeInfo.controls.unitNumber"
-                          [simpleList]="
-                            getUnitsByYear(yearlyForm.controls.year.value)
-                          "
-                        ></app-dropdown>
+                    @if (
+                      getUnitsByYear(yearlyForm.controls.year.value).length > 0
+                    ) {
+                      <div class="mb-2">
+                        <span class="fw-500">{{
+                          "ColumnHeader.UnitNumber" | translate
+                        }}</span>
+                        <div class="w-50">
+                          <app-dropdown
+                            [control]="homeOfficeInfo.controls.unitNumber"
+                            [simpleList]="
+                              getUnitsByYear(yearlyForm.controls.year.value)
+                            "
+                          ></app-dropdown>
+                        </div>
                       </div>
-                    </div>
+                    }
 
                     <div class="mb-2">
                       <span class="fw-500">{{
@@ -471,11 +479,11 @@
                             | getListItemValue
                               : homeOfficeInfo.controls.electricityPackage.value
                         }}
+                        <span class="fw-500">kg CO2 ekv/kWh</span>
                       </div>
                     }
                     @if (
-                      homeOfficeInfo.controls.isUsingModelEmissionFactor
-                        .value === false
+                      !homeOfficeInfo.controls.isUsingModelEmissionFactor.value
                     ) {
                       <div class="mb-3">
                         <span class="fw-500">
@@ -551,20 +559,23 @@
               <div class="mb-3 entry">
                 <div class="row row-cols-1 row-cols-md-2">
                   <div class="col-md-4">
-                    <div class="mb-2">
-                      <span class="fw-500">{{
-                        "ColumnHeader.UnitNumber" | translate
-                      }}</span>
-                      <div class="w-50">
-                        <app-dropdown
-                          [control]="productInfo.controls.unitNumber"
-                          [simpleList]="
-                            getUnitsByYear(yearlyForm.controls.year.value)
-                          "
-                        ></app-dropdown>
+                    @if (
+                      getUnitsByYear(yearlyForm.controls.year.value).length > 0
+                    ) {
+                      <div class="mb-2">
+                        <span class="fw-500">{{
+                          "ColumnHeader.UnitNumber" | translate
+                        }}</span>
+                        <div class="w-50">
+                          <app-dropdown
+                            [control]="productInfo.controls.unitNumber"
+                            [simpleList]="
+                              getUnitsByYear(yearlyForm.controls.year.value)
+                            "
+                          ></app-dropdown>
+                        </div>
                       </div>
-                    </div>
-
+                    }
                     <div class="mb-2">
                       <span class="fw-500">
                         {{ "PageFive.ColumnHeader.BoughtOrSold" | translate }}
@@ -684,20 +695,23 @@
               <div class="mb-3 entry">
                 <div class="row row-cols-1 row-cols-md-2">
                   <div class="col-md-4">
-                    <div class="mb-2">
-                      <span class="fw-500">{{
-                        "ColumnHeader.UnitNumber" | translate
-                      }}</span>
-                      <div class="w-50">
-                        <app-dropdown
-                          [control]="vehicleFuelInfo.controls.unitNumber"
-                          [simpleList]="
-                            getUnitsByYear(yearlyForm.controls.year.value)
-                          "
-                        ></app-dropdown>
+                    @if (
+                      getUnitsByYear(yearlyForm.controls.year.value).length > 0
+                    ) {
+                      <div class="mb-2">
+                        <span class="fw-500">{{
+                          "ColumnHeader.UnitNumber" | translate
+                        }}</span>
+                        <div class="w-50">
+                          <app-dropdown
+                            [control]="vehicleFuelInfo.controls.unitNumber"
+                            [simpleList]="
+                              getUnitsByYear(yearlyForm.controls.year.value)
+                            "
+                          ></app-dropdown>
+                        </div>
                       </div>
-                    </div>
-
+                    }
                     <div class="mb-2">
                       <span class="fw-500">{{
                         "PageFive.ColumnHeader.VehicleFuelType" | translate
@@ -823,20 +837,23 @@
               <div class="mb-3 entry">
                 <div class="row row-cols-1 row-cols-md-2">
                   <div class="col-md-4">
-                    <div class="mb-2">
-                      <span class="fw-500">{{
-                        "ColumnHeader.UnitNumber" | translate
-                      }}</span>
-                      <div class="w-50">
-                        <app-dropdown
-                          [control]="diffuseEmissionInfo.controls.unitNumber"
-                          [simpleList]="
-                            getUnitsByYear(yearlyForm.controls.year.value)
-                          "
-                        ></app-dropdown>
+                    @if (
+                      getUnitsByYear(yearlyForm.controls.year.value).length > 0
+                    ) {
+                      <div class="mb-2">
+                        <span class="fw-500">{{
+                          "ColumnHeader.UnitNumber" | translate
+                        }}</span>
+                        <div class="w-50">
+                          <app-dropdown
+                            [control]="diffuseEmissionInfo.controls.unitNumber"
+                            [simpleList]="
+                              getUnitsByYear(yearlyForm.controls.year.value)
+                            "
+                          ></app-dropdown>
+                        </div>
                       </div>
-                    </div>
-
+                    }
                     <div class="mb-2">
                       <span class="fw-500">{{
                         "PageFive.ColumnHeader.DiffuseEmissionSource"

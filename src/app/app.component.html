@@ -40,7 +40,12 @@
     </div>
     <div class="btn--btns-left navigation py-2">
       @if (pageIndex !== 5) {
-        <button type="button" class="btn btn-primary" (click)="nextPage()">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="nextPage()"
+          [disabled]="checkIfOrganizationAdded()"
+        >
           {{ "General.Next" | translate }}
         </button>
       }

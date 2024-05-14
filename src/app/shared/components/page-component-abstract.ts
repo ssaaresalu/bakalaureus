@@ -180,14 +180,12 @@ export abstract class PageComponentAbstract implements OnDestroy {
     }
   }
 
-  addNewDetailsFormGroup(isDispersedEmissions?: boolean): DetailsForm {
+  addNewDetailsFormGroup(): DetailsForm {
     return new FormGroup({
       unitNumber: this.fb.control<string>(''),
       type: this.fb.control<string>(''),
       amountOrDistance: this.fb.control<string | undefined>(undefined),
-      isUsingModelEmissionFactor: this.fb.control<boolean | undefined>(
-        isDispersedEmissions ? true : undefined,
-      ),
+      isUsingModelEmissionFactor: this.fb.control<boolean>(true),
       emissionFactor: this.fb.control<number>(0),
       otherEmissionFactor: this.fb.control<string | undefined>(undefined),
       kgCO2Footprint: this.fb.control<number>(0),
@@ -204,7 +202,7 @@ export abstract class PageComponentAbstract implements OnDestroy {
         emissionFactor: formDet.value.emissionFactor ?? 0,
         kgCO2Footprint: formDet.value.kgCO2Footprint ?? 0,
         isUsingModelEmissionsFactor:
-          formDet.value.isUsingModelEmissionFactor ?? undefined,
+          formDet.value.isUsingModelEmissionFactor ?? true,
         otherEmissionFactor: formDet.value.otherEmissionFactor ?? '',
         amountOrDistance: formDet.value.amountOrDistance ?? '',
       };
@@ -222,8 +220,8 @@ export abstract class PageComponentAbstract implements OnDestroy {
       amountOrDistance: this.fb.control<string | undefined>(
         details.amountOrDistance ?? undefined,
       ),
-      isUsingModelEmissionFactor: this.fb.control<boolean | undefined>(
-        details.isUsingModelEmissionsFactor ?? undefined,
+      isUsingModelEmissionFactor: this.fb.control<boolean>(
+        details.isUsingModelEmissionsFactor ?? true,
       ),
       emissionFactor: this.fb.control<number>(details.emissionFactor ?? 0),
       otherEmissionFactor: this.fb.control<string | undefined>(

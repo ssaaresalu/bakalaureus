@@ -28,7 +28,7 @@
     "Name": "Organization/company name:",
     "ReportingPeriodStart": "Start year of the GHG footprint reporting period:",
     "ReportingPeriodEnd": "End year of the GHG footprint reporting period:",
-    "RelativeIndicator": "Number of employees:",
+    "RelativeIndicator": "Average number of employees of year:",
     "AllOrganizationsLabel": "Select a previously added company:",
     "Units": {
       "StructuralUnits": "Defining the scope of the organization:",
@@ -48,7 +48,7 @@
     }
   },
   "PageTwo": {
-    "Heading": "Area of Influence 1",
+    "Heading": "Scope 1",
     "EnergyHeading": "Energy produced by the organization",
     "VehicleFuelsHeading": "Fuel for organization's vehicles",
     "AddRow": "Add entry",
@@ -67,7 +67,7 @@
     }
   },
   "PageThree": {
-    "Heading": "Area of Influence 2",
+    "Heading": "Scope 2",
     "BoughtElectricalHeading": "Purchased electricity",
     "BoughtHeatHeading": "Purchased heat energy",
     "AddRow": "Add entry",
@@ -78,7 +78,7 @@
     }
   },
   "PageFour": {
-    "Heading": "Area of Influence 3 - Transport",
+    "Heading": "Scope 3 - transport",
     "BoughtTransportEmissionsHeading": "GHG emissions from purchased road transport",
     "Vans": "Van",
     "RigidTrucks": "Rigid truck",
@@ -100,7 +100,7 @@
     }
   },
   "PageFive": {
-    "Heading": "M3",
+    "Heading": "Scope 3 - other",
     "BusinessTripsHeading": "Business trips",
     "BusinessTripSmallVehicles": "Car, motorcycle, moped, taxi",
     "BusinessTripLargeVehicles": "Bus, rail transport, airplane, ship",
@@ -151,19 +151,20 @@
     }
   },
   "ColumnHeader": {
-    "UnitNumber": "Unit number",
-    "Amount": "Amount",
+    "UnitNumber": "Unit number:",
+    "Amount": "Amount:",
     "ModelEmissions": "Are you using the calculation model's specific emission factor?",
     "EmissionFactor": "Model specific emission factor:",
+    "GWP": "Global warming potential:",
     "OtherEmissionFactor": "Other specific emission factor (enter here):",
     "EmissionsKG": "GHG emissions: ",
     "EmissionsT": "GHG emissions: ",
-    "Capacity": "Truck capacity",
-    "Distance": "Distance (km)",
-    "ProductAmount": "Product amount (km)",
-    "TotalDistanceAmount": "Total tonne-km or km of transport service",
-    "WorkHomeType": "Direction",
-    "WasteMass": "Amount of waste (t)"
+    "Capacity": "Truck capacity:",
+    "Distance": "Distance (km):",
+    "ProductAmount": "Product amount (t):",
+    "TotalDistanceAmount": "Total tonne-km or km of transport service:",
+    "WorkHomeType": "Direction:",
+    "WasteMass": "Amount of waste (t):"
   },
   "Progress": {
     "ProgressBar_0": "Organization",

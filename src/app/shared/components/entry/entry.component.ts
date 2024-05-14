@@ -14,6 +14,7 @@ import { takeUntil } from 'rxjs';
 import { GetListByCapacityPipe } from '../../pipes/get-list-by-capacity.pipe';
 import { AsyncPipe } from '@angular/common';
 import { WORK_HOME_TYPES } from '../../../util/lists';
+import { GetMeasurementUnitForFactorPipe } from '../../pipes/get-measurement-unit-for-factor.pipe';
 
 @Component({
   selector: 'app-entry',
@@ -27,6 +28,7 @@ import { WORK_HOME_TYPES } from '../../../util/lists';
     ReactiveFormsModule,
     CalculateDistanceAmountPipe,
     AsyncPipe,
+    GetMeasurementUnitForFactorPipe,
   ],
   templateUrl: './entry.component.html',
   styleUrl: './entry.component.css',
@@ -45,6 +47,12 @@ export class EntryComponent extends PageComponentAbstract implements OnInit {
   @Input() isWorkHomeForm = false;
   @Input() isDistanceLabel = false;
   @Input() isWasteMass = false;
+  @Input() isVehicleFuels3 = false;
+  @Input() isM2 = false;
+  @Input() isKmEmissions = false;
+  @Input() isPassengerEmissions = false;
+  @Input() isTonnKmEmissions = false;
+  unitListByYear: string[] = [];
 
   constructor(
     fb: NonNullableFormBuilder,
@@ -85,5 +93,6 @@ export class EntryComponent extends PageComponentAbstract implements OnInit {
           });
       }
     }
+    this.unitListByYear = this.getUnitsByYear(this.year);
   }
 }

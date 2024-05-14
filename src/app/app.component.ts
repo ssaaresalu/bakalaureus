@@ -42,4 +42,8 @@ export class AppComponent implements OnInit {
   public get showSpinner(): Observable<number> {
     return this.spinnerService.activeSpinners.asObservable();
   }
+
+  checkIfOrganizationAdded(): boolean {
+    return this.dataService.organizationData$.value === null;
+  }
 }

@@ -29,7 +29,7 @@
     "Name": "Organisatsiooni/ettevõtte nimi:",
     "ReportingPeriodStart": "KHG jalajälje aruandlusperioodi algusaasta:",
     "ReportingPeriodEnd": "KHG jalajälje aruandlusperioodi lõppaasta:",
-    "RelativeIndicator": "Töötajate arv:",
+    "RelativeIndicator": "Aasta keskmine töötajate arv:",
     "AllOrganizationsLabel": "Valige varasemalt lisatud ettevõtte:",
     "Units": {
       "StructuralUnits": "Organisatsiooni ulatuse määratlemine:",
@@ -101,7 +101,7 @@
     }
   },
   "PageFive": {
-    "Heading": "M3",
+    "Heading": "Mõjuala 3 - muu",
     "BusinessTripsHeading": "Tööreisid",
     "BusinessTripSmallVehicles": "Sõiduauto, mootorratas, mopeed, takso",
     "BusinessTripLargeVehicles": "Buss, rööbastransport, lennuk, laev",
@@ -152,19 +152,20 @@
     }
   },
   "ColumnHeader": {
-    "UnitNumber": "Üksuse number",
-    "Amount": "Kogus",
+    "UnitNumber": "Üksuse number:",
+    "Amount": "Kogus:",
     "ModelEmissions": "Kas kasutate arvutusmudeli eriheitetegurit?",
     "EmissionFactor": "Mudeli eriheitetegur:",
+    "GWP": "Globaalse soojenemise potentsiaal:",
     "OtherEmissionFactor": "Muu eriheitetegur (sisestage siia):",
     "EmissionsKG": "KHG heide: ",
     "EmissionsT": "KHG heide: ",
-    "Capacity": "Veoauto täituvus",
-    "Distance": "Vahemaa (km)",
-    "ProductAmount": "Kauba kogus (km)",
-    "TotalDistanceAmount": "Transporditeenuse tonn-km või km kokku",
-    "WorkHomeType": "Suund",
-    "WasteMass": "Jäätmete kogus (t)"
+    "Capacity": "Veoauto täituvus:",
+    "Distance": "Vahemaa (km):",
+    "ProductAmount": "Kauba kogus (t):",
+    "TotalDistanceAmount": "Transporditeenuse tonn-km või km kokku:",
+    "WorkHomeType": "Suund:",
+    "WasteMass": "Jäätmete kogus (t):"
   },
   "Progress": {
     "ProgressBar_0": "Organisatsioon",

@@ -303,9 +303,7 @@ export class M3TransportPageComponent
       unitNumber: this.fb.control<string>(''),
       distance: this.fb.control<string>(''),
       type: this.fb.control<string>(''),
-      isUsingModelEmissionFactor: this.fb.control<boolean | undefined>(
-        undefined,
-      ),
+      isUsingModelEmissionFactor: this.fb.control<boolean>(true),
       emissionFactor: this.fb.control<number>(0),
       otherEmissionFactor: this.fb.control<string>(''),
       kgCO2Footprint: this.fb.control<number>(0),

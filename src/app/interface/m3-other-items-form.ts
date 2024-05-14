@@ -27,7 +27,7 @@ export type HomeOfficeForm = FormGroup<{
   amountOfHours: FormControl<string>;
   electricityPackage: FormControl<string>;
   amount_kWh: FormControl<number>;
-  isUsingModelEmissionFactor: FormControl<boolean | undefined>;
+  isUsingModelEmissionFactor: FormControl<boolean>;
   emissionFactor: FormControl<number>;
   otherEmissionFactor: FormControl<string | undefined>;
   kgCO2Footprint: FormControl<number>;

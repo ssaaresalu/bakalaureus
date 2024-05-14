@@ -23,7 +23,7 @@ export type TransportDetailsForm = FormGroup<{
   distance: FormControl<string>;
   productAmount?: FormControl<string>;
   totalDistanceProductAmount?: FormControl<number>;
-  isUsingModelEmissionFactor: FormControl<boolean | undefined>;
+  isUsingModelEmissionFactor: FormControl<boolean>;
   emissionFactor: FormControl<number>;
   otherEmissionFactor: FormControl<string>;
   kgCO2Footprint: FormControl<number>;

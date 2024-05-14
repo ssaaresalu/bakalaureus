@@ -1,15 +1,16 @@
 <div class="row row-cols-1 row-cols-md-2">
   <div class="col-md-4">
-    <div class="mb-2">
-      <span class="fw-500">{{ "ColumnHeader.UnitNumber" | translate }}</span>
-      <div class="w-50">
-        <app-dropdown
-          [control]="investmentForm.controls.unitNumber"
-          [simpleList]="getUnitsByYear(year)"
-        ></app-dropdown>
+    @if (getUnitsByYear(year).length > 0) {
+      <div class="mb-2">
+        <span class="fw-500">{{ "ColumnHeader.UnitNumber" | translate }}</span>
+        <div class="w-50">
+          <app-dropdown
+            [control]="investmentForm.controls.unitNumber"
+            [simpleList]="getUnitsByYear(year)"
+          ></app-dropdown>
+        </div>
       </div>
-    </div>
-
+    }
     <div class="mb-2">
       <span class="fw-500">{{
         "PageFive.InvestmentsHeading" | translate

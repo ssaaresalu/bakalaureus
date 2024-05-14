@@ -383,8 +383,8 @@ export class M3PageTwoComponentComponent
         details?.electricityPackage ?? '',
       ),
       amount_kWh: this.fb.control<number>(details?.amount_kWh ?? 0),
-      isUsingModelEmissionFactor: this.fb.control<boolean | undefined>(
-        details?.isUsingModelEmissionFactor ?? undefined,
+      isUsingModelEmissionFactor: this.fb.control<boolean>(
+        details?.isUsingModelEmissionFactor ?? true,
       ),
       emissionFactor: this.fb.control<number>(details?.emissionFactor ?? 0),
       otherEmissionFactor: this.fb.control<string | undefined>(
